@@ -1,37 +1,41 @@
 package fall2018.csc2017.GameCentre;
 
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+public class Scores {
 
-public abstract class ScoreBoard extends Fragment{
+    static final int name = 0;
+    static final  int scores = 1;
 
-    /**
-     * Create the view for each scoreboard
-     * @param inflater layout inflater
-     * @param container container for the ViewGroup
-     * @param savedInstanceState the bundle for this Fragment
-     */
-    public abstract View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState);
+    private ArrayList<String> accountNames;
+    private ArrayList<String> accountScores;
+
 
     /**
-     * Cast the list to either Score listView or Account name listView
-     * @param lis input array list
-     * @param isName wether the lis is contains Scores, or Game
-     * @param rootview the view for the current Fragment
+     * Construct all the scores for a specific game.
      */
-    public abstract void castToView (ArrayList<String> lis, boolean isName, View rootview);
+    public Scores(String game){
+        ArrayList<UserAccount> accList = sortingAccountsScores(game, loadAllAccountInfo());
+        List<ArrayList<String>> names_and_scores = accountsGetNamesScores(accList, game);
+        accountNames = names_and_scores.get(name);
+        accountScores = names_and_scores.get(scores);
+    }
+
+    /**
+     * Return the accountNames
+     * @return An array list of all account names that have played  and won the game
+     */
+    public ArrayList<String> getAccountNames(){return accountNames;}
+
+    /**
+     * Return the accountScores
+     * @return An array list of all the scores of the accounts in accountNames
+     */
+    public ArrayList<String> getAccountScores(){return accountScores;}
+
 
     /**
      * Load all the account information
@@ -56,7 +60,7 @@ public abstract class ScoreBoard extends Fragment{
      * @return an List of 2 ArrayLists, one representing the name and one representing the scores
      */
     List<ArrayList<String>> accountsGetNamesScores(ArrayList<UserAccount> accounts,
-                                                          String gametype){
+                                                   String gametype){
         ArrayList<String> names = new ArrayList<>(accounts.size());
         ArrayList<String> scores = new ArrayList<>(accounts.size());
         for(UserAccount acc: accounts){
@@ -112,6 +116,7 @@ public abstract class ScoreBoard extends Fragment{
         }
         return players;
     }
+
 
 
 }

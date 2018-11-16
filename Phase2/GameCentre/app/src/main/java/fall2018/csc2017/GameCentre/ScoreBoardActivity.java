@@ -11,8 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 public class ScoreBoardActivity extends AppCompatActivity {
 
@@ -98,11 +96,11 @@ public class ScoreBoardActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
-                    return new ScoreBoard3x3();
+                    return new SlidingTile3x3ScoresFragment();
                 case 1:
-                    return new ScoreBoard4x4();
+                    return new SlidingTile4x4ScoresFragment();
                 case 2:
-                    return new ScoreBoard5x5();
+                    return new SlidingTile5x5ScoresFragment();
                 default:
                     return null;
             }

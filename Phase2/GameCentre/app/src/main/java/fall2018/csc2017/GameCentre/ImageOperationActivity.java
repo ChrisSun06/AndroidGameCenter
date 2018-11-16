@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import fall2018.csc2017.GameCentre.R;
+
 public abstract class ImageOperationActivity extends AppCompatActivity {
     /**
      * The default source image width.
