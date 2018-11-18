@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                         mPasswordView.getText().toString())) {
                     currentUser = mEmailView.getText().toString();
                     Intent intent = new Intent(LoginActivity.this,
-                            GameCenterActivity.class);
+                            GameSelectionActivity.class);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
                 } else {

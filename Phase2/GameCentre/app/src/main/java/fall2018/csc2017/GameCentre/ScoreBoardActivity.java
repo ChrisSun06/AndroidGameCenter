@@ -1,5 +1,7 @@
 package fall2018.csc2017.GameCentre;
 
+import android.content.Intent;
+import android.icu.text.UnicodeSet;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -53,15 +55,11 @@ public class ScoreBoardActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
+
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_score_board, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -93,38 +91,23 @@ public class ScoreBoardActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            switch (position) {
-                case 0:
-                    return new SlidingTile3x3ScoresFragment();
-                case 1:
-                    return new SlidingTile4x4ScoresFragment();
-                case 2:
-                    return new SlidingTile5x5ScoresFragment();
-                default:
-                    return null;
-            }
+            // Return a PlaceholderFragment (defined as a static inner class below)
+            //
+            GameScoresFragment game = new GameScoresFragment();
+            game.setGame_type(UserAccount.games[position]);
+            return game;
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 5;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             // Show 3 total pages.
-            switch (position) {
-                case 0:
-                    return "3x3 Scores!";
-                case 1:
-                    return "4x4 Scores!";
-                case 2:
-                    return "5x5 Scores!";
-                default:
-                    return null;
-            }
+            return UserAccount.games[position];
         }
 
     }

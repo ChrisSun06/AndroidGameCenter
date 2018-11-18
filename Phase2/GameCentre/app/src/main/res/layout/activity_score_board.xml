@@ -53,6 +53,18 @@
                 android:layout_height="wrap_content"
                 android:text="5x5 Scores" />
 
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabItem4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sudoku" />
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tabItem5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2048" />
+
         </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 

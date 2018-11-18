@@ -7,11 +7,12 @@
     android:layout_height="match_parent"
     tools:context=".ScoreBoardActivity$PlaceholderFragment">
 
+
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/gametype"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="5X5ScoreBoard"
+        android:text="Game"
         android:textSize="24sp" />
 
     <TextView
@@ -28,25 +29,25 @@
         tools:layout_constraintTop_creator="1" />
 
     <ListView
-        android:id="@+id/by5listViewScores"
-        android:layout_width="92dp"
+        android:id="@+id/gameViewScores"
+        android:layout_width="89dp"
         android:layout_height="519dp"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/by5listViewName"
-        app:layout_constraintTop_toTopOf="@+id/by5listViewName" />
+        app:layout_constraintStart_toEndOf="@+id/gameViewName"
+        app:layout_constraintTop_toBottomOf="@+id/gametype" />
 
     <ListView
-        android:id="@+id/by5listViewName"
+        android:id="@+id/gameViewName"
         android:layout_width="263dp"
         android:layout_height="516dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/gameViewScores"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/gametype">
 
     </ListView>
 

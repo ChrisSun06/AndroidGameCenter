@@ -120,16 +120,8 @@ public class UserAccManager implements Serializable {
      * @return the current game user is playing.
      */
     private String getCurrentGame() {
-        switch (GameCenterActivity.CURRENT_GAME) {
-            case 3:
-                return "3X3sliding";
-            case 4:
-                return "4X4sliding";
-            case 5:
-                return "5X5sliding";
-            default:
-                return "";
-        }
+        return GameCenterActivity.CURRENT_GAME;
+
     }
 
     /**

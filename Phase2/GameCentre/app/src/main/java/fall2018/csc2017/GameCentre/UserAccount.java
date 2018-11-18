@@ -9,6 +9,8 @@ import java.util.HashMap;
  */
 public class UserAccount implements Serializable {
 
+    public static final String[] games = {"3X3sliding", "4X4sliding", "5X5sliding", "Sudoku", "2048"};
+
     /**
      * The username of user.
      */
@@ -87,7 +89,7 @@ public class UserAccount implements Serializable {
         this.name = n;
         this.password = p;
         this.scores = new HashMap<>();
-        String[] games = {"3X3sliding", "4X4sliding", "5X5sliding"};
+
         //setting all scores to -1
         for (String game : games) {
             scores.put(game, -1);
