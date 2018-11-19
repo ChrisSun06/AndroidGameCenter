@@ -24,7 +24,8 @@ public class BoardAndTileTest {
      */
     private List<Tile> makeTiles() {
         List<Tile> tiles = new ArrayList<>();
-        final int numTiles = Board.NUM_ROWS * Board.NUM_COLS;
+        final int numTiles = boardManager.getBoard().getNumRows() *
+                boardManager.getBoard().getNumCols();
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
             tiles.add(new Tile(tileNum + 1, tileNum));
         }
@@ -33,11 +34,11 @@ public class BoardAndTileTest {
     }
 
     /**
-     * Make a solved Board.
+     * Make a solved 4x4 Board.
      */
     private void setUpCorrect() {
         List<Tile> tiles = makeTiles();
-        Board board = new Board(tiles);
+        Board board = new Board(tiles, 4);
         boardManager = new BoardManager(board);
     }
 
