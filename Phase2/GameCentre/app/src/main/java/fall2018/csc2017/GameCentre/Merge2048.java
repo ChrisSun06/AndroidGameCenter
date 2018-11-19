@@ -44,7 +44,7 @@ public class Merge2048 {
      * @param inputArray input array of tiles
      * @return an array of tile without blank tile.
      */
-    private static Tile[] removingBlank(Tile[] inputArray){
+    private Tile[] removingBlank(Tile[] inputArray){
         ArrayList<Tile> temResult = new ArrayList<>();
         for (Tile t: inputArray){
             if(t.getId() != 15)//Todo: 不确定blank的id是什么。
