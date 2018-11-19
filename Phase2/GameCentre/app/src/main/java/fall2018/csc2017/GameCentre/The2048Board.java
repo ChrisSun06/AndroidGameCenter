@@ -2,6 +2,7 @@ package fall2018.csc2017.GameCentre;
 
 import android.support.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.Observable;
 
 import java.io.Serializable;
@@ -11,30 +12,32 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
+import fall2018.csc2017.GameCentre.tiles.TofeTile;
+
 /**
- * The sliding tiles board.
+ * The board for game 2048.
  */
-public class The2048Board extends Observable implements Serializable, Iterable<Tile> {
+public class The2048Board extends Observable implements Serializable, Iterable<TofeTile> {
 
     /**
      * The number of rows.
      */
-    private int numCols;
+    public static final int numCols = 4;
 
     /**
      * The number of rows.
      */
-    private int numRows;
+    public static final int numRows = 4;
+
+    /**
+     * The number of tiles.
+     */
+    public static final int numTiles = 16;
 
     /**
      * The tiles on the board in row-major order.
      */
-    private Tile[][] tiles;
-
-    /**
-     * The stack which keeps track of the clickable undo positions.
-     */
-    Stack<Integer> historyStack = new Stack<>();
+    private TofeTile[][] tiles;
 
     /**
      * The max times player can undo(default is 3, player could set any positive integer).
@@ -46,72 +49,18 @@ public class The2048Board extends Observable implements Serializable, Iterable<T
      */
     private int numOfMoves = 0;
 
-
-
-    /*int [] beginBoardList(){
-        int [] boardNumber = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-        int set1 = 1;
-        int set2 = 2;
-        int set3 = 1;
-        while (set1 == set2){
-            set2 = (int) (Math.random() * 15);
-        }
-        if (set3 == 0) {
-            boardNumber[set1] = 2;
-            boardNumber[set2] = 2;
-        }else if (set3 == 1){
-            boardNumber[set1] = 2;
-            boardNumber[set2] = 4;
-        }else if (set3 == 2){
-            boardNumber[set1] = 4;
-            boardNumber[set2] = 2;
-        }else {
-            boardNumber[set1] = 4;
-            boardNumber[set2] = 4;
-        }
-        return boardNumber;
-    }
-    */
-
-    /*
-    void beginBoardList(){
-        int set1 = (int) (Math.random() * 15);
-        int set2 = (int) (Math.random() * 15);
-        int set3 = (int) (Math.random() * 3);
-        while (set1 == set2){
-            set2 = (int) (Math.random() * 15);
-        }
-        if (set3 == 0) {
-            boardNumber[set1] = 2;
-            boardNumber[set2] = 2;
-        }else if (set3 == 1){
-            boardNumber[set1] = 2;
-            boardNumber[set2] = 4;
-        }else if (set3 == 2){
-            boardNumber[set1] = 4;
-            boardNumber[set2] = 2;
-        }else {
-            boardNumber[set1] = 4;
-            boardNumber[set2] = 4;
-        }
-    }
-     */
-
     /**
      * A new board of tiles in row-major order.
      * Precondition: len(tiles) == NUM_ROWS * NUM_COLS
      *
      * @param tiles the tiles for the board
      */
-    Board(List<Tile> tiles, int gridSize) {
-        Iterator<Tile> iter = tiles.iterator();
+    The2048Board(List<TofeTile> tiles) {
+        Iterator<TofeTile> iter = tiles.iterator();
+        this.tiles = new TofeTile[numRows][numCols];
 
-        this.numRows = gridSize;
-        this.numCols = gridSize;
-        this.tiles = new Tile[this.numRows][this.numCols];
-
-        for (int row = 0; row != this.numRows; row++) {
-            for (int col = 0; col != this.numCols; col++) {
+        for (int row = 0; row != numRows; row++) {
+            for (int col = 0; col != numCols; col++) {
                 this.tiles[row][col] = iter.next();
             }
         }
@@ -134,57 +83,69 @@ public class The2048Board extends Observable implements Serializable, Iterable<T
     }
 
     /**
-     * get number of rows.
-     *
-     * @return the number of rows
-     */
-    int getNumRows() {
-        return numRows;
-    }
-
-    /**
-     * get number of columns.
-     *
-     * @return the number of columns
-     */
-    int getNumCols() {
-        return numCols;
-    }
-
-    /**
-     * Return the number of tiles on the board.
-     *
-     * @return the number of tiles on the board
-     */
-    int numTiles() {
-        return this.numRows * this.numCols;
-    }
-
-    /**
      * Return the tile at (row, col)
      *
      * @param row the tile row
      * @param col the tile column
      * @return the tile at (row, col)
      */
-    Tile getTile(int row, int col) {
+    TofeTile getTile(int row, int col) {
         return tiles[row][col];
     }
 
+    void setTile(int row, int col, TofeTile tile){
+        tiles[row][col] = tile;
+    }
     /**
-     * Swap the tiles at (row1, col1) and (row2, col2)
-     *
-     * @param row1 the first tile row
-     * @param col1 the first tile col
-     * @param row2 the second tile row
-     * @param col2 the second tile col
+     * Return the column corresponding to colNum, can be inverted if specified.
+     * @param colNum the number of the needed column.
+     * @param inverted whether we want the column to be inverted.
+     * @return the column corresponding to colNum, can be inverted if specified.
      */
-    void swapTiles(int row1, int col1, int row2, int col2) {
-        Tile temp = getTile(row1, col1);
-        this.tiles[row1][col1] = this.tiles[row2][col2];
-        this.tiles[row2][col2] = temp;
-        setChanged();
-        notifyObservers();
+    TofeTile[] getCol(int colNum, boolean inverted){
+        TofeTile[] result = new TofeTile[4];
+        if(! inverted){
+            for(int i = 0; i < 4; i++){
+                result[i] = getTile(i, colNum);
+            }
+        }else{
+            for(int i = 0; i < 4; i++){
+                result[i] = getTile(3-i, colNum);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Return the row corresponding to rowNum, can be inverted if specified.
+     * @param rowNum the number of the needed row.
+     * @param inverted whether we want the row to be inverted.
+     * @return the row corresponding to rowNum, can be inverted if specified.
+     */
+    TofeTile[] getRow(int rowNum, boolean inverted){
+        TofeTile[] result = new TofeTile[4];
+        if(! inverted){
+            for(int i = 0; i < 4; i++){
+                result[i] = getTile(rowNum, i);
+            }
+        }else{
+            for(int i = 0; i < 4; i++){
+                result[i] = getTile(rowNum, 3-i);
+            }
+        }
+        return result;
+    }
+
+    Integer[] getBlankPosition(){
+        ArrayList<Integer> result = new ArrayList<>();
+        Iterator<TofeTile> iter = iterator();
+        int counter = 0;
+        while(iter.hasNext()){
+            if (iter.next().getValue() == 0)
+                result.add(counter);
+            counter++;
+        }
+        return (Integer[])(result.toArray());
     }
 
     /**
@@ -194,14 +155,14 @@ public class The2048Board extends Observable implements Serializable, Iterable<T
      */
     @Override
     @NonNull
-    public Iterator<Tile> iterator() {
+    public Iterator<TofeTile> iterator() {
         return new BoardIterator();
     }
 
     /**
      * The board iterator which checks the tiles in corresponding board position.
      */
-    private class BoardIterator implements Iterator<Tile> {
+    private class BoardIterator implements Iterator<TofeTile> {
 
         /**
          * The index of the next item in the class list.
@@ -215,7 +176,7 @@ public class The2048Board extends Observable implements Serializable, Iterable<T
          */
         @Override
         public boolean hasNext() {
-            return (nextIndex < numTiles() - 1);
+            return (nextIndex < numTiles - 1);
         }
 
         /**
@@ -224,11 +185,11 @@ public class The2048Board extends Observable implements Serializable, Iterable<T
          * @return the next tile.
          */
         @Override
-        public Tile next() {
+        public TofeTile next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            Tile nextTile = getTile(nextIndex / numRows, nextIndex % numCols);
+            TofeTile nextTile = getTile(nextIndex / numRows, nextIndex % numCols);
             nextIndex++;
             return nextTile;
         }
