@@ -2,21 +2,23 @@ package fall2018.csc2017.GameCentre;
 
 import java.util.ArrayList;
 
+import fall2018.csc2017.GameCentre.tiles.TofeTile;
+
 /**
  * Class responsible for algorithm of adding numbers together and changing positions of tiles on
  * the board, i.e., merging rows or columns.
  */
-public class Merge2048 {
+class Merge2048 {
 
     /**
      * The resulting list after merging the original row/column.
      */
-    private Tile[] resultingList = new Tile[4];
+    private TofeTile[] resultingList = new TofeTile[4];
 
     /**
      * The input list for merging.
      */
-    private Tile[] inputArray;
+    private TofeTile[] inputArray;
 
     /**
      * The position the next tile to be put in the resulting list
@@ -34,7 +36,7 @@ public class Merge2048 {
      *
      * @param inputArray the array to be merged.
      */
-    public Merge2048(Tile[] inputArray){
+    Merge2048(TofeTile[] inputArray){
         this.inputArray = removingBlank(inputArray);
     }
 
@@ -44,13 +46,13 @@ public class Merge2048 {
      * @param inputArray input array of tiles
      * @return an array of tile without blank tile.
      */
-    private Tile[] removingBlank(Tile[] inputArray){
-        ArrayList<Tile> temResult = new ArrayList<>();
-        for (Tile t: inputArray){
-            if(t.getId() != 15)//Todo: 不确定blank的id是什么。
+    private static TofeTile[] removingBlank(TofeTile[] inputArray){
+        ArrayList<TofeTile> temResult = new ArrayList<>();
+        for (TofeTile t: inputArray){
+            if(t.getValue() != 0)
                 temResult.add(t);
         }
-        return (Tile[])temResult.toArray();
+        return (TofeTile[])temResult.toArray();
     }
 
     /**
@@ -58,15 +60,14 @@ public class Merge2048 {
      *
      * @return the merged version of inputArray.
      */
-    public Tile[] merge(){
+    TofeTile[] merge(){
         while (currentPosition < inputArray.length - 1){
-            if(inputArray[currentPosition].getId() == inputArray[currentPosition+1].getId()){
-                //Todo: 不确定Tile如何建立
-                resultingList[posInResult] = new Tile(inputArray[currentPosition].getId()+1, 4);
+            if(inputArray[currentPosition].getValue() == inputArray[currentPosition+1].getValue()){
+                resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue()*2);
                 currentPosition += 2;
                 posInResult += 1;
             }else{
-                resultingList[posInResult] = new Tile(inputArray[currentPosition].getId(), 4);
+                resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue());
                 currentPosition += 1;
                 posInResult += 1;
             }
@@ -81,11 +82,11 @@ public class Merge2048 {
      */
     private void addingToResultingList(){
         if (currentPosition == inputArray.length - 1){
-            resultingList[posInResult] = new Tile(inputArray[currentPosition].getId(), 4);
+            resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue());
             posInResult += 1;
         }
         while (posInResult < 4){
-            resultingList[posInResult] = new Tile(15, 4);
+            resultingList[posInResult] = new TofeTile(0);
             posInResult += 1;
         }
     }
