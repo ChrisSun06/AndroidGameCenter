@@ -120,7 +120,9 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onPause() {
         super.onPause();
-        LoginActivity.accManager.writeAccManager(getApplicationContext());
+        FileSaver.getInstance().saveToFile(getApplicationContext(), UserAccManager.getInstance(),
+                LoginActivity.ACC_INFO);
+        //UserAccManager.getInstance().writeAccManager(getApplicationContext());
         saveToFile(GameCenterActivity.TEMP_SAVE_FILENAME);
     }
 
@@ -150,7 +152,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     public void onSolved(){
         if (boardManager.puzzleSolved()){
-            LoginActivity.accManager.addScore(boardManager.getBoard().getNumOfMoves()+1,
+            UserAccManager.getInstance().addScore(boardManager.getBoard().getNumOfMoves()+1,
                     boardManager.getBoard());
         }
     }
@@ -161,7 +163,9 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onStop(){
         super.onStop();
-        LoginActivity.accManager.writeAccManager(getApplicationContext());
+        FileSaver.getInstance().saveToFile(getApplicationContext(), UserAccManager.getInstance(),
+                LoginActivity.ACC_INFO);
+        //UserAccManager.getInstance().writeAccManager(getApplicationContext());
         saveToFile(GameCenterActivity.SAVE_FILENAME);
     }
 
@@ -176,8 +180,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private void loadGameState(InputStream inputStream) throws IOException, ClassNotFoundException {
         ObjectInputStream input = new ObjectInputStream(inputStream);
         gameStateMap = (HashMap<String, BoardManager>) input.readObject();
-        if (gameStateMap.containsKey(LoginActivity.currentUser)){
-            boardManager = gameStateMap.get(LoginActivity.currentUser);
+        if (gameStateMap.containsKey(UserAccManager.getInstance().getCurrentUser())){
+            boardManager = gameStateMap.get(UserAccManager.getInstance().getCurrentUser());
             boardManager.getBoard().setMaxUndoTime(boardManager.getBoard().getMaxUndoTime());
         } else {
             Toast.makeText(this, "Game saves not found!", Toast.LENGTH_LONG).show();
@@ -192,7 +196,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * @param fileName the name of the file
      */
     public void saveToFile(String fileName) {
-        gameStateMap.put(LoginActivity.currentUser, boardManager);
+        gameStateMap.put(UserAccManager.getInstance().getCurrentUser(), boardManager);
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(fileName, MODE_PRIVATE));

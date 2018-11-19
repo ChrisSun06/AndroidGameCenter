@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
+import java.util.HashMap;
+
 
 /**
  * The login activity.
@@ -29,22 +32,24 @@ public class LoginActivity extends AppCompatActivity {
      */
     public static final String ACC_INFO = "acc_save.ser";
 
-    /**
-     * The current logged in user
-     */
-    public static String currentUser;
 
     /**
      * The account manager
      */
     public static UserAccManager accManager;
 
+    /**
+     * The file saver
+     */
+    public static FileSaver fileSaver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        accManager = new UserAccManager();
+        accManager = UserAccManager.getInstance();
+        fileSaver = FileSaver.getInstance();
         mEmailView = findViewById(R.id.emailEdit);
         mPasswordView = findViewById(R.id.passwordEdit);
         loadAccounts();
@@ -56,7 +61,12 @@ public class LoginActivity extends AppCompatActivity {
      * Load the UserAccManager.
      */
     private void loadAccounts(){
-        accManager.loadAccManager(getApplicationContext());
+        UserAccManager tempManager = (UserAccManager)fileSaver.loadFromFile
+                (getApplicationContext(), ACC_INFO);
+        if (tempManager != null){
+            accManager.setAccountMap(tempManager.getAccountMap());
+        }
+        //accManager.loadAccManager(getApplicationContext());
     }
 
     /**
@@ -69,9 +79,11 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (accManager.accountExist(mEmailView.getText().toString(),
                         mPasswordView.getText().toString())) {
-                    currentUser = mEmailView.getText().toString();
+                    //currentUser = mEmailView.getText().toString();
+                    accManager.setCurrentUser(mEmailView.getText().toString());
                     Intent intent = new Intent(LoginActivity.this,
                             GameSelectionActivity.class);
+                    intent.putExtra("accountManager", accManager);
                     startActivity(intent);
                     overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
                 } else {
@@ -115,7 +127,9 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Field cannot be empty!", Toast.LENGTH_SHORT).show();
         } else {
             accManager.writeAcc(email, password);
-            accManager.writeAccManager(getApplicationContext());
+            FileSaver.getInstance().saveToFile(getApplicationContext(), UserAccManager.getInstance()
+                    , LoginActivity.ACC_INFO);
+            //accManager.writeAccManager(getApplicationContext());
         }
     }
 

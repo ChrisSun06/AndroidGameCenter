@@ -58,7 +58,7 @@ public class InGameSettings extends ImageOperationActivity {
 
                 try{
                 int num = Integer.parseInt(undoNum.getText().toString());
-                LoginActivity.accManager.updateUndoTime(num);
+                UserAccManager.getInstance().updateUndoTime(num);
                 makeToastSetUndo(num);
                 InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);}
@@ -192,7 +192,9 @@ public class InGameSettings extends ImageOperationActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        LoginActivity.accManager.writeAccManager(getApplicationContext());
+        FileSaver.getInstance().saveToFile(getApplicationContext(), UserAccManager.getInstance(),
+                LoginActivity.ACC_INFO);
+        //UserAccManager.getInstance().writeAccManager(getApplicationContext());
     }
 
     /**

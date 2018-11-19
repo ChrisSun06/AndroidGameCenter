@@ -37,10 +37,6 @@ public class SlidingTileFragment extends Fragment {
      */
     private HashMap<String, BoardManager> gameStateMap = new HashMap<>();
 
-    /**
-     * Current Game
-     */
-    public static int CURRENT_GAME;
 
     public SlidingTileFragment() {
         // Required empty public constructor
@@ -70,6 +66,7 @@ public class SlidingTileFragment extends Fragment {
         by3sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GameCenterActivity.CURRENT_GAME = "3X3sliding";
                 activateGame(3);
             }
         });
@@ -84,6 +81,7 @@ public class SlidingTileFragment extends Fragment {
         by4sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GameCenterActivity.CURRENT_GAME = "4X4sliding";
                 activateGame(4);
             }
         });
@@ -97,6 +95,7 @@ public class SlidingTileFragment extends Fragment {
         by5sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                GameCenterActivity.CURRENT_GAME = "5X5sliding";
                 activateGame(5);
             }
         });
@@ -118,9 +117,8 @@ public class SlidingTileFragment extends Fragment {
      */
     private void activateGame(int i) {
         boardManager = new BoardManager(i);
-        boardManager.getBoard().setMaxUndoTime(LoginActivity.accManager.
-                getUserUndoTime(getActivity().getApplicationContext()));
-        CURRENT_GAME = i;
+        boardManager.getBoard().setMaxUndoTime(UserAccManager.getInstance().
+                getUserUndoTime());
         switchToGame();
     }
 
@@ -131,7 +129,7 @@ public class SlidingTileFragment extends Fragment {
      * @param fileName the name of the file
      */
     public void saveToFile(String fileName) {
-        gameStateMap.put(LoginActivity.currentUser, boardManager);
+        gameStateMap.put(UserAccManager.getInstance().getCurrentUser(), boardManager);
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     getActivity().openFileOutput(fileName, MODE_PRIVATE));

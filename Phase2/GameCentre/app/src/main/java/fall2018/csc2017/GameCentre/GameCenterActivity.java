@@ -61,7 +61,6 @@ public class GameCenterActivity extends ImageOperationActivity {
         super.onCreate(savedInstanceState);
         boardManager = new BoardManager(4);
         Intent b = getIntent();
-
         CURRENT_GAME = b.getStringExtra("GAME");
 
         loadFromFile(SAVE_FILENAME);
@@ -216,8 +215,8 @@ public class GameCenterActivity extends ImageOperationActivity {
     private void loadGameState(InputStream inputStream) throws IOException, ClassNotFoundException {
         ObjectInputStream input = new ObjectInputStream(inputStream);
         gameStateMap = (HashMap<String, BoardManager>) input.readObject();
-        if (gameStateMap.containsKey(LoginActivity.currentUser)){
-            boardManager = gameStateMap.get(LoginActivity.currentUser);
+        if (gameStateMap.containsKey(UserAccManager.getInstance().getCurrentUser())){
+            boardManager = gameStateMap.get(UserAccManager.getInstance().getCurrentUser());
             boardManager.getBoard().setMaxUndoTime(boardManager.getBoard().getMaxUndoTime());
         } else {
             Toast.makeText(this, "Game saves not found!", Toast.LENGTH_LONG).show();
@@ -231,7 +230,7 @@ public class GameCenterActivity extends ImageOperationActivity {
      * @param fileName the name of the file
      */
     public void saveToFile(String fileName) {
-        gameStateMap.put(LoginActivity.currentUser, boardManager);
+        gameStateMap.put(UserAccManager.getInstance().getCurrentUser(), boardManager);
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(fileName, MODE_PRIVATE));

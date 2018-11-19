@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -22,6 +23,31 @@ public class UserAccManager implements Serializable {
      * The HashMap that stores all counts.
      */
     private HashMap<String, UserAccount> accountMap = new HashMap<>();
+
+    /**
+     * The String that stores the current user.
+     */
+    private String currentUser;
+
+    /**
+     * The UserAccManager instance.
+     */
+    private static UserAccManager userAccManagerInstance = new UserAccManager();
+
+    /**
+     * The Constructor that prevents other classes from calling it (singleton design).
+     */
+    private UserAccManager(){}
+
+    /**
+     * The only way other classes can access this object.
+     */
+    public static UserAccManager getInstance(){
+        if (userAccManagerInstance == null){
+            userAccManagerInstance = new UserAccManager();
+        }
+        return userAccManagerInstance;
+    }
 
     /**
      * Check whether a given email and password exists in the accountMap or not.
@@ -38,6 +64,24 @@ public class UserAccManager implements Serializable {
             }
         }
         return found;
+    }
+
+    /**
+     * Return the current user.
+     *
+     * @return the current user.
+     */
+    public String getCurrentUser(){
+        return currentUser;
+    }
+
+    /**
+     * Set the current user.
+     *
+     * @param currentUser current user.
+     */
+    public void setCurrentUser(String currentUser){
+        this.currentUser = currentUser;
     }
 
     /**
@@ -60,61 +104,6 @@ public class UserAccManager implements Serializable {
     }
 
     /**
-     * Load and return UserAccManager from local storage.
-     *
-     * @param c current context
-     * @throws IOException            the in/output exception
-     * @throws ClassNotFoundException the class not found exception
-     */
-    private UserAccManager loadAcc(Context c) throws IOException,
-            ClassNotFoundException {
-        UserAccManager temp = new UserAccManager();
-        InputStream inputStream = c.openFileInput(LoginActivity.ACC_INFO);
-        if (inputStream != null) {
-            ObjectInputStream input = new ObjectInputStream(inputStream);
-            temp = (UserAccManager) input.readObject();
-            inputStream.close();
-        }
-        return temp;
-    }
-
-    /**
-     * Load/populate the accountMap from the accountMap of UserAccManager in local storage.
-     *
-     * @param context the current context
-     */
-    public void loadAccManager(Context context) {
-        try {
-            accountMap = loadAcc(context).getAccountMap();
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException ioe) {
-            Log.e("login activity", "Can not read file: " + ioe.toString());
-        } catch (ClassNotFoundException cne) {
-            Log.e("login activity", "File contained unexpected data type: " + cne.toString());
-        }
-    }
-
-    /**
-     * Write the account manager itself into local storage.
-     *
-     * @param context the current context
-     */
-    public void writeAccManager(Context context) {
-        try {
-            ObjectOutputStream os =
-                    new ObjectOutputStream(context.openFileOutput
-                            (LoginActivity.ACC_INFO, MODE_PRIVATE));
-            os.writeObject(this);
-            os.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Return the current game user is playing.
      *
      * @return the current game user is playing.
@@ -125,15 +114,24 @@ public class UserAccManager implements Serializable {
     }
 
     /**
+     * Return the current game user is playing.
+     *
+     * @param accountMap the account hashMap.
+     */
+    public void setAccountMap(HashMap<String, UserAccount> accountMap){
+        this.accountMap = accountMap;
+    }
+
+    /**
      * Add score of a user based on how many moves he/she made.
      *
      * @param moves number of moves user made.
      * @param board board user is playing on.
      */
     void addScore(int moves, Board board) {
-        int score = accountMap.get(LoginActivity.currentUser).getScores().get(getCurrentGame());
+        int score = accountMap.get(currentUser).getScores().get(getCurrentGame());
         if (1000 * board.numTiles() / moves > score && moves != 1) {
-            accountMap.get(LoginActivity.currentUser).setScore(getCurrentGame(),
+            accountMap.get(currentUser).setScore(getCurrentGame(),
                     1000 * board.numTiles() / moves);
         }
     }
@@ -141,12 +139,10 @@ public class UserAccManager implements Serializable {
     /**
      * Return number of undo times user chose to have.
      *
-     * @param c the current context
      * @return number of undo times user chose to have.
      */
-    int getUserUndoTime(Context c) {
-        loadAccManager(c);
-        return accountMap.get(LoginActivity.currentUser).getMaxUndo();
+    int getUserUndoTime() {
+        return accountMap.get(currentUser).getMaxUndo();
     }
 
     /**
@@ -155,7 +151,7 @@ public class UserAccManager implements Serializable {
      * @param undoTime numbers of undo
      */
     public void updateUndoTime(int undoTime) {
-        accountMap.get(LoginActivity.currentUser).setMaxUndo(undoTime);
+        accountMap.get(currentUser).setMaxUndo(undoTime);
     }
 
 }

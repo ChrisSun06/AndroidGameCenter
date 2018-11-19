@@ -43,7 +43,7 @@ public class Scores {
      * @return an array list of all user accounts
      */
     ArrayList<UserAccount> loadAllAccountInfo(){
-        HashMap<String, UserAccount> map = LoginActivity.accManager.getAccountMap();
+        HashMap<String, UserAccount> map = UserAccManager.getInstance().getAccountMap();
         ArrayList<UserAccount> accountList = new ArrayList<>(map.size());
         for(String name: map.keySet()){
             accountList.add(map.get(name));
