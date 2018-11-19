@@ -12,10 +12,23 @@ public class TofeTile extends Tile{
      * The id of the first 2048 tile image
      */
     public static final int FirstTofeTileDrawableId = R.drawable.tofe_01;
+
     /**
      * The background image id to find the tile image.
      */
     private int drawableId;
+
+    /**
+     * The value on the tile image.
+     */
+    private int value;
+
+    /**
+     * Return the value of the tile
+     *
+     * @return the value of the tile
+     */
+    public int getValue(){return value;}
 
     /**
      * Set the drawable id of the background image.
@@ -24,6 +37,15 @@ public class TofeTile extends Tile{
      */
     public void setDrawableId(int drawableId) {
         this.drawableId = drawableId;
+    }
+
+    /**
+     * Set the value of the tile.
+     *
+     * @param value the value
+     */
+    public void setValue(int value) {
+        this.value = value;
     }
 
     /**
@@ -38,12 +60,15 @@ public class TofeTile extends Tile{
     /**
      * A tile with a background id and image id; look up and set the id.
      *
-     * @param id background id
      * @param value current tile's displayed value such as 1024, 2048...
      */
-    public TofeTile(int id, int value) {
-        setId(id + 1);
-        this.drawableId = FirstTofeTileDrawableId + powerOfTwo(value) - 1;
+    public TofeTile(int value) {
+        //setId(id + 1);
+        if(value != 0)
+            this.drawableId = FirstTofeTileDrawableId + powerOfTwo(value) - 1;
+        else
+            this.drawableId = R.drawable.white;
+        this.value = value;
     }
 
     /**
