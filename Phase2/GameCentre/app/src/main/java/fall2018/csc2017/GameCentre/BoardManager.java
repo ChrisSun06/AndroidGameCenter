@@ -41,7 +41,65 @@ class BoardManager implements Serializable {
         }
 
         Collections.shuffle(tiles);
+        while (!solvable(tiles, gridSize)){
+            Collections.shuffle(tiles);
+        }
         this.board = new Board(tiles, gridSize);
+    }
+
+    /**
+     * Return an boolean to check if the game could be solved.
+     *
+     * @param tile the list to check
+     * @return true if it could; otherwise, false
+     */
+    private boolean solvable(List<Tile> tile, int gridSize){
+        if (gridSize % 2 == 1){
+            return  (inversion(tile) % 2 == 0);
+        }else{
+            return (inversion(tile) % 2 + blankFromBottom(tile, gridSize) % 2 == 1);
+        }
+    }
+
+    /**
+     * Return the blank Tile position from bottom (need by solvable).
+     *
+     * @param tile the list to check
+     * @param gridSize the row and col number
+     * @return the int blank Tile position from bottom which need by solvable
+     */
+    private int blankFromBottom(List<Tile> tile, int gridSize) {
+        int blankId = tile.size();
+        for (int r = 0; r != gridSize; r++) {
+            for (int c = 0; c != gridSize; c++) {
+                if (tile.get(r * gridSize + c).getId() == blankId){
+                    return gridSize - r;
+                }
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * Return an inversion (need by solvable).
+     *
+     * @param tile the list to check
+     * @return the int named inversion which need by solvable
+     */
+    private int inversion(List<Tile> tile){
+        int blankId = tile.size();
+        int totalTile = tile.size();
+        int i = 0;
+        for (int r = 0; r != totalTile; r++) {
+            if (tile.get(r).getId() != blankId){
+                for (int rr = r+1; rr != totalTile; rr++) {
+                    if (tile.get(r).getId() > tile.get(rr).getId()) {
+                        i = i + 1;
+                    }
+                }
+            }
+        }
+        return i;
     }
 
     /**
