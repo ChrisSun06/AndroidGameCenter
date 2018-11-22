@@ -69,6 +69,7 @@ public class SudokuTest {
 
     @Test
     public void testTouchMoveSolved(){
+        setUp();
         int tile = boardManager.getBoard().getTiles(4,5);
         boardManager.touchMove(29);
         int newTile = boardManager.getBoard().getTiles(4, 5);
@@ -77,6 +78,15 @@ public class SudokuTest {
         } else {
             assertEquals(tile+1, newTile);
         }
+    }
+
+    @Test
+    public void testTouchMoveReset(){
+        setUp();
+        for (int i = 0; i <= 6; i++){
+            boardManager.touchMove(1);
+        }
+        assertTrue(boardManager.getBoard().getTiles(0, 1) == 0);
     }
 
     @Test

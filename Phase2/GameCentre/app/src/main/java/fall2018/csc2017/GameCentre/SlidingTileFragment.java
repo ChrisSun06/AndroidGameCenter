@@ -35,7 +35,12 @@ public class SlidingTileFragment extends Fragment {
     /**
      * The buttons to display.
      */
-    private HashMap<String, BoardManager> gameStateMap = new HashMap<>();
+    private String currentGame;
+
+    /**
+     * The account manager
+     */
+    private UserAccManager accManager;
 
 
     public SlidingTileFragment() {
@@ -49,12 +54,23 @@ public class SlidingTileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        accManager = (UserAccManager) FileSaver.loadFromFile(getActivity(),
+                LoginActivity.ACC_INFO);
         view = inflater.inflate(R.layout.fragment_sliding_tile, container, false);
         add3x3ButtonListener();
         add4x4ButtonListener();
         add5x5ButtonListener();
         return view;
 
+    }
+
+    /**
+     * Set the current game
+     *
+     * @param currentGame the current game
+     */
+    public void setCurrentGame(String currentGame){
+        this.currentGame = currentGame;
     }
 
 
@@ -66,7 +82,6 @@ public class SlidingTileFragment extends Fragment {
         by3sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameCenterActivity.CURRENT_GAME = "3X3sliding";
                 activateGame(3);
             }
         });
@@ -81,7 +96,6 @@ public class SlidingTileFragment extends Fragment {
         by4sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameCenterActivity.CURRENT_GAME = "4X4sliding";
                 activateGame(4);
             }
         });
@@ -95,7 +109,6 @@ public class SlidingTileFragment extends Fragment {
         by5sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameCenterActivity.CURRENT_GAME = "5X5sliding";
                 activateGame(5);
             }
         });
@@ -104,9 +117,11 @@ public class SlidingTileFragment extends Fragment {
     /**
      * Switch to the GameActivity view to play the game.
      */
-    private void switchToGame() {
+    private void switchToGame(String game) {
         Intent tmp = new Intent(getActivity(), GameActivity.class);
-        saveToFile(TEMP_SAVE_FILENAME);
+        tmp.putExtra("accManager", accManager);
+        tmp.putExtra("currentGame", game);
+        FileSaver.saveToFile(getActivity(), boardManager, TEMP_SAVE_FILENAME);
         startActivity(tmp);
     }
 
@@ -117,26 +132,9 @@ public class SlidingTileFragment extends Fragment {
      */
     private void activateGame(int i) {
         boardManager = new BoardManager(i);
-        boardManager.getBoard().setMaxUndoTime(UserAccManager.getInstance().
-                getUserUndoTime());
-        switchToGame();
-    }
-
-
-    /**
-     * Save the game state to fileName.
-     *
-     * @param fileName the name of the file
-     */
-    public void saveToFile(String fileName) {
-        gameStateMap.put(UserAccManager.getInstance().getCurrentUser(), boardManager);
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    getActivity().openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(gameStateMap);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+        boardManager.getBoard().setMaxUndoTime(accManager.getUserUndoTime());
+        String gameSize = Integer.valueOf(i).toString();
+        switchToGame(gameSize + "X" + gameSize + currentGame);
     }
 }
+

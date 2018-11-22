@@ -11,6 +11,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -22,7 +23,7 @@ public class UserAccManager implements Serializable {
     /**
      * The HashMap that stores all counts.
      */
-    private HashMap<String, UserAccount> accountMap = new HashMap<>();
+    private Map<String, UserAccount> accountMap = new HashMap<>();
 
     /**
      * The String that stores the current user.
@@ -30,24 +31,9 @@ public class UserAccManager implements Serializable {
     private String currentUser;
 
     /**
-     * The UserAccManager instance.
+     * The String that stores the current game.
      */
-    private static UserAccManager userAccManagerInstance = new UserAccManager();
-
-    /**
-     * The Constructor that prevents other classes from calling it (singleton design).
-     */
-    private UserAccManager(){}
-
-    /**
-     * The only way other classes can access this object.
-     */
-    public static UserAccManager getInstance(){
-        if (userAccManagerInstance == null){
-            userAccManagerInstance = new UserAccManager();
-        }
-        return userAccManagerInstance;
-    }
+    private String currentGame;
 
     /**
      * Check whether a given email and password exists in the accountMap or not.
@@ -90,7 +76,7 @@ public class UserAccManager implements Serializable {
      * @return account map
      */
     public HashMap<String, UserAccount> getAccountMap() {
-        return accountMap;
+        return (HashMap<String, UserAccount>) accountMap;
     }
 
     /**
@@ -108,9 +94,19 @@ public class UserAccManager implements Serializable {
      *
      * @return the current game user is playing.
      */
-    private String getCurrentGame() {
-        return GameCenterActivity.CURRENT_GAME;
+    public String getCurrentGame() {
+        return currentGame;
+    }
 
+    /**
+     * Set the current game user is playing.
+     *
+     * @param game the current game
+     */
+    public void setCurrentGame(String game) {
+        if (game != null){
+            currentGame = game;
+        }
     }
 
     /**
@@ -118,7 +114,7 @@ public class UserAccManager implements Serializable {
      *
      * @param accountMap the account hashMap.
      */
-    public void setAccountMap(HashMap<String, UserAccount> accountMap){
+    public void setAccountMap(Map<String, UserAccount> accountMap){
         this.accountMap = accountMap;
     }
 
@@ -129,10 +125,25 @@ public class UserAccManager implements Serializable {
      * @param board board user is playing on.
      */
     void addScore(int moves, Board board) {
-        int score = accountMap.get(currentUser).getScores().get(getCurrentGame());
+        int score = accountMap.get(currentUser).getScores().get(currentGame);
         if (1000 * board.numTiles() / moves > score && moves != 1) {
-            accountMap.get(currentUser).setScore(getCurrentGame(),
+            accountMap.get(currentUser).setScore(currentGame,
                     1000 * board.numTiles() / moves);
+        }
+    }
+
+    void setCurrentGameState(BoardManager boardManager){
+        if (currentGame != null) {
+            accountMap.get(currentUser).setSaves(currentGame, boardManager);
+        }
+    }
+
+    BoardManager getCurrentGameStateMap(String game){
+        Map<String, BoardManager> tempGameSaves = accountMap.get(currentUser).getSaves();
+        if (tempGameSaves.containsKey(game)) {
+            return tempGameSaves.get(game);
+        } else {
+            return null;
         }
     }
 

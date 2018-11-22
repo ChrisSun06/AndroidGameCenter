@@ -26,6 +26,8 @@ public class ScoreBoardActivity extends AppCompatActivity {
      */
     private SectionsPagerAdapter mSectionsPagerAdapter;
 
+    private UserAccManager accManager;
+
     /**
      * The {@link ViewPager} that will host the section contents.
      */
@@ -38,6 +40,8 @@ public class ScoreBoardActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        accManager = (UserAccManager) FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
         setContentView(R.layout.activity_score_board);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -79,7 +83,8 @@ public class ScoreBoardActivity extends AppCompatActivity {
             // Return a PlaceholderFragment (defined as a static inner class below)
             //
             GameScoresFragment game = new GameScoresFragment();
-            game.setGame_type(UserAccount.games[position]);
+            //game.setUserAccManager(accManager);
+            game.setGame_type(UserAccount.GAMES[position]);
             return game;
         }
 
@@ -92,7 +97,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             // Show 5 total pages.
-            return UserAccount.games[position];
+            return UserAccount.GAMES[position];
         }
 
     }

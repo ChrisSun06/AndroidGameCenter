@@ -2,6 +2,7 @@ package fall2018.csc2017.GameCentre;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,8 +26,7 @@ public class GameScoresFragment extends Fragment implements ScoresBoardFragmentI
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        Scores scores = new Scores(game_type);
+        Scores scores = new Scores(game_type, getActivity());
         View rootView = inflater.inflate(R.layout.fragment_game_scores, container, false);
 
         //ScoreBoardActivity activity = (ScoreBoardActivity) getActivity();
@@ -43,6 +43,7 @@ public class GameScoresFragment extends Fragment implements ScoresBoardFragmentI
     public void setGame_type(String game_type) {
         this.game_type = game_type;
     }
+
 
     /**
      * It will cast the ArrayList lis to the  name listView or the score listView

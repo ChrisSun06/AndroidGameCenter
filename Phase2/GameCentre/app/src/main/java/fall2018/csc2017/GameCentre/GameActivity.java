@@ -9,6 +9,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,6 +17,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -29,6 +31,8 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     private BoardManager boardManager;
 
+    private String currentGame;
+
     /**
      * The buttons to display.
      */
@@ -38,6 +42,11 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * The buttons to display.
      */
     private HashMap<String, BoardManager> gameStateMap;
+
+    /**
+     * The user account manager
+     */
+    private UserAccManager userAccManager;
 
     // Grid View and calculated column height and width based on device size
     private GestureDetectGridView gridView;
@@ -56,10 +65,15 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadFromFile(GameCenterActivity.TEMP_SAVE_FILENAME);
+        currentGame = getIntent().getExtras().getString("currentGame");
+        makeToastSavedText();
+        userAccManager = (UserAccManager) FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
+        userAccManager.setCurrentGame(currentGame);
+        boardManager = (BoardManager) FileSaver.loadFromFile(getApplicationContext(),
+                GameCenterActivity.TEMP_SAVE_FILENAME);
         createTileButtons(this);
         setContentView(R.layout.activity_main);
-
         // Add View to activity
         gridView = findViewById(R.id.grid);
         gridView.setNumColumns(boardManager.getBoard().getNumCols());
@@ -81,6 +95,14 @@ public class GameActivity extends AppCompatActivity implements Observer {
                         display();
                     }
                 });
+    }
+
+    /**
+     *
+     */
+    private void setCurrentGameName(){
+        String gridSize = String.valueOf(boardManager.getBoard().getNumCols());
+        currentGame = gridSize + "X" + gridSize + currentGame;
     }
 
     /**
@@ -120,31 +142,20 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onPause() {
         super.onPause();
-        FileSaver.getInstance().saveToFile(getApplicationContext(), UserAccManager.getInstance(),
+        FileSaver.saveToFile(getApplicationContext(), userAccManager,
                 LoginActivity.ACC_INFO);
-        //UserAccManager.getInstance().writeAccManager(getApplicationContext());
-        saveToFile(GameCenterActivity.TEMP_SAVE_FILENAME);
+        FileSaver.saveToFile(getApplicationContext(), boardManager,
+                GameCenterActivity.TEMP_SAVE_FILENAME);
     }
 
     /**
-     * Load the board manager from fileName.
-     *
-     * @param fileName the name of the file
+     * Save the user's game state according to the current game, to local storage.
      */
-    private void loadFromFile(String fileName) {
-
-        try {
-            InputStream inputStream = this.openFileInput(fileName);
-            if (inputStream != null) {
-                loadGameState(inputStream);
-            }
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
-        }
+    private void saveToFile(){
+        userAccManager.setCurrentGameState(boardManager);
+        FileSaver.saveToFile(getApplicationContext(), boardManager,
+                GameCenterActivity.TEMP_SAVE_FILENAME);
+        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
     }
 
     /**
@@ -152,8 +163,9 @@ public class GameActivity extends AppCompatActivity implements Observer {
      */
     public void onSolved(){
         if (boardManager.puzzleSolved()){
-            UserAccManager.getInstance().addScore(boardManager.getBoard().getNumOfMoves()+1,
+            userAccManager.addScore(boardManager.getBoard().getNumOfMoves()+1,
                     boardManager.getBoard());
+            FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
         }
     }
 
@@ -163,54 +175,18 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onStop(){
         super.onStop();
-        FileSaver.getInstance().saveToFile(getApplicationContext(), UserAccManager.getInstance(),
-                LoginActivity.ACC_INFO);
-        //UserAccManager.getInstance().writeAccManager(getApplicationContext());
-        saveToFile(GameCenterActivity.SAVE_FILENAME);
+        saveToFile();
     }
 
-    /**
-     * load the game state.
-     *
-     * @param inputStream the file input stream
-     *
-     * @throws IOException in/output exception
-     * @throws ClassNotFoundException class not found exception
-     */
-    private void loadGameState(InputStream inputStream) throws IOException, ClassNotFoundException {
-        ObjectInputStream input = new ObjectInputStream(inputStream);
-        gameStateMap = (HashMap<String, BoardManager>) input.readObject();
-        if (gameStateMap.containsKey(UserAccManager.getInstance().getCurrentUser())){
-            boardManager = gameStateMap.get(UserAccManager.getInstance().getCurrentUser());
-            boardManager.getBoard().setMaxUndoTime(boardManager.getBoard().getMaxUndoTime());
-        } else {
-            Toast.makeText(this, "Game saves not found!", Toast.LENGTH_LONG).show();
-        }
-        inputStream.close();
-    }
-
-
-    /**
-     * Save the board manager to fileName.
-     *
-     * @param fileName the name of the file
-     */
-    public void saveToFile(String fileName) {
-        gameStateMap.put(UserAccManager.getInstance().getCurrentUser(), boardManager);
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(gameStateMap);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
-    }
 
     @Override
     public void update(Observable o, Object arg) {
-        saveToFile(GameCenterActivity.SAVE_FILENAME);
+        saveToFile();
         display();
         onSolved();
+    }
+
+    private void makeToastSavedText() {
+        Toast.makeText(this, currentGame, Toast.LENGTH_SHORT).show();
     }
 }

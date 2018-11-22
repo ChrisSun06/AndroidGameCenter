@@ -14,18 +14,7 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class FileSaver {
 
-    private static FileSaver fileSaver = new FileSaver();
-
-    private FileSaver(){}
-
-    public static FileSaver getInstance(){
-        if (fileSaver != null){
-            fileSaver = new FileSaver();
-        }
-        return fileSaver;
-    }
-
-    public void saveToFile(Context context, Object obj, String fileLocation){
+    public static void saveToFile(Context context, Object obj, String fileLocation){
         try {
             ObjectOutputStream os =
                     new ObjectOutputStream(context.openFileOutput(fileLocation, MODE_PRIVATE));
@@ -38,7 +27,7 @@ public class FileSaver {
         }
     }
 
-    public Object loadFromFile(Context context, String fileLocation){
+    public static Object loadFromFile(Context context, String fileLocation){
         try {
             return loadFile(context, fileLocation);
         } catch (FileNotFoundException e) {
@@ -53,7 +42,7 @@ public class FileSaver {
         }
     }
 
-    private Object loadFile(Context c, String fileLocation) throws IOException,
+    public static Object loadFile(Context c, String fileLocation) throws IOException,
             ClassNotFoundException {
         Object temp = new Object();
         InputStream inputStream = c.openFileInput(fileLocation);

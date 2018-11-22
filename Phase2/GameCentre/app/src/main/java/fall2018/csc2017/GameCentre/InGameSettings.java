@@ -31,6 +31,8 @@ public class InGameSettings extends ImageOperationActivity {
      */
     private EditText urlAddress;
 
+    private UserAccManager accManager;
+
     /**
      * Activate all the buttons when InGameSettings is created
      */
@@ -38,6 +40,7 @@ public class InGameSettings extends ImageOperationActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_game_settings);
+        accManager = (UserAccManager) getIntent().getSerializableExtra("accManager");
         addConfirmUndoNumButtonListener();
         addUrlButtonListener();
         addChooseFromGalleryButtonListener();
@@ -58,7 +61,7 @@ public class InGameSettings extends ImageOperationActivity {
 
                 try{
                 int num = Integer.parseInt(undoNum.getText().toString());
-                UserAccManager.getInstance().updateUndoTime(num);
+                accManager.updateUndoTime(num);
                 makeToastSetUndo(num);
                 InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);}
@@ -192,7 +195,7 @@ public class InGameSettings extends ImageOperationActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        FileSaver.getInstance().saveToFile(getApplicationContext(), UserAccManager.getInstance(),
+        FileSaver.saveToFile(getApplicationContext(), accManager,
                 LoginActivity.ACC_INFO);
         //UserAccManager.getInstance().writeAccManager(getApplicationContext());
     }

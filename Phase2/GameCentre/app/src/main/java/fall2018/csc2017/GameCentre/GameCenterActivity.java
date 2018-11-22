@@ -1,5 +1,6 @@
 package fall2018.csc2017.GameCentre;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,22 +12,20 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * The initial activity for the sliding puzzle tile game.
  */
 public class GameCenterActivity extends ImageOperationActivity {
-
-    /**
-     * The main save file.
-     */
-    public static final String SAVE_FILENAME = "save_file.ser";
 
     /**
      * A temporary save file.
@@ -39,14 +38,15 @@ public class GameCenterActivity extends ImageOperationActivity {
     private BoardManager boardManager;
 
     /**
-     * The buttons to display.
-     */
-    private HashMap<String, BoardManager> gameStateMap = new HashMap<>();
-
-    /**
      * Current Game
      */
-    static String CURRENT_GAME;
+    private String currentGame;
+
+    /**
+     * User account manager
+     */
+    private UserAccManager userAccManager;
+
 
 
     /**
@@ -61,19 +61,20 @@ public class GameCenterActivity extends ImageOperationActivity {
         super.onCreate(savedInstanceState);
         boardManager = new BoardManager(4);
         Intent b = getIntent();
-        CURRENT_GAME = b.getStringExtra("GAME");
+        currentGame = b.getStringExtra("GAME");
+        userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
 
-        loadFromFile(SAVE_FILENAME);
-        saveToFile(TEMP_SAVE_FILENAME);
-
+        FileSaver.saveToFile(getApplicationContext(), boardManager, TEMP_SAVE_FILENAME);
         setupDefault();
 
         setContentView(R.layout.activity_game_center);
 
-        changeFragment2(CURRENT_GAME);
+        changeFragment2(currentGame);
 
         goToScoreBoard();
-
+        addLoadButtonListener();
+        addSaveButtonListener();
     }
 
 
@@ -84,6 +85,7 @@ public class GameCenterActivity extends ImageOperationActivity {
         switch (game) {
             case GameSelectionActivity.GameSlidingTile:
                 Fragment fragment0 = new SlidingTileFragment();
+                ((SlidingTileFragment) fragment0).setCurrentGame(game);
                 transaction.replace(R.id.gameButtonFrame, fragment0);
                 break;
 
@@ -114,7 +116,10 @@ public class GameCenterActivity extends ImageOperationActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GameCenterActivity.this, InGameSettings.class));
+                Intent settings = new Intent(GameCenterActivity.this,
+                        InGameSettings.class);
+                settings.putExtra("accManager", userAccManager);
+                startActivity(settings);
             }
         });
     }
@@ -128,8 +133,8 @@ public class GameCenterActivity extends ImageOperationActivity {
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFromFile(SAVE_FILENAME);
-                saveToFile(TEMP_SAVE_FILENAME);
+                loadFromFile();
+                FileSaver.saveToFile(getApplicationContext(), boardManager, TEMP_SAVE_FILENAME);
                 makeToastLoadedText();
                 switchToGame();
             }
@@ -148,12 +153,13 @@ public class GameCenterActivity extends ImageOperationActivity {
      */
     private void addSaveButtonListener() {
         Button saveButton = findViewById(R.id.SaveButton);
+        userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFromFile(SAVE_FILENAME);
-                saveToFile(SAVE_FILENAME);
-                saveToFile(TEMP_SAVE_FILENAME);
+                saveToFile();
+                FileSaver.saveToFile(getApplicationContext(), boardManager, TEMP_SAVE_FILENAME);
                 makeToastSavedText();
             }
         });
@@ -172,7 +178,7 @@ public class GameCenterActivity extends ImageOperationActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadFromFile(TEMP_SAVE_FILENAME);
+        FileSaver.loadFromFile(getApplicationContext(), TEMP_SAVE_FILENAME);
     }
 
     /**
@@ -180,65 +186,33 @@ public class GameCenterActivity extends ImageOperationActivity {
      */
     private void switchToGame() {
         Intent tmp = new Intent(this, GameActivity.class);
-        saveToFile(TEMP_SAVE_FILENAME);
+        tmp.putExtra("accManager", userAccManager);
+        tmp.putExtra("currentGame", currentGame);
+        saveToFile();
         startActivity(tmp);
     }
 
     /**
      * Load the game state from fileName.
      *
-     * @param fileName the name of the file
      */
-    private void loadFromFile(String fileName) {
-
-        try {
-            InputStream inputStream = this.openFileInput(fileName);
-            if (inputStream != null) {
-                loadGameState(inputStream);
-            }
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
+    private void loadFromFile() {
+        userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
+        if (userAccManager != null) {
+            boardManager = userAccManager.getCurrentGameStateMap(currentGame);
         }
-    }
-
-    /**
-     * Load the game state from inputStream.
-     *
-     * @param inputStream the file input stream
-     * @throws IOException in/output exception
-     * @throws ClassNotFoundException class not found exception
-     */
-    private void loadGameState(InputStream inputStream) throws IOException, ClassNotFoundException {
-        ObjectInputStream input = new ObjectInputStream(inputStream);
-        gameStateMap = (HashMap<String, BoardManager>) input.readObject();
-        if (gameStateMap.containsKey(UserAccManager.getInstance().getCurrentUser())){
-            boardManager = gameStateMap.get(UserAccManager.getInstance().getCurrentUser());
-            boardManager.getBoard().setMaxUndoTime(boardManager.getBoard().getMaxUndoTime());
-        } else {
-            Toast.makeText(this, "Game saves not found!", Toast.LENGTH_LONG).show();
-        }
-        inputStream.close();
     }
 
     /**
      * Save the game state to fileName.
      *
-     * @param fileName the name of the file
      */
-    public void saveToFile(String fileName) {
-        gameStateMap.put(UserAccManager.getInstance().getCurrentUser(), boardManager);
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(gameStateMap);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+    public void saveToFile() {
+        boardManager = (BoardManager)FileSaver.loadFromFile(getApplicationContext(),
+                TEMP_SAVE_FILENAME);
+        userAccManager.setCurrentGameState(boardManager);
+        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
     }
 
     /**
@@ -249,7 +223,10 @@ public class GameCenterActivity extends ImageOperationActivity {
         scoreboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GameCenterActivity.this, ScoreBoardActivity.class));
+                Intent scoreBoard = new Intent(GameCenterActivity.this,
+                        ScoreBoardActivity.class);
+                scoreBoard.putExtra("accManager", userAccManager);
+                startActivity(scoreBoard);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }
         });
