@@ -13,6 +13,12 @@ public class SlidingTile extends Tile {
      */
     private Bitmap imageBitmap;
 
+    private int gridSize;
+
+    public int getGridSize() {
+        return gridSize;
+    }
+
     /**
      * Set the bitmap of the background image.
      *
@@ -32,13 +38,13 @@ public class SlidingTile extends Tile {
     }
 
     /**
-     * A tile with a background id and background image bitmap; look up and set the id.
+     * A tile with a background id and the grid size; look up and set the id.
      *
      * @param id background id
-     * @param imageBitmap bitmap of the background image
+     * @param gridSize grid size
      */
-    public SlidingTile(int id, Bitmap imageBitmap) {
+    public SlidingTile(int id, int gridSize) {
         setId(id);
-        this.imageBitmap = imageBitmap;
+        this.gridSize = gridSize;
     }
 }
