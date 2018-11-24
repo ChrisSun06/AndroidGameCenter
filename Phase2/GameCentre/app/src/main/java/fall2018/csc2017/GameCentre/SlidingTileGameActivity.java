@@ -6,10 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -39,7 +37,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     private UserAccManager userAccManager;
 
     // Grid View and calculated column height and width based on device size
-    private GestureDetectGridView gridView;
+    private SlidingTileGestureDetectGridView gridView;
     private static int columnWidth, columnHeight;
 
     /**

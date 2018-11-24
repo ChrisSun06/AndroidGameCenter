@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,11 +23,6 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import fall2018.csc2017.GameCentre.CustomAdapter;
-import fall2018.csc2017.GameCentre.GameCenterActivity;
-import fall2018.csc2017.GameCentre.GestureDetectGridView;
-import fall2018.csc2017.GameCentre.LoginActivity;
-import fall2018.csc2017.GameCentre.R;
 import fall2018.csc2017.GameCentre.abstract_classes.Tile;
 
 /**
@@ -52,7 +46,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     private HashMap<String, SudokuBoardManager> gameStateMap;
 
     // Grid View and calculated column height and width based on device size
-    private GestureDetectGridView gridView;
+    private SlidingTileGestureDetectGridView gridView;
     private static int columnWidth, columnHeight;
 
     /**

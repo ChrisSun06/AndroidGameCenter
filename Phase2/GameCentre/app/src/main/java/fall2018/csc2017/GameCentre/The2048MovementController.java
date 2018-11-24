@@ -4,37 +4,31 @@ import android.content.Context;
 import android.widget.Toast;
 
 
-class MovementController {
+class The2048MovementController {
 
     /**
      * The boardManager.
      */
-    private SlidingTileBoardManager boardManager = null;
+    private The2048BoardManager boardManager = null;
 
     /**
      * Set the boardManager.
      *
      * @param boardManager the board manager
      */
-    void setBoardManager(SlidingTileBoardManager boardManager) {
+    void setBoardManager(The2048BoardManager boardManager) {
         this.boardManager = boardManager;
     }
 
     /**
-     * Process the movement for each tap on position.
+     * Process the movement for each slides.
      *
      * @param context the current context
-     * @param position the tapped position
+     * @param direction either "row" or "col", "row" means horizontal movenment, "col" means vertical movement
+     * @param directionValue deciding vector if "row" is left or right, and if "col" is up or down.
      */
-    void processTapMovement(Context context, int position) {
-        if (boardManager.isValidTap(position)) {
-            processValidTap(context, position);
-        } else if (!boardManager.getBoard().historyStack.isEmpty() && position ==
-                boardManager.blankTilePosition()) {
-            processUndo(context);
-        } else {
-            Toast.makeText(context, "Invalid Tap", Toast.LENGTH_SHORT).show();
-        }
+    void processMovement(Context context, String direction, boolean directionValue) {
+        //ToDo: process a slide movement
     }
 
     /**
@@ -59,11 +53,7 @@ class MovementController {
      * @param position the position tapped
      */
     private void processValidTap(Context context, int position) {
-        boardManager.touchMove(position, false);
-        boardManager.getBoard().increaseNumOfMoves();
-        if (boardManager.puzzleSolved()) {
-            Toast.makeText(context, "YOU WIN!", Toast.LENGTH_SHORT).show();
-        }
+        //ToDo: is this even necessary?
     }
 
 

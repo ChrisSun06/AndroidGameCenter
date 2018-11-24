@@ -4,20 +4,12 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -49,7 +41,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     private UserAccManager userAccManager;
 
     // Grid View and calculated column height and width based on device size
-    private GestureDetectGridView gridView;
+    private SlidingTileGestureDetectGridView gridView;
     private static int columnWidth, columnHeight;
 
     /**
