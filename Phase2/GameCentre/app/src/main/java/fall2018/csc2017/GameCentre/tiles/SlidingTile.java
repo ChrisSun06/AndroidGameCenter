@@ -8,7 +8,6 @@ import fall2018.csc2017.GameCentre.R;
  * A Tile in a sliding tiles game.
  */
 public class SlidingTile extends Tile {
-    public static final int FirstSlidingTileDefaultId = R.drawable.tile_01;
     /**
      * Bitmap of the background image.
      */

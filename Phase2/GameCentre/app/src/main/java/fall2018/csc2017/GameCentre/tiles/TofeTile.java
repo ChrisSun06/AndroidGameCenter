@@ -8,10 +8,6 @@ import fall2018.csc2017.GameCentre.R;
  * A Tile in a 2048 game.
  */
 public class TofeTile extends Tile{
-    /**
-     * The id of the first 2048 tile image
-     */
-    public static final int FirstTofeTileDrawableId = R.drawable.tofe_01;
 
     /**
      * The background image id to find the tile image.

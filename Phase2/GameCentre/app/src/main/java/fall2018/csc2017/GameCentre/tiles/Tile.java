@@ -1,17 +1,38 @@
 package fall2018.csc2017.GameCentre.tiles;
 
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
+
+import fall2018.csc2017.GameCentre.R;
 
 /**
  * An abstract tile for polymorphism implementation.
  */
 public abstract class Tile implements Comparable<Tile>, Serializable {
     /**
+     * All the drawable id's of the background images.
+     */
+    public static final int FirstSlidingTileDefaultId = R.drawable.tile_01;
+    public static final int FirstSudokuTileId = R.drawable.sudoku_01;
+    public static final int FirstSudokuNumberId = R.drawable.sudoku_i_01;
+    public static final int FirstSudokuIEditNumberId = R.drawable.sudoku_i_11;
+    public static final int FirstTofeTileDrawableId = R.drawable.tofe_01;
+    /**
      * Tile's background id on the board.
      */
     private int id;
+
+    private Bitmap imageBitmap;
+
+    public void setImageBitmap(Bitmap imageBitmap) {
+        this.imageBitmap = imageBitmap;
+    }
+
+    public Bitmap getImageBitmap() {
+        return imageBitmap;
+    }
 
     /**
      * Set tile's background id.

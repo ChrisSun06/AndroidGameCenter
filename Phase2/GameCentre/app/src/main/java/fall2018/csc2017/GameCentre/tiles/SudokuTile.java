@@ -1,10 +1,4 @@
 package fall2018.csc2017.GameCentre.tiles;
-
-import android.graphics.Bitmap;
-
-import fall2018.csc2017.GameCentre.R;
-import fall2018.csc2017.GameCentre.abstract_classes.Tile;
-
 /**
  * A Tile in a sudoku game.
  */
@@ -17,7 +11,7 @@ public class SudokuTile extends Tile {
     /**
      * Number is mutable if check available is 1, 0 otherwise.
      */
-    private boolean changeAvailable;
+    private boolean isMutable;
 
     /**
      * Set number of the current position
@@ -32,22 +26,25 @@ public class SudokuTile extends Tile {
         return number;
     }
 
-    public void incrementNumber() {
+    /*public void incrementNumber() {
         this.number ++;
-    }
+    }*/
 
     /*public void setChangeAvailable(int changeAvailable) {
         this.changeAvailable = changeAvailable;
     }*/
 
-    public boolean getChangeAvailable() {
-        return changeAvailable;
+    public boolean getIsMutable() {
+        return isMutable;
     }
 
-    public SudokuTile(int id, int number, boolean changeAvailable) {
-        setId(id);
+    public void setIsMutable(boolean isMutable) {
+        this.isMutable = isMutable;
+    }
+
+    public SudokuTile(int number, boolean isMutable) {
         this.number = number;
         // changeAvailable is access only
-        this.changeAvailable = changeAvailable;
+        this.isMutable = isMutable;
     }
 }
