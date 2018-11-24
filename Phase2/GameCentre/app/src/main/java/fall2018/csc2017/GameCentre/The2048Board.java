@@ -102,7 +102,7 @@ public class The2048Board extends Observable implements Serializable, Iterable<T
      * @param inverted whether we want the column to be inverted.
      * @return the column corresponding to colNum, can be inverted if specified.
      */
-    TofeTile[] getCol(int colNum, boolean inverted){
+    private TofeTile[] getCol(int colNum, boolean inverted){
         TofeTile[] result = new TofeTile[4];
         if(! inverted){
             for(int i = 0; i < 4; i++){
@@ -122,7 +122,7 @@ public class The2048Board extends Observable implements Serializable, Iterable<T
      * @param inverted whether we want the row to be inverted.
      * @return the row corresponding to rowNum, can be inverted if specified.
      */
-    TofeTile[] getRow(int rowNum, boolean inverted){
+    private TofeTile[] getRow(int rowNum, boolean inverted){
         TofeTile[] result = new TofeTile[4];
         if(! inverted){
             for(int i = 0; i < 4; i++){
@@ -136,6 +136,23 @@ public class The2048Board extends Observable implements Serializable, Iterable<T
         return result;
     }
 
+    /**
+     * Return the row or column based on String rowOrColumn, the number of row or column
+     * to be returned is determined by int rowORColumnNum, can be inverted if specified.
+     * @param rowOrColumn whether we want row or column.
+     * @param rowORColumnNum the number of row/column we need.
+     * @param inverted whether we want the row/column to be inverted.
+     * @return the row/column corresponding to rowOrColumnNum, can be inverted if specified.
+     */
+    TofeTile[] getRowOrColumn(String rowOrColumn, int rowORColumnNum, boolean inverted){
+        if(rowOrColumn.equals("row")){
+            return getRow(rowORColumnNum, inverted);
+        }else if(rowOrColumn.equals("column")){
+            return getCol(rowORColumnNum, inverted);
+        }return null;
+    }
+
+
     Integer[] getBlankPosition(){
         ArrayList<Integer> result = new ArrayList<>();
         Iterator<TofeTile> iter = iterator();
@@ -146,6 +163,20 @@ public class The2048Board extends Observable implements Serializable, Iterable<T
             counter++;
         }
         return (Integer[])(result.toArray());
+    }
+
+    @Override
+    public boolean equals(Object other){
+        if(!(other instanceof The2048Board))
+            return false;
+        for(int i = 0; i < numRows; i++){
+            for(int j = 0; j < numCols; j++){
+                if(this.getTile(i,j).getDrawableId() !=
+                        ((The2048Board) other).getTile(i,j).getDrawableId())
+                    return false;
+            }
+        }
+        return true;
     }
 
     /**
