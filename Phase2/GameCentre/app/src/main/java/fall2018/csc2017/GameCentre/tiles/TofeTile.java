@@ -68,6 +68,14 @@ public class TofeTile extends Tile{
         this.value = value;
     }
 
+    @Override
+    public boolean equals(Object other){
+        if(!(other instanceof TofeTile))
+            return false;
+        return this.getId() == ((TofeTile) other).getId() &&
+                this.getValue() == ((TofeTile) other).getValue();
+    }
+
     /**
      * A helper that returns the power of 2 of a given value.
      *
