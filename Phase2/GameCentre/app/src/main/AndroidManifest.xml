@@ -27,6 +27,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".InGameSettings" />
         <activity android:name=".GameSelectionActivity" />
+        <activity android:name=".SlidingTileGameActivity" />
     </application>
 
 </manifest>

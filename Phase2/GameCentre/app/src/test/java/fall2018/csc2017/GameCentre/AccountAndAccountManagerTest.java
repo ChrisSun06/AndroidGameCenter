@@ -11,7 +11,6 @@ import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 import fall2018.csc2017.GameCentre.Strategies.SlidingTileStrategy;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
 
 public class AccountAndAccountManagerTest {
 

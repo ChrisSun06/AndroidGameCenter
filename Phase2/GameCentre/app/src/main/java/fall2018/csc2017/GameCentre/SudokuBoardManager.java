@@ -3,6 +3,7 @@ package fall2018.csc2017.GameCentre;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -22,13 +23,9 @@ public class SudokuBoardManager extends AbstractBoardManager {
         for (int i = 1; i <= 9; i++) {
             NUMBERS.add(i);
         }
-        ArrayList<Integer> numbers = new ArrayList<>(Collections.nCopies(72, 0));
+        List<SudokuTile> numbers = new ArrayList<>();
         randomAdd(numbers);
-        ArrayList<SudokuTile> tiles = new ArrayList<>();
-        for (int i = 0; i < numbers.size(); i++) {
-            tiles.add(new SudokuTile(numbers.get(i), false));
-        }
-        this.board = new SudokuBoard(tiles);
+        this.board = new SudokuBoard(numbers);
         solve();
         randomRemove();
     }
@@ -48,9 +45,12 @@ public class SudokuBoardManager extends AbstractBoardManager {
         }
     }
 
-    private void randomAdd(ArrayList<Integer> tiles){
+    private void randomAdd(List<SudokuTile> tiles){
+        for (int i = 0; i < 72; i++) {
+            tiles.add(new SudokuTile(0, false));
+        }
         for (int i = 0; i < NUMBERS.size(); i++) {
-            tiles.add(NUMBERS.get(i));
+            tiles.add(new SudokuTile(NUMBERS.get(i), false));
         }
         Collections.shuffle(tiles);
     }
@@ -95,13 +95,13 @@ public class SudokuBoardManager extends AbstractBoardManager {
     boolean isPartialValid(Iterable<SudokuTile> part) {
         int count = 0;
         int totalCount = 0;
-        Set<SudokuTile> tempSet = new HashSet<>();
+        Set<Integer> tempSet = new HashSet<>();
 
         for (SudokuTile i: part){
             totalCount ++;
             if (i.getNumber() != 0) {
                 count++;
-                tempSet.add(i);
+                tempSet.add(i.getNumber());
                 if (tempSet.size() != count){
                     return false;
                 }

@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import fall2018.csc2017.GameCentre.tiles.SlidingTile;
+
 import static org.junit.Assert.*;
 
 /**
@@ -22,12 +24,12 @@ public class BoardAndTileTest {
      * Make a set of tiles that are in order.
      * @return a set of tiles that are in order
      */
-    private List<Tile> makeTiles() {
-        List<Tile> tiles = new ArrayList<>();
+    private List<SlidingTile> makeTiles() {
+        List<SlidingTile> tiles = new ArrayList<>();
         final int numTiles = boardManager.getBoard().getNumRows() *
                 boardManager.getBoard().getNumCols();
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
-            tiles.add(new Tile(tileNum + 1, tileNum));
+            tiles.add(new SlidingTile(tileNum + 1, tileNum));
         }
 
         return tiles;
@@ -37,7 +39,7 @@ public class BoardAndTileTest {
      * Make a solved 4x4 Board.
      */
     private void setUpCorrect() {
-        List<Tile> tiles = makeTiles();
+        List<SlidingTile> tiles = makeTiles();
         AbstractBoard board = new SlidingTileBoard(tiles, 4);
         boardManager = new SlidingTileBoardManager((SlidingTileBoard) board);
     }

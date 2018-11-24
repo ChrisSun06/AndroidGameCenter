@@ -6,25 +6,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import fall2018.csc2017.GameCentre.tiles.SlidingTile;
+import fall2018.csc2017.GameCentre.tiles.SudokuTile;
+
 import static org.junit.Assert.*;
 
 public class SudokuTest {
 
     SudokuBoardManager boardManager;
 
+    SudokuBoard board;
+
     /**
      * Make a partially solved Board.
      */
-    private void setUpCorrect(){
+    @Test
+    public void setUpCorrect(){
         this.boardManager = new SudokuBoardManager();
     }
 
     /**
      * Make a first row of the Sudoku board be numbers from 1-6.
      */
+
     private void setFirstRow(){
-        for (int i = 0; i < 6; i++){
-            this.boardManager.getBoard().setTiles(0, i, i+1);
+        for (int i = 0; i < 9; i++){
+            this.boardManager.getBoard().setTile(0, i, i+1);
         }
     }
 
@@ -32,8 +39,12 @@ public class SudokuTest {
      * Make a empty Board, filled with all 0s.
      */
     private void setUp(){
-        List<Integer> tiles = new ArrayList<>(Collections.nCopies(36, 0));
-        SudokuBoard board = new SudokuBoard(tiles);
+        ArrayList<Integer> numbers = new ArrayList<>(Collections.nCopies(81, 0));
+        ArrayList<SudokuTile> tiles = new ArrayList<>();
+        for (int i = 0; i < numbers.size(); i++) {
+            tiles.add(new SudokuTile(numbers.get(i), false));
+        }
+        this.board = new SudokuBoard(tiles);
         boardManager = new SudokuBoardManager(board);
     }
 
@@ -50,33 +61,33 @@ public class SudokuTest {
     @Test
     public void testTouchMoveEmptyFirst(){
         setUp();
-        assertEquals(0, boardManager.getBoard().getTiles(0, 0));
+        assertEquals(0, boardManager.getBoard().getTile(0, 0));
         boardManager.touchMove(0);
-        assertEquals(1, boardManager.getBoard().getTiles(0, 0));
+        assertEquals(1, boardManager.getBoard().getTile(0, 0));
         boardManager.touchMove(0);
-        assertEquals(2, boardManager.getBoard().getTiles(0, 0));
+        assertEquals(2, boardManager.getBoard().getTile(0, 0));
     }
 
     @Test
     public void testTouchMoveEmptyLast(){
         setUp();
-        assertEquals(0, boardManager.getBoard().getTiles(5, 5));
+        assertEquals(0, boardManager.getBoard().getTile(5, 5));
         boardManager.touchMove(35);
-        assertEquals(1, boardManager.getBoard().getTiles(5, 5));
+        assertEquals(1, boardManager.getBoard().getTile(5, 5));
         boardManager.touchMove(35);
-        assertEquals(2, boardManager.getBoard().getTiles(5, 5));
+        assertEquals(2, boardManager.getBoard().getTile(5, 5));
     }
 
     @Test
     public void testTouchMoveSolved(){
         setUp();
-        int tile = boardManager.getBoard().getTiles(4,5);
+        SudokuTile tile = boardManager.getBoard().getTile(4,5);
         boardManager.touchMove(29);
-        int newTile = boardManager.getBoard().getTiles(4, 5);
-        if (tile == 6){
-            assertEquals(0, newTile);
+        SudokuTile newTile = boardManager.getBoard().getTile(4, 5);
+        if (tile.getNumber() == 9){
+            assertEquals(0, newTile.getNumber());
         } else {
-            assertEquals(tile+1, newTile);
+            assertEquals(tile.getNumber() + 1, newTile.getNumber());
         }
     }
 
@@ -86,7 +97,7 @@ public class SudokuTest {
         for (int i = 0; i <= 6; i++){
             boardManager.touchMove(1);
         }
-        assertTrue(boardManager.getBoard().getTiles(0, 1) == 0);
+        assertTrue(boardManager.getBoard().getTile(0, 1).getNumber() == 0);
     }
 
     @Test
@@ -101,11 +112,8 @@ public class SudokuTest {
         assertTrue(boardManager.isValid());
         setFirstRow();
         assertTrue(boardManager.isValid());
-        boardManager.getBoard().setTiles(1, 0, 1);
+        boardManager.getBoard().setTile(1, 0, 1);
         assertFalse(boardManager.isValid());
-        assertTrue(boardManager.isRowValid());
-        assertFalse(boardManager.isColValid());
-        assertFalse(boardManager.isSectionValid());
     }
 
 
