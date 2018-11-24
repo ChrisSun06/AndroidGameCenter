@@ -55,6 +55,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
         super.onCreate(savedInstanceState);
         boardManager = (SlidingTileBoardManager) FileSaver.loadFromFile(getApplicationContext(),
                         GameCenterActivity.TEMP_SAVE_FILENAME);
+        userAccManager = (UserAccManager) getIntent().getSerializableExtra("accManager");
         setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_main);

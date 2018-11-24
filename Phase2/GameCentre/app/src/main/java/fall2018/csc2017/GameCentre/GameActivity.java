@@ -21,7 +21,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
+    private SlidingTileBoardManager boardManager;
 
     private String currentGame;
 
@@ -62,7 +62,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         userAccManager = (UserAccManager) FileSaver.loadFromFile(getApplicationContext(),
                 LoginActivity.ACC_INFO);
         userAccManager.setCurrentGame(currentGame);
-        boardManager = (BoardManager) FileSaver.loadFromFile(getApplicationContext(),
+        boardManager = (SlidingTileBoardManager) FileSaver.loadFromFile(getApplicationContext(),
                 GameCenterActivity.TEMP_SAVE_FILENAME);
         createTileButtons(this);
         setContentView(R.layout.activity_main);
@@ -103,7 +103,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * @param context the context
      */
     private void createTileButtons(Context context) {
-        Board board = boardManager.getBoard();
+        SlidingTileBoard board = boardManager.getBoard();
         tileButtons = new ArrayList<>();
         for (int row = 0; row != boardManager.getBoard().getNumRows(); row++) {
             for (int col = 0; col != boardManager.getBoard().getNumCols(); col++) {
@@ -118,7 +118,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * Update the backgrounds on the buttons to match the tiles.
      */
     private void updateTileButtons() {
-        Board board = boardManager.getBoard();
+        SlidingTileBoard board = boardManager.getBoard();
         int nextPos = 0;
         for (Button b : tileButtons) {
             int row = nextPos / boardManager.getBoard().getNumRows();
