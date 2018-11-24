@@ -20,6 +20,10 @@ class The2048BoardManager implements Serializable {
     private The2048Board board;
 
     /**
+     * The stack which keeps track of the previous board.
+     */
+
+    /**
      * Manage a board that has been pre-populated.
      *
      * @param board the board
@@ -56,63 +60,39 @@ class The2048BoardManager implements Serializable {
         final int numTiles = The2048Board.numTiles;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
             if (boardNumber[tileNum] == 2) {
-                tiles.add(new TofeTile(2));
+                tiles.add(new TofeTile(2, tileNum));
             } else if (boardNumber[tileNum] == 4) {
-                tiles.add(new TofeTile(4));
+                tiles.add(new TofeTile(4, tileNum));
             } else {
-                tiles.add(new TofeTile(0));
+                tiles.add(new TofeTile(0, tileNum));
             }
         }
         this.board = new The2048Board(tiles);
         historyStack.push(this.board);
     }
 
-    void movingVertical(boolean down){
-        The2048Board mergedBoard = mergeVertical(down);
+    void move(String rOrC, boolean inverted){
+        The2048Board mergedBoard = this.merge(rOrC, inverted);
         Integer[] blankPositions = mergedBoard.getBlankPosition();
         if (blankPositions.length != 0){
             int randomPos = blankPositions[(int) (Math.random() * blankPositions.length)];
-            TofeTile randomTile = new TofeTile(((int) (Math.random() * 1) + 1) * 2);
+            TofeTile randomTile = new TofeTile(((int) (Math.random() * 1) + 1) * 2, randomPos);
             mergedBoard.setTile(randomPos/The2048Board.numRows, randomPos%The2048Board.numCols, randomTile);
         }
         this.board = mergedBoard;
         historyStack.push(mergedBoard);
     }
 
-    private The2048Board mergeVertical(boolean down) {
+    private The2048Board merge(String rOrC, boolean inverted) {
         TofeTile[] resultingTiles = new TofeTile[16];
-        for (int column = 0; column < 4; column++) {
-            TofeTile[] mergedTiles = new Merge2048(board.getCol(column, down)).merge();
-            if (!down) {
-                for (int row = 1; row < 4; row++) {
-                    resultingTiles[row * 4 + column] = mergedTiles[row];
-                }
-            } else {
-                for (int row = 1; row < 4; row++) {
-                    resultingTiles[row * 4 + column] = mergedTiles[3 - row];
-                }
-            }
+        for (int i = 0; i < 4; i++) {
+            TofeTile[] mergedTiles = new Merge2048(board.getRowOrColumn(rOrC,
+                    i, inverted), rOrC, i, inverted).merge();
+            for(int j = 0; j < 4; j++)
+                resultingTiles[mergedTiles[j].getId()] = mergedTiles[j];
         }
         return new The2048Board(Arrays.asList(resultingTiles));
-
     }
-
-//    void appearNewTile(){
-//        int appearPosition = (int)(Math.random()*15);
-//        int appearNumber = (int)(Math.random());
-//        while (boardNumber[appearPosition] != 0){
-//            appearPosition = (int)(Math.random()*15);
-//        }
-//        boardNumber[appearPosition] = appearNumber;
-//    }
-//
-//    void recreateBoard(){
-//        List<Tile> tiles = new ArrayList<>();
-//        for (int i = 0; i!=16; i++){
-//            tiles.add(new Tile(boardNumber[i]-1, 4));
-//            //要保证boardNumber[i]－1 对应png的数字 重点需解决！！
-//        }
-//    }
 
     /**
      * Return whether the tiles are in row-major order.
@@ -120,12 +100,7 @@ class The2048BoardManager implements Serializable {
      * @return whether the tiles are in row-major order
      */
     boolean puzzleSolved() {
-        boolean solved = true;
-        for (TofeTile tile : this.board) {
-            solved = (tile.getValue() != 0);
-            if (!solved) break;
-        }
-        return solved;
+        return merge("row", true).equals(board) && merge("column", true).equals(board);
     }
 
     /**
