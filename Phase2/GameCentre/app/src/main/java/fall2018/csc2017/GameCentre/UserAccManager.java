@@ -1,19 +1,13 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
-import android.util.Log;
+import android.widget.Toast;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.Context.MODE_PRIVATE;
+import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 
 /**
  * The serializable user account manager.
@@ -29,6 +23,11 @@ public class UserAccManager implements Serializable {
      * The String that stores the current user.
      */
     private String currentUser;
+
+    /**
+     * The boolean that keeps track of whether last game saves load is successful or not.
+     */
+    private boolean gameLoaded;
 
     /**
      * The String that stores the current game.
@@ -110,6 +109,18 @@ public class UserAccManager implements Serializable {
     }
 
     /**
+     * Set the current game user is playing, use specifically for games that
+     * has several sizes (e.g. sliding tile game).
+     *
+     * @param gridSize the grid size
+     * @param game the current game
+     */
+    public void setCurrentGame(int gridSize, String game) {
+        String size = String.valueOf(gridSize);
+        currentGame = size + "X" + size + game;
+    }
+
+    /**
      * Return the current game user is playing.
      *
      * @param accountMap the account hashMap.
@@ -124,7 +135,7 @@ public class UserAccManager implements Serializable {
      * @param moves number of moves user made.
      * @param board board user is playing on.
      */
-    void addScore(int moves, Board board) {
+    void addScore(int moves, SlidingTileBoard board) {
         int score = accountMap.get(currentUser).getScores().get(currentGame);
         if (1000 * board.numTiles() / moves > score && moves != 1) {
             accountMap.get(currentUser).setScore(currentGame,
@@ -132,18 +143,56 @@ public class UserAccManager implements Serializable {
         }
     }
 
-    void setCurrentGameState(BoardManager boardManager){
-        if (currentGame != null) {
+    /**
+     * Add score of a user based on how many moves he/she made.
+     *
+     * @param scoringStrategy the strategy to calculate score.
+     * @param moves number of moves user made.
+     * @param board board user is playing on.
+     */
+    void addScore(ScoringStrategy scoringStrategy, int moves, AbstractBoard board) {
+        scoringStrategy.addScore(moves, board);
+    }
+
+    /**
+     * Set the user's game save to be the current board manager.
+     *
+     * @param boardManager the board manager
+     */
+    void setCurrentGameState(AbstractBoardManager boardManager){
+        if (currentGame != null && accountMap.containsKey(currentUser)) {
             accountMap.get(currentUser).setSaves(currentGame, boardManager);
         }
     }
 
-    BoardManager getCurrentGameStateMap(String game){
-        Map<String, BoardManager> tempGameSaves = accountMap.get(currentUser).getSaves();
-        if (tempGameSaves.containsKey(game)) {
+    /**
+     * Set the user's game save to be the current board manager.
+     *
+     * @param game the game name that user wants to load.
+     */
+    AbstractBoardManager getCurrentGameStateMap(String game){
+        Map<String, AbstractBoardManager> tempGameSaves = accountMap.get(currentUser).getSaves();
+        if (tempGameSaves.containsKey(game) && tempGameSaves.get(game) != null) {
+            gameLoaded = true;
             return tempGameSaves.get(game);
         } else {
+            gameLoaded = false;
             return null;
+        }
+    }
+
+    /**
+     * Make a toast message of whether game board is initialized successfully or not.
+     * Combined with getCurrentGameStateMap method above, to clarify for user.
+     *
+     * @param context current activity context.
+     */
+    void makeToastGameState(Context context){
+        if (gameLoaded) {
+            Toast.makeText(context, "Game save successfully loaded! Enjoy your game.",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Game save not found!", Toast.LENGTH_LONG).show();
         }
     }
 

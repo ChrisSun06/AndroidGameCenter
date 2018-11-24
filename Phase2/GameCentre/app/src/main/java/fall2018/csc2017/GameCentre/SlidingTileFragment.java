@@ -4,38 +4,21 @@ package fall2018.csc2017.GameCentre;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
-
-import static android.content.Context.MODE_PRIVATE;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SlidingTileFragment extends Fragment {
-
-    /**
-     * A temporary save file.
-     */
-    public static final String TEMP_SAVE_FILENAME = "save_file_tmp.ser";
+public class SlidingTileFragment extends GameCenterButtonFragment {
 
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
-
-    /**
-     * The buttons to display.
-     */
-    private String currentGame;
+    private SlidingTileBoardManager slidingTileBoardManager;
 
     /**
      * The account manager
@@ -45,7 +28,6 @@ public class SlidingTileFragment extends Fragment {
 
     public SlidingTileFragment() {
         // Required empty public constructor
-
     }
 
     private View view;
@@ -65,16 +47,6 @@ public class SlidingTileFragment extends Fragment {
     }
 
     /**
-     * Set the current game
-     *
-     * @param currentGame the current game
-     */
-    public void setCurrentGame(String currentGame){
-        this.currentGame = currentGame;
-    }
-
-
-    /**
      * Activate the 3x3 game.
      */
     private void add3x3ButtonListener() {
@@ -85,6 +57,7 @@ public class SlidingTileFragment extends Fragment {
                 activateGame(3);
             }
         });
+
     }
 
 
@@ -117,24 +90,25 @@ public class SlidingTileFragment extends Fragment {
     /**
      * Switch to the GameActivity view to play the game.
      */
-    private void switchToGame(String game) {
-        Intent tmp = new Intent(getActivity(), GameActivity.class);
+    @Override
+    void switchToGame() {
+        Intent tmp = new Intent(getActivity(), SlidingTileGameActivity.class);
         tmp.putExtra("accManager", accManager);
-        tmp.putExtra("currentGame", game);
-        FileSaver.saveToFile(getActivity(), boardManager, TEMP_SAVE_FILENAME);
+        FileSaver.saveToFile(getActivity(), slidingTileBoardManager,
+                GameCenterActivity.TEMP_SAVE_FILENAME);
         startActivity(tmp);
     }
 
     /**
      * Activate the ixi game.
      *
-     * @param i the complexity of game
+     * @param gridSize the grid size of game
      */
-    private void activateGame(int i) {
-        boardManager = new BoardManager(i);
-        boardManager.getBoard().setMaxUndoTime(accManager.getUserUndoTime());
-        String gameSize = Integer.valueOf(i).toString();
-        switchToGame(gameSize + "X" + gameSize + currentGame);
+    @Override
+    void activateGame(int gridSize) {
+        slidingTileBoardManager = new SlidingTileBoardManager(gridSize);
+        slidingTileBoardManager.getBoard().setMaxUndoTime(accManager.getUserUndoTime());
+        switchToGame();
     }
 }
 

@@ -3,6 +3,7 @@ package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -50,6 +51,8 @@ public class FileSaver {
             ObjectInputStream input = new ObjectInputStream(inputStream);
             temp = input.readObject();
             inputStream.close();
+        } else {
+            Toast.makeText(c, "saves not found, loaded default", Toast.LENGTH_LONG).show();
         }
         return temp;
     }

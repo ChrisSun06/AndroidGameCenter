@@ -1,17 +1,7 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
-
-import static android.content.Context.MODE_PRIVATE;
 
 
 class MovementController {
@@ -19,14 +9,14 @@ class MovementController {
     /**
      * The boardManager.
      */
-    private BoardManager boardManager = null;
+    private SlidingTileBoardManager boardManager = null;
 
     /**
      * Set the boardManager.
      *
      * @param boardManager the board manager
      */
-    void setBoardManager(BoardManager boardManager) {
+    void setBoardManager(SlidingTileBoardManager boardManager) {
         this.boardManager = boardManager;
     }
 
@@ -39,7 +29,8 @@ class MovementController {
     void processTapMovement(Context context, int position) {
         if (boardManager.isValidTap(position)) {
             processValidTap(context, position);
-        } else if (!boardManager.getBoard().historyStack.isEmpty() && position == boardManager.blankTilePosition()) {
+        } else if (!boardManager.getBoard().historyStack.isEmpty() && position ==
+                boardManager.blankTilePosition()) {
             processUndo(context);
         } else {
             Toast.makeText(context, "Invalid Tap", Toast.LENGTH_SHORT).show();
@@ -56,7 +47,8 @@ class MovementController {
             Toast.makeText(context, "Cannot Undo anymore", Toast.LENGTH_SHORT).show();
         } else {
             boardManager.undo();
-            Toast.makeText(context, boardManager.getBoard().getMaxUndoTime() + " Undo chance(s) left", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, boardManager.getBoard().getMaxUndoTime() +
+                    " Undo chance(s) left", Toast.LENGTH_SHORT).show();
         }
     }
 

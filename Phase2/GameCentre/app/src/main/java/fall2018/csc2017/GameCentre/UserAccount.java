@@ -1,7 +1,6 @@
 package fall2018.csc2017.GameCentre;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -36,14 +35,14 @@ public class UserAccount implements Serializable {
     /**
      * The HashMap of BoardManager map to each game, this is the saves for this user.
      */
-    private HashMap<String, BoardManager> gameSaves;
+    private HashMap<String, AbstractBoardManager> gameSaves;
 
     /**
      * Return the HashMap of the scores of the user.
      *
      * @return scores
      */
-    HashMap<String, Integer> getScores(){
+    public HashMap<String, Integer> getScores(){
         return scores;
     }
 
@@ -52,7 +51,7 @@ public class UserAccount implements Serializable {
      *
      * @return board manager for game
      */
-    HashMap<String, BoardManager> getSaves(){
+    HashMap<String, AbstractBoardManager> getSaves(){
         return gameSaves;
     }
 
@@ -62,7 +61,7 @@ public class UserAccount implements Serializable {
      * @param game the game name
      * @param boardManager board manager for this game
      */
-    void setSaves(String game, BoardManager boardManager){
+    void setSaves(String game, AbstractBoardManager boardManager){
         for (String key : gameSaves.keySet()){
             if (game.contains(key)){gameSaves.put(key, boardManager);}
         }
@@ -134,7 +133,7 @@ public class UserAccount implements Serializable {
      * @param currentGame current game
      * @param score score for this game
      */
-    void setScore(String currentGame, int score) {
+    public void setScore(String currentGame, int score) {
         scores.put(currentGame, score);
     }
 
