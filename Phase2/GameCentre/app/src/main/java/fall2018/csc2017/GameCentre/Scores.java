@@ -1,5 +1,8 @@
 package fall2018.csc2017.GameCentre;
 
+import android.content.Context;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,16 +11,18 @@ import java.util.List;
 public class Scores {
 
     static final int name = 0;
-    static final  int scores = 1;
+    static final int scores = 1;
 
     private ArrayList<String> accountNames;
     private ArrayList<String> accountScores;
+    private UserAccManager userAccManager;
 
 
     /**
      * Construct all the scores for a specific game.
      */
-    public Scores(String game){
+    public Scores(String game, Context context){
+        this.userAccManager = (UserAccManager) FileSaver.loadFromFile(context, LoginActivity.ACC_INFO);
         ArrayList<UserAccount> accList = sortingAccountsScores(game, loadAllAccountInfo());
         List<ArrayList<String>> names_and_scores = accountsGetNamesScores(accList, game);
         accountNames = names_and_scores.get(name);
@@ -43,7 +48,7 @@ public class Scores {
      * @return an array list of all user accounts
      */
     ArrayList<UserAccount> loadAllAccountInfo(){
-        HashMap<String, UserAccount> map = UserAccManager.getInstance().getAccountMap();
+        HashMap<String, UserAccount> map = userAccManager.getAccountMap();
         ArrayList<UserAccount> accountList = new ArrayList<>(map.size());
         for(String name: map.keySet()){
             accountList.add(map.get(name));

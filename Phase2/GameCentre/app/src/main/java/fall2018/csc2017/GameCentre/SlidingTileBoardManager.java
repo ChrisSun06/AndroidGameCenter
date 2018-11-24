@@ -8,32 +8,32 @@ import java.util.List;
 /**
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  */
-class BoardManager implements Serializable {
+class SlidingTileBoardManager extends AbstractBoardManager implements Serializable{
 
     /**
      * The board being managed.
      */
-    private Board board;
+    private SlidingTileBoard slidingTileBoard;
 
     /**
      * Manage a board that has been pre-populated.
-     * @param board the board
+     * @param slidingTileBoard the board
      */
-    BoardManager(Board board) {
-        this.board = board;
+    SlidingTileBoardManager(SlidingTileBoard slidingTileBoard) {
+        this.slidingTileBoard = slidingTileBoard;
     }
 
     /**
      * Return the current board.
      */
-    Board getBoard() {
-        return board;
+    SlidingTileBoard getBoard() {
+        return slidingTileBoard;
     }
 
     /**
      * Manage a new shuffled board.
      */
-    BoardManager(int gridSize) {
+    SlidingTileBoardManager(int gridSize) {
         List<Tile> tiles = new ArrayList<>();
         final int numTiles = gridSize * gridSize;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
@@ -44,7 +44,7 @@ class BoardManager implements Serializable {
         while (!solvable(tiles, gridSize)){
             Collections.shuffle(tiles);
         }
-        this.board = new Board(tiles, gridSize);
+        this.slidingTileBoard = new SlidingTileBoard(tiles, gridSize);
     }
 
     /**
@@ -111,7 +111,7 @@ class BoardManager implements Serializable {
         boolean solved = true;
 
         int tileId = 1;
-        for (Tile tile: this.board) {
+        for (Tile tile: this.slidingTileBoard) {
             solved = (tile.getId() == tileId);
             tileId++;
             if (!solved) break;
@@ -127,13 +127,13 @@ class BoardManager implements Serializable {
      */
     boolean isValidTap(int position) {
 
-        int row = position / board.getNumRows();
-        int col = position % board.getNumCols();
-        int blankId = board.numTiles();
-        Tile above = row == 0 ? null : board.getTile(row - 1, col);
-        Tile below = row == board.getNumRows() - 1 ? null : board.getTile(row + 1, col);
-        Tile left = col == 0 ? null : board.getTile(row, col - 1);
-        Tile right = col == board.getNumCols() - 1 ? null : board.getTile(row, col + 1);
+        int row = position / slidingTileBoard.getNumRows();
+        int col = position % slidingTileBoard.getNumCols();
+        int blankId = slidingTileBoard.numTiles();
+        Tile above = row == 0 ? null : slidingTileBoard.getTile(row - 1, col);
+        Tile below = row == slidingTileBoard.getNumRows() - 1 ? null : slidingTileBoard.getTile(row + 1, col);
+        Tile left = col == 0 ? null : slidingTileBoard.getTile(row, col - 1);
+        Tile right = col == slidingTileBoard.getNumCols() - 1 ? null : slidingTileBoard.getTile(row, col + 1);
         return (below != null && below.getId() == blankId)
                 || (above != null && above.getId() == blankId)
                 || (left != null && left.getId() == blankId)
@@ -146,12 +146,12 @@ class BoardManager implements Serializable {
      * @return An int array of the row and col of blankTile.
      */
     private int[] blankTilePos(){
-        int blankId = board.numTiles();
+        int blankId = slidingTileBoard.numTiles();
         int row1 = 0;
         int col1 = 0;
-        for (int r = 0; r != board.getNumRows(); r++) {
-            for (int c = 0; c != board.getNumCols(); c++) {
-                if (board.getTile(r, c).getId() == blankId) {
+        for (int r = 0; r != slidingTileBoard.getNumRows(); r++) {
+            for (int c = 0; c != slidingTileBoard.getNumCols(); c++) {
+                if (slidingTileBoard.getTile(r, c).getId() == blankId) {
                     row1 = r;
                     col1 = c;
                 }
@@ -167,12 +167,12 @@ class BoardManager implements Serializable {
      * @param position the position
      */
     void touchMove(int position, boolean ifUndo) {
-            int row = position / board.getNumRows();
-            int col = position % board.getNumCols();
+            int row = position / slidingTileBoard.getNumRows();
+            int col = position % slidingTileBoard.getNumCols();
 
             int[] position2 = blankTilePos();
             if (!ifUndo) moveHistory();
-            board.swapTiles(row, col, position2[0], position2[1]);
+            slidingTileBoard.swapTiles(row, col, position2[0], position2[1]);
     }
 
     /**
@@ -181,7 +181,7 @@ class BoardManager implements Serializable {
      * @return An int blankTile position.
      */
     int blankTilePosition(){
-        return blankTilePos()[0] * board.getNumRows() + blankTilePos()[1];
+        return blankTilePos()[0] * slidingTileBoard.getNumRows() + blankTilePos()[1];
     }
 
     /**
@@ -189,8 +189,8 @@ class BoardManager implements Serializable {
      *
      */
     void undo(){
-        touchMove(board.historyStack.pop(), true);
-        board.setMaxUndoTime(board.getMaxUndoTime()-1);
+        touchMove(slidingTileBoard.historyStack.pop(), true);
+        slidingTileBoard.setMaxUndoTime(slidingTileBoard.getMaxUndoTime()-1);
     }
 
     /**
@@ -198,6 +198,6 @@ class BoardManager implements Serializable {
      *
      */
     private void moveHistory(){
-        board.historyStack.push(blankTilePosition());
+        slidingTileBoard.historyStack.push(blankTilePosition());
     }
 }

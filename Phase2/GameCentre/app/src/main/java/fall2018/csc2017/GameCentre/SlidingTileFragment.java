@@ -4,43 +4,30 @@ package fall2018.csc2017.GameCentre;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
-
-import static android.content.Context.MODE_PRIVATE;
-
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SlidingTileFragment extends Fragment {
-
-    /**
-     * A temporary save file.
-     */
-    public static final String TEMP_SAVE_FILENAME = "save_file_tmp.ser";
+public class SlidingTileFragment extends GameCenterButtonFragment {
 
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
+    private SlidingTileBoardManager slidingTileBoardManager;
 
     /**
-     * The buttons to display.
+     * The account manager
      */
-    private HashMap<String, BoardManager> gameStateMap = new HashMap<>();
+    private UserAccManager accManager;
 
 
     public SlidingTileFragment() {
         // Required empty public constructor
-
     }
 
     private View view;
@@ -49,6 +36,8 @@ public class SlidingTileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        accManager = (UserAccManager) FileSaver.loadFromFile(getActivity(),
+                LoginActivity.ACC_INFO);
         view = inflater.inflate(R.layout.fragment_sliding_tile, container, false);
         add3x3ButtonListener();
         add4x4ButtonListener();
@@ -56,7 +45,6 @@ public class SlidingTileFragment extends Fragment {
         return view;
 
     }
-
 
     /**
      * Activate the 3x3 game.
@@ -66,10 +54,10 @@ public class SlidingTileFragment extends Fragment {
         by3sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameCenterActivity.CURRENT_GAME = "3X3sliding";
                 activateGame(3);
             }
         });
+
     }
 
 
@@ -81,7 +69,6 @@ public class SlidingTileFragment extends Fragment {
         by4sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameCenterActivity.CURRENT_GAME = "4X4sliding";
                 activateGame(4);
             }
         });
@@ -95,7 +82,6 @@ public class SlidingTileFragment extends Fragment {
         by5sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                GameCenterActivity.CURRENT_GAME = "5X5sliding";
                 activateGame(5);
             }
         });
@@ -104,39 +90,25 @@ public class SlidingTileFragment extends Fragment {
     /**
      * Switch to the GameActivity view to play the game.
      */
-    private void switchToGame() {
-        Intent tmp = new Intent(getActivity(), GameActivity.class);
-        saveToFile(TEMP_SAVE_FILENAME);
+    @Override
+    void switchToGame() {
+        Intent tmp = new Intent(getActivity(), SlidingTileGameActivity.class);
+        tmp.putExtra("accManager", accManager);
+        FileSaver.saveToFile(getActivity(), slidingTileBoardManager,
+                GameCenterActivity.TEMP_SAVE_FILENAME);
         startActivity(tmp);
     }
 
     /**
      * Activate the ixi game.
      *
-     * @param i the complexity of game
+     * @param gridSize the grid size of game
      */
-    private void activateGame(int i) {
-        boardManager = new BoardManager(i);
-        boardManager.getBoard().setMaxUndoTime(UserAccManager.getInstance().
-                getUserUndoTime());
+    @Override
+    void activateGame(int gridSize) {
+        slidingTileBoardManager = new SlidingTileBoardManager(gridSize);
+        slidingTileBoardManager.getBoard().setMaxUndoTime(accManager.getUserUndoTime());
         switchToGame();
     }
-
-
-    /**
-     * Save the game state to fileName.
-     *
-     * @param fileName the name of the file
-     */
-    public void saveToFile(String fileName) {
-        gameStateMap.put(UserAccManager.getInstance().getCurrentUser(), boardManager);
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    getActivity().openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(gameStateMap);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
-    }
 }
+

@@ -5,28 +5,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.HashMap;
-
 /**
  * The initial activity for the sliding puzzle tile game.
  */
-public class GameCenterActivity extends ImageOperationActivity {
-
-    /**
-     * The main save file.
-     */
-    public static final String SAVE_FILENAME = "save_file.ser";
+public class GameCenterActivity extends ImageOperationActivity implements FragmentBasedInterface{
 
     /**
      * A temporary save file.
@@ -36,17 +23,18 @@ public class GameCenterActivity extends ImageOperationActivity {
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
-
-    /**
-     * The buttons to display.
-     */
-    private HashMap<String, BoardManager> gameStateMap = new HashMap<>();
+    private AbstractBoardManager boardManager;
 
     /**
      * Current Game
      */
-    static String CURRENT_GAME;
+    private String currentGame;
+
+    /**
+     * User account manager
+     */
+    private UserAccManager userAccManager;
+
 
 
     /**
@@ -59,31 +47,36 @@ public class GameCenterActivity extends ImageOperationActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boardManager = new BoardManager(4);
-        Intent b = getIntent();
-        CURRENT_GAME = b.getStringExtra("GAME");
 
-        loadFromFile(SAVE_FILENAME);
-        saveToFile(TEMP_SAVE_FILENAME);
+        currentGameInfoSetup();
 
         setupDefault();
 
         setContentView(R.layout.activity_game_center);
 
-        changeFragment2(CURRENT_GAME);
+        changeFragment(currentGame);
 
         goToScoreBoard();
-
+        addLoadButtonListener();
+        addSaveButtonListener();
+        addSettingButtonListener();
     }
 
 
+private void currentGameInfoSetup(){
+    currentGame = getIntent().getStringExtra("GAME");
+    userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
+            LoginActivity.ACC_INFO);
 
-    private void changeFragment2(String game){
+}
+
+    public void changeFragment(String game){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
         switch (game) {
             case GameSelectionActivity.GameSlidingTile:
                 Fragment fragment0 = new SlidingTileFragment();
+                boardManager = new SlidingTileBoardManager(4);
                 transaction.replace(R.id.gameButtonFrame, fragment0);
                 break;
 
@@ -105,7 +98,6 @@ public class GameCenterActivity extends ImageOperationActivity {
 
     }
 
-
     /**
      * Activate the start button.
      */
@@ -114,11 +106,13 @@ public class GameCenterActivity extends ImageOperationActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GameCenterActivity.this, InGameSettings.class));
+                Intent settings = new Intent(GameCenterActivity.this,
+                        SlidingTileGameSettings.class);
+                settings.putExtra("accManager", userAccManager);
+                startActivity(settings);
             }
         });
     }
-
 
     /**
      * Activate the load button.
@@ -128,32 +122,30 @@ public class GameCenterActivity extends ImageOperationActivity {
         loadButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFromFile(SAVE_FILENAME);
-                saveToFile(TEMP_SAVE_FILENAME);
-                makeToastLoadedText();
-                switchToGame();
+                loadFromFile();
+                FileSaver.saveToFile(getApplicationContext(), boardManager, TEMP_SAVE_FILENAME);
+                if (boardManager == null) {
+                    makeToastSavedText();
+                } else {
+                    switchToLoadedGame();
+                }
             }
         });
     }
 
-    /**
-     * Display that a game was loaded successfully.
-     */
-    private void makeToastLoadedText() {
-        Toast.makeText(this, "Loaded Game", Toast.LENGTH_SHORT).show();
-    }
 
     /**
      * Activate the save button.
      */
     private void addSaveButtonListener() {
         Button saveButton = findViewById(R.id.SaveButton);
+        userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadFromFile(SAVE_FILENAME);
-                saveToFile(SAVE_FILENAME);
-                saveToFile(TEMP_SAVE_FILENAME);
+                saveToFile();
+                FileSaver.saveToFile(getApplicationContext(), boardManager, TEMP_SAVE_FILENAME);
                 makeToastSavedText();
             }
         });
@@ -167,78 +159,35 @@ public class GameCenterActivity extends ImageOperationActivity {
     }
 
     /**
-     * Read the temporary board from disk.
-     */
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadFromFile(TEMP_SAVE_FILENAME);
-    }
-
-    /**
      * Switch to the GameActivity view to play the game.
      */
-    private void switchToGame() {
-        Intent tmp = new Intent(this, GameActivity.class);
-        saveToFile(TEMP_SAVE_FILENAME);
+    private void switchToLoadedGame() {
+        //from loaded slot, activate the game by current_game
+        Intent tmp = new Intent(this, SlidingTileGameActivity.class);
+        tmp.putExtra("accManager", userAccManager);
+        tmp.putExtra("currentGame", currentGame);
+        saveToFile();
         startActivity(tmp);
     }
 
     /**
-     * Load the game state from fileName.
-     *
-     * @param fileName the name of the file
+     * Load the game state from file.
      */
-    private void loadFromFile(String fileName) {
-
-        try {
-            InputStream inputStream = this.openFileInput(fileName);
-            if (inputStream != null) {
-                loadGameState(inputStream);
-            }
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
-        }
-    }
-
-    /**
-     * Load the game state from inputStream.
-     *
-     * @param inputStream the file input stream
-     * @throws IOException in/output exception
-     * @throws ClassNotFoundException class not found exception
-     */
-    private void loadGameState(InputStream inputStream) throws IOException, ClassNotFoundException {
-        ObjectInputStream input = new ObjectInputStream(inputStream);
-        gameStateMap = (HashMap<String, BoardManager>) input.readObject();
-        if (gameStateMap.containsKey(UserAccManager.getInstance().getCurrentUser())){
-            boardManager = gameStateMap.get(UserAccManager.getInstance().getCurrentUser());
-            boardManager.getBoard().setMaxUndoTime(boardManager.getBoard().getMaxUndoTime());
-        } else {
-            Toast.makeText(this, "Game saves not found!", Toast.LENGTH_LONG).show();
-        }
-        inputStream.close();
+    private void loadFromFile() {
+        userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
+        boardManager = userAccManager.getCurrentGameStateMap(currentGame);
+        userAccManager.makeToastGameState(getApplicationContext());
     }
 
     /**
      * Save the game state to fileName.
-     *
-     * @param fileName the name of the file
      */
-    public void saveToFile(String fileName) {
-        gameStateMap.put(UserAccManager.getInstance().getCurrentUser(), boardManager);
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(gameStateMap);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }
+    public void saveToFile() {
+        boardManager = (AbstractBoardManager)FileSaver.loadFromFile(getApplicationContext(),
+                TEMP_SAVE_FILENAME);
+        userAccManager.setCurrentGameState(boardManager);
+        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
     }
 
     /**
@@ -249,7 +198,10 @@ public class GameCenterActivity extends ImageOperationActivity {
         scoreboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(GameCenterActivity.this, ScoreBoardActivity.class));
+                Intent scoreBoard = new Intent(GameCenterActivity.this,
+                        ScoreBoardActivity.class);
+                scoreBoard.putExtra("accManager", userAccManager);
+                startActivity(scoreBoard);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }
         });

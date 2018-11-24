@@ -32,24 +32,16 @@ public class LoginActivity extends AppCompatActivity {
      */
     public static final String ACC_INFO = "acc_save.ser";
 
-
     /**
      * The account manager
      */
-    public static UserAccManager accManager;
-
-    /**
-     * The file saver
-     */
-    public static FileSaver fileSaver;
+    public UserAccManager accManager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        accManager = UserAccManager.getInstance();
-        fileSaver = FileSaver.getInstance();
         mEmailView = findViewById(R.id.emailEdit);
         mPasswordView = findViewById(R.id.passwordEdit);
         loadAccounts();
@@ -61,12 +53,14 @@ public class LoginActivity extends AppCompatActivity {
      * Load the UserAccManager.
      */
     private void loadAccounts(){
-        UserAccManager tempManager = (UserAccManager)fileSaver.loadFromFile
+        UserAccManager tempManager = (UserAccManager)FileSaver.loadFromFile
                 (getApplicationContext(), ACC_INFO);
         if (tempManager != null){
-            accManager.setAccountMap(tempManager.getAccountMap());
+            accManager = tempManager;
+        } else {
+            accManager = new UserAccManager();
+            FileSaver.saveToFile(getApplicationContext(), accManager, ACC_INFO);
         }
-        //accManager.loadAccManager(getApplicationContext());
     }
 
     /**
@@ -77,10 +71,11 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                accManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(), ACC_INFO);
                 if (accManager.accountExist(mEmailView.getText().toString(),
                         mPasswordView.getText().toString())) {
-                    //currentUser = mEmailView.getText().toString();
                     accManager.setCurrentUser(mEmailView.getText().toString());
+                    FileSaver.saveToFile(getApplicationContext(), accManager, ACC_INFO);
                     Intent intent = new Intent(LoginActivity.this,
                             GameSelectionActivity.class);
                     intent.putExtra("accountManager", accManager);
@@ -108,6 +103,7 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                accManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(), ACC_INFO);
                 writeAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
             }
         });
@@ -127,9 +123,8 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(this, "Field cannot be empty!", Toast.LENGTH_SHORT).show();
         } else {
             accManager.writeAcc(email, password);
-            FileSaver.getInstance().saveToFile(getApplicationContext(), UserAccManager.getInstance()
+            FileSaver.saveToFile(getApplicationContext(), accManager
                     , LoginActivity.ACC_INFO);
-            //accManager.writeAccManager(getApplicationContext());
         }
     }
 

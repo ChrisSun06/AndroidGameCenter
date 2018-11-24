@@ -1,7 +1,6 @@
 package fall2018.csc2017.GameCentre;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -9,7 +8,9 @@ import java.util.HashMap;
  */
 public class UserAccount implements Serializable {
 
-    public static final String[] games = {"3X3sliding", "4X4sliding", "5X5sliding", "Sudoku", "2048"};
+    public static final String[] GAMES = {"3X3sliding", "4X4sliding", "5X5sliding", "Sudoku", "2048"};
+
+    public static final String[] GAME_TYPES = {"sliding", "Sudoku", "2048"};
 
     /**
      * The username of user.
@@ -32,12 +33,38 @@ public class UserAccount implements Serializable {
     private HashMap<String, Integer> scores;
 
     /**
+     * The HashMap of BoardManager map to each game, this is the saves for this user.
+     */
+    private HashMap<String, AbstractBoardManager> gameSaves;
+
+    /**
      * Return the HashMap of the scores of the user.
      *
      * @return scores
      */
-    HashMap<String, Integer> getScores(){
+    public HashMap<String, Integer> getScores(){
         return scores;
+    }
+
+    /**
+     * Return the HashMap of the scores of the user.
+     *
+     * @return board manager for game
+     */
+    HashMap<String, AbstractBoardManager> getSaves(){
+        return gameSaves;
+    }
+
+    /**
+     * Return the HashMap of the scores of the user.
+     *
+     * @param game the game name
+     * @param boardManager board manager for this game
+     */
+    void setSaves(String game, AbstractBoardManager boardManager){
+        for (String key : gameSaves.keySet()){
+            if (game.contains(key)){gameSaves.put(key, boardManager);}
+        }
     }
 
     /**
@@ -89,10 +116,14 @@ public class UserAccount implements Serializable {
         this.name = n;
         this.password = p;
         this.scores = new HashMap<>();
+        this.gameSaves = new HashMap<>();
 
-        //setting all scores to -1
-        for (String game : games) {
+        //setting all scores to -1, initialize games saves to null.
+        for (String game : GAMES) {
             scores.put(game, -1);
+        }
+        for (String gameTypes : GAME_TYPES) {
+            gameSaves.put(gameTypes, null);
         }
     }
 
@@ -102,7 +133,7 @@ public class UserAccount implements Serializable {
      * @param currentGame current game
      * @param score score for this game
      */
-    void setScore(String currentGame, int score) {
+    public void setScore(String currentGame, int score) {
         scores.put(currentGame, score);
     }
 

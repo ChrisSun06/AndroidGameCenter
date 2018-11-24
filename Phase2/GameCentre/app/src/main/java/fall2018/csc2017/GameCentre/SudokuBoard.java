@@ -7,22 +7,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 
+import fall2018.csc2017.GameCentre.abstract_classes.Tile;
+
 public class SudokuBoard extends Observable implements Serializable{
     /**
      * The number of rows.
      */
-    private int numRows = 6;
-
-
+    private int numRows = 9;
     /**
      * The number of rows.
      */
-    private int numCols= 6;
+    private int numCols= 9;
 
-    private Integer[][] tiles = new Integer[numRows][numCols];
+    private SudokuTile[][] tiles = new SudokuTile[numRows][numCols];
 
-    SudokuBoard(List<Integer> tiles) {
-        Iterator<Integer> iter = tiles.iterator();
+    SudokuBoard(List<SudokuTile> tiles) {
+        Iterator<SudokuTile> iter = tiles.iterator();
         for (int row = 0; row != numRows; row++) {
             for (int col = 0; col != numCols; col++) {
                 this.tiles[row][col] = iter.next();
@@ -38,39 +38,39 @@ public class SudokuBoard extends Observable implements Serializable{
 
     int getNumCols(){return numCols;}
 
-    void setTiles(int row, int col, int value){
-        tiles[row][col] = value;
+    void setTile(int row, int col, int value){
+        tiles[row][col].setNumber(value);
     }
 
-    int getTiles(int row, int col){
+    SudokuTile getTile(int row, int col){
         return tiles[row][col];
     }
 
-    public Iterable<Integer> horizontal(){return new Iterable<Integer>() {
+    public Iterable<SudokuTile> horizontal(){return new Iterable<SudokuTile>() {
         @NonNull
         @Override
-        public Iterator<Integer> iterator() {
+        public Iterator<SudokuTile> iterator() {
             return new SudokuIterator();
         }
     };}
 
-    public Iterable<Integer> vertical(){return new Iterable<Integer>() {
+    public Iterable<SudokuTile> vertical(){return new Iterable<SudokuTile>() {
         @NonNull
         @Override
-        public Iterator<Integer> iterator() {
+        public Iterator<SudokuTile> iterator() {
             return new SudokuVerticalIterator();
         }
     };}
 
-    public Iterable<Integer> sectional(){return new Iterable<Integer>() {
+    public Iterable<SudokuTile> sectional(){return new Iterable<SudokuTile>() {
         @NonNull
         @Override
-        public Iterator<Integer> iterator() {
+        public Iterator<SudokuTile> iterator() {
             return new SudokuSectionalIterator();
         }
     };}
 
-    private class SudokuIterator implements Iterator<Integer> {
+    private class SudokuIterator implements Iterator<SudokuTile> {
 
         /**
          * The index of next item in tiles list.
@@ -93,10 +93,10 @@ public class SudokuBoard extends Observable implements Serializable{
          * @return the next tile in the array.
          */
         @Override
-        public Integer next() {
+        public SudokuTile next() {
             int curRow = nextIndex / numRows;
             int curColumn = nextIndex % numCols;
-            Integer tile = tiles[curRow][curColumn];
+            SudokuTile tile = tiles[curRow][curColumn];
             nextIndex += 1;
             return tile;
         }
@@ -106,7 +106,7 @@ public class SudokuBoard extends Observable implements Serializable{
 
     public int getCols(){return numCols;}
 
-    private class SudokuVerticalIterator implements Iterator<Integer> {
+    private class SudokuVerticalIterator implements Iterator<SudokuTile> {
 
         /**
          * The index of next item in tiles list.
@@ -129,16 +129,16 @@ public class SudokuBoard extends Observable implements Serializable{
          * @return the next tile in the array.
          */
         @Override
-        public Integer next() {
+        public SudokuTile next() {
             int curRow = nextIndex / numRows;
             int curColumn = nextIndex % numCols;
-            Integer tile = tiles[curColumn][curRow];
+            SudokuTile tile = tiles[curColumn][curRow];
             nextIndex += 1;
             return tile;
         }
     }
 
-    private class SudokuSectionalIterator implements Iterator<Integer> {
+    private class SudokuSectionalIterator implements Iterator<SudokuTile> {
 
         /**
          * The index of next item in tiles list.
@@ -161,20 +161,20 @@ public class SudokuBoard extends Observable implements Serializable{
          * @return the next tile in the array.
          */
         @Override
-        public Integer next() {
+        public SudokuTile next() {
             int curRow = (nextIndex % 18) / 3;
             int curColumn = (nextIndex % 3) + (nextIndex / 18) * 3;
-            Integer tile = tiles[curColumn][curRow];
+            SudokuTile tile = tiles[curColumn][curRow];
             nextIndex += 1;
             return tile;
         }
     }
 
     public void incrementTile(int row, int col){
-        if (tiles[row][col] == numRows) {
-            tiles[row][col] = 0;
+        if (tiles[row][col].getNumber() == numRows) {
+            tiles[row][col].setNumber(0);
         } else {
-            tiles[row][col] = tiles[row][col] + 1;
+            tiles[row][col].setNumber(tiles[row][col].getNumber());
         }
     }
 

@@ -10,8 +10,8 @@ public class GameSelectionActivity extends AppCompatActivity {
 
     //private String slidingtilegame;
 
-    public static final String GameSudoku = "sudoku";
-    public static final String GameSlidingTile = "slidingtile";
+    public static final String GameSudoku = "Sudoku";
+    public static final String GameSlidingTile = "sliding";
     public static final String Game2048 = "2048";
 
     @Override
@@ -30,8 +30,11 @@ public class GameSelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(GameSelectionActivity.this, GameCenterActivity.class);
+                Intent i = new Intent(GameSelectionActivity.this,
+                        GameCenterActivity.class);
                 i.putExtra("GAME", GameSlidingTile);
+                i.putExtra("accManager", getIntent().
+                        getSerializableExtra("accountManager"));
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }
@@ -44,8 +47,11 @@ public class GameSelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(GameSelectionActivity.this, GameCenterActivity.class);
+                Intent i = new Intent(GameSelectionActivity.this,
+                        GameCenterActivity.class);
                 i.putExtra("GAME", GameSudoku);
+                i.putExtra("accManager", getIntent().
+                        getSerializableExtra("accountManager"));
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }
@@ -58,8 +64,11 @@ public class GameSelectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(GameSelectionActivity.this, GameCenterActivity.class);
+                Intent i = new Intent(GameSelectionActivity.this,
+                        GameCenterActivity.class);
                 i.putExtra("GAME", Game2048);
+                i.putExtra("accManager", getIntent().
+                        getSerializableExtra("accountManager"));
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }

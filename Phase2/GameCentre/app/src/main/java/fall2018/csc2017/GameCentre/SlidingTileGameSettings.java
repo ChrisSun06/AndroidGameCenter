@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class InGameSettings extends ImageOperationActivity {
+public class SlidingTileGameSettings extends ImageOperationActivity {
 
     public final static int PICK_IMAGE = 1046;
     /**

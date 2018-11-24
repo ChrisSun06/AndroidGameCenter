@@ -4,44 +4,34 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 /**
  * The game activity.
  */
-public class GameActivity extends AppCompatActivity implements Observer {
+public class SlidingTileGameActivity extends AppCompatActivity implements Observer {
 
     /**
      * The board manager.
      */
-    private BoardManager boardManager;
+    private SlidingTileBoardManager boardManager;
 
+    /**
+     * The current sliding tile game name.
+     */
     private String currentGame;
 
     /**
      * The buttons to display.
      */
     private ArrayList<Button> tileButtons;
-
-    /**
-     * The buttons to display.
-     */
-    private HashMap<String, BoardManager> gameStateMap;
 
     /**
      * The user account manager
@@ -65,13 +55,9 @@ public class GameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentGame = getIntent().getExtras().getString("currentGame");
-        makeToastSavedText();
-        userAccManager = (UserAccManager) FileSaver.loadFromFile(getApplicationContext(),
-                LoginActivity.ACC_INFO);
-        userAccManager.setCurrentGame(currentGame);
-        boardManager = (BoardManager) FileSaver.loadFromFile(getApplicationContext(),
-                GameCenterActivity.TEMP_SAVE_FILENAME);
+        boardManager = (SlidingTileBoardManager) FileSaver.loadFromFile(getApplicationContext(),
+                        GameCenterActivity.TEMP_SAVE_FILENAME);
+        setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_main);
         // Add View to activity
@@ -98,11 +84,21 @@ public class GameActivity extends AppCompatActivity implements Observer {
     }
 
     /**
-     *
+     * Set up the board and account manager.
+     */
+    private void setUpBoard() {
+        setCurrentGameName();
+        userAccManager = (UserAccManager) FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
+        userAccManager.setCurrentGame(currentGame);
+    }
+
+    /**
+     * A method that set the game name based on gridSize.
      */
     private void setCurrentGameName(){
-        String gridSize = String.valueOf(boardManager.getBoard().getNumCols());
-        currentGame = gridSize + "X" + gridSize + currentGame;
+        String gridSize = Integer.valueOf(boardManager.getBoard().getNumCols()).toString();
+        currentGame = gridSize + "X" + gridSize + "sliding";
     }
 
     /**
@@ -111,12 +107,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * @param context the context
      */
     private void createTileButtons(Context context) {
-        Board board = boardManager.getBoard();
+        SlidingTileBoard slidingTileBoard = boardManager.getBoard();
         tileButtons = new ArrayList<>();
         for (int row = 0; row != boardManager.getBoard().getNumRows(); row++) {
             for (int col = 0; col != boardManager.getBoard().getNumCols(); col++) {
                 Button tmp = new Button(context);
-                tmp.setBackground(Drawable.createFromPath(board.getTile(row, col).getBackground()));
+                tmp.setBackground(Drawable.createFromPath(slidingTileBoard.getTile(row, col).getBackground()));
                 this.tileButtons.add(tmp);
             }
         }
@@ -126,12 +122,12 @@ public class GameActivity extends AppCompatActivity implements Observer {
      * Update the backgrounds on the buttons to match the tiles.
      */
     private void updateTileButtons() {
-        Board board = boardManager.getBoard();
+        SlidingTileBoard slidingTileBoard = boardManager.getBoard();
         int nextPos = 0;
         for (Button b : tileButtons) {
             int row = nextPos / boardManager.getBoard().getNumRows();
             int col = nextPos % boardManager.getBoard().getNumCols();
-            b.setBackground(Drawable.createFromPath(board.getTile(row, col).getBackground()));
+            b.setBackground(Drawable.createFromPath(slidingTileBoard.getTile(row, col).getBackground()));
             nextPos++;
         }
     }
@@ -184,9 +180,5 @@ public class GameActivity extends AppCompatActivity implements Observer {
         saveToFile();
         display();
         onSolved();
-    }
-
-    private void makeToastSavedText() {
-        Toast.makeText(this, currentGame, Toast.LENGTH_SHORT).show();
     }
 }

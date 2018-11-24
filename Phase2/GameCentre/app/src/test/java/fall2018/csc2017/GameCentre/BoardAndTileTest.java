@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class BoardAndTileTest {
 
     /** The board manager for testing. */
-    BoardManager boardManager;
+    SlidingTileBoardManager boardManager;
 
     /**
      * Make a set of tiles that are in order.
@@ -38,8 +38,8 @@ public class BoardAndTileTest {
      */
     private void setUpCorrect() {
         List<Tile> tiles = makeTiles();
-        Board board = new Board(tiles, 4);
-        boardManager = new BoardManager(board);
+        AbstractBoard board = new SlidingTileBoard(tiles, 4);
+        boardManager = new SlidingTileBoardManager((SlidingTileBoard) board);
     }
 
     /**

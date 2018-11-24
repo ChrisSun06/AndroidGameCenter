@@ -5,5 +5,7 @@ import android.view.View;
 import java.util.ArrayList;
 
 interface ScoresBoardFragmentInterface {
-    void castNameScoresToView (ArrayList<String> lis, boolean isName, View rootview);
+    void castNameToView (ArrayList<String> lis, View rootview);
+
+    void castScoresToView (ArrayList<String> lis, View rootview);
 }

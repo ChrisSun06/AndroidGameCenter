@@ -1,18 +1,13 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
-import android.util.Log;
+import android.widget.Toast;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
-import static android.content.Context.MODE_PRIVATE;
+import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 
 /**
  * The serializable user account manager.
@@ -22,7 +17,7 @@ public class UserAccManager implements Serializable {
     /**
      * The HashMap that stores all counts.
      */
-    private HashMap<String, UserAccount> accountMap = new HashMap<>();
+    private Map<String, UserAccount> accountMap = new HashMap<>();
 
     /**
      * The String that stores the current user.
@@ -30,24 +25,14 @@ public class UserAccManager implements Serializable {
     private String currentUser;
 
     /**
-     * The UserAccManager instance.
+     * The boolean that keeps track of whether last game saves load is successful or not.
      */
-    private static UserAccManager userAccManagerInstance = new UserAccManager();
+    private boolean gameLoaded;
 
     /**
-     * The Constructor that prevents other classes from calling it (singleton design).
+     * The String that stores the current game.
      */
-    private UserAccManager(){}
-
-    /**
-     * The only way other classes can access this object.
-     */
-    public static UserAccManager getInstance(){
-        if (userAccManagerInstance == null){
-            userAccManagerInstance = new UserAccManager();
-        }
-        return userAccManagerInstance;
-    }
+    private String currentGame;
 
     /**
      * Check whether a given email and password exists in the accountMap or not.
@@ -90,7 +75,7 @@ public class UserAccManager implements Serializable {
      * @return account map
      */
     public HashMap<String, UserAccount> getAccountMap() {
-        return accountMap;
+        return (HashMap<String, UserAccount>) accountMap;
     }
 
     /**
@@ -108,9 +93,31 @@ public class UserAccManager implements Serializable {
      *
      * @return the current game user is playing.
      */
-    private String getCurrentGame() {
-        return GameCenterActivity.CURRENT_GAME;
+    public String getCurrentGame() {
+        return currentGame;
+    }
 
+    /**
+     * Set the current game user is playing.
+     *
+     * @param game the current game
+     */
+    public void setCurrentGame(String game) {
+        if (game != null){
+            currentGame = game;
+        }
+    }
+
+    /**
+     * Set the current game user is playing, use specifically for games that
+     * has several sizes (e.g. sliding tile game).
+     *
+     * @param gridSize the grid size
+     * @param game the current game
+     */
+    public void setCurrentGame(int gridSize, String game) {
+        String size = String.valueOf(gridSize);
+        currentGame = size + "X" + size + game;
     }
 
     /**
@@ -118,7 +125,7 @@ public class UserAccManager implements Serializable {
      *
      * @param accountMap the account hashMap.
      */
-    public void setAccountMap(HashMap<String, UserAccount> accountMap){
+    public void setAccountMap(Map<String, UserAccount> accountMap){
         this.accountMap = accountMap;
     }
 
@@ -128,11 +135,64 @@ public class UserAccManager implements Serializable {
      * @param moves number of moves user made.
      * @param board board user is playing on.
      */
-    void addScore(int moves, Board board) {
-        int score = accountMap.get(currentUser).getScores().get(getCurrentGame());
+    void addScore(int moves, SlidingTileBoard board) {
+        int score = accountMap.get(currentUser).getScores().get(currentGame);
         if (1000 * board.numTiles() / moves > score && moves != 1) {
-            accountMap.get(currentUser).setScore(getCurrentGame(),
+            accountMap.get(currentUser).setScore(currentGame,
                     1000 * board.numTiles() / moves);
+        }
+    }
+
+    /**
+     * Add score of a user based on how many moves he/she made.
+     *
+     * @param scoringStrategy the strategy to calculate score.
+     * @param moves number of moves user made.
+     * @param board board user is playing on.
+     */
+    void addScore(ScoringStrategy scoringStrategy, int moves, AbstractBoard board) {
+        scoringStrategy.addScore(moves, board);
+    }
+
+    /**
+     * Set the user's game save to be the current board manager.
+     *
+     * @param boardManager the board manager
+     */
+    void setCurrentGameState(AbstractBoardManager boardManager){
+        if (currentGame != null && accountMap.containsKey(currentUser)) {
+            accountMap.get(currentUser).setSaves(currentGame, boardManager);
+        }
+    }
+
+    /**
+     * Set the user's game save to be the current board manager.
+     *
+     * @param game the game name that user wants to load.
+     */
+    AbstractBoardManager getCurrentGameStateMap(String game){
+        Map<String, AbstractBoardManager> tempGameSaves = accountMap.get(currentUser).getSaves();
+        if (tempGameSaves.containsKey(game) && tempGameSaves.get(game) != null) {
+            gameLoaded = true;
+            return tempGameSaves.get(game);
+        } else {
+            gameLoaded = false;
+            return null;
+        }
+    }
+
+    /**
+     * Make a toast message of whether game board is initialized successfully or not.
+     * Combined with getCurrentGameStateMap method above, to clarify for user.
+     *
+     * @param context current activity context.
+     */
+    void makeToastGameState(Context context){
+        if (gameLoaded) {
+            Toast.makeText(context, "Game save successfully loaded! Enjoy your game.",
+                    Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context, "Game save not found!", Toast.LENGTH_LONG).show();
         }
     }
 
