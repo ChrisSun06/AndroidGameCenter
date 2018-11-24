@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import fall2018.csc2017.GameCentre.tiles.SlidingTile;
+
 /**
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  */
@@ -34,10 +36,10 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
      * Manage a new shuffled board.
      */
     SlidingTileBoardManager(int gridSize) {
-        List<Tile> tiles = new ArrayList<>();
+        List<SlidingTile> tiles = new ArrayList<>();
         final int numTiles = gridSize * gridSize;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
-            tiles.add(new Tile(tileNum, gridSize));
+            tiles.add(new SlidingTile(tileNum + 1, gridSize));
         }
 
         Collections.shuffle(tiles);
@@ -53,7 +55,7 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
      * @param tile the list to check
      * @return true if it could; otherwise, false
      */
-    private boolean solvable(List<Tile> tile, int gridSize){
+    private boolean solvable(List<SlidingTile> tile, int gridSize){
         if (gridSize % 2 == 1){
             return  (inversion(tile) % 2 == 0);
         }else{
@@ -68,7 +70,7 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
      * @param gridSize the row and col number
      * @return the int blank Tile position from bottom which need by solvable
      */
-    private int blankFromBottom(List<Tile> tile, int gridSize) {
+    private int blankFromBottom(List<SlidingTile> tile, int gridSize) {
         int blankId = tile.size();
         for (int r = 0; r != gridSize; r++) {
             for (int c = 0; c != gridSize; c++) {
@@ -86,7 +88,7 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
      * @param tile the list to check
      * @return the int named inversion which need by solvable
      */
-    private int inversion(List<Tile> tile){
+    private int inversion(List<SlidingTile> tile){
         int blankId = tile.size();
         int totalTile = tile.size();
         int i = 0;
@@ -111,7 +113,7 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
         boolean solved = true;
 
         int tileId = 1;
-        for (Tile tile: this.slidingTileBoard) {
+        for (SlidingTile tile: this.slidingTileBoard) {
             solved = (tile.getId() == tileId);
             tileId++;
             if (!solved) break;
@@ -130,10 +132,10 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
         int row = position / slidingTileBoard.getNumRows();
         int col = position % slidingTileBoard.getNumCols();
         int blankId = slidingTileBoard.numTiles();
-        Tile above = row == 0 ? null : slidingTileBoard.getTile(row - 1, col);
-        Tile below = row == slidingTileBoard.getNumRows() - 1 ? null : slidingTileBoard.getTile(row + 1, col);
-        Tile left = col == 0 ? null : slidingTileBoard.getTile(row, col - 1);
-        Tile right = col == slidingTileBoard.getNumCols() - 1 ? null : slidingTileBoard.getTile(row, col + 1);
+        SlidingTile above = row == 0 ? null : slidingTileBoard.getTile(row - 1, col);
+        SlidingTile below = row == slidingTileBoard.getNumRows() - 1 ? null : slidingTileBoard.getTile(row + 1, col);
+        SlidingTile left = col == 0 ? null : slidingTileBoard.getTile(row, col - 1);
+        SlidingTile right = col == slidingTileBoard.getNumCols() - 1 ? null : slidingTileBoard.getTile(row, col + 1);
         return (below != null && below.getId() == blankId)
                 || (above != null && above.getId() == blankId)
                 || (left != null && left.getId() == blankId)

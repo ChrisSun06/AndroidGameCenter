@@ -11,10 +11,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
+import fall2018.csc2017.GameCentre.tiles.SlidingTile;
+
 /**
  * The sliding tiles board.
  */
-public class SlidingTileBoard extends AbstractBoard implements Iterable<Tile> {
+public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingTile> {
 
     /**
      * The number of rows.
@@ -29,7 +31,7 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<Tile> {
     /**
      * The tiles on the board in row-major order.
      */
-    private Tile[][] tiles;
+    private SlidingTile[][] tiles;
 
     /**
      * The stack which keeps track of the clickable undo positions.
@@ -52,12 +54,12 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<Tile> {
      *
      * @param tiles the tiles for the board
      */
-    SlidingTileBoard(List<Tile> tiles, int gridSize) {
-        Iterator<Tile> iter = tiles.iterator();
+    SlidingTileBoard(List<SlidingTile> tiles, int gridSize) {
+        Iterator<SlidingTile> iter = tiles.iterator();
 
         this.numRows = gridSize;
         this.numCols = gridSize;
-        this.tiles = new Tile[this.numRows][this.numCols];
+        this.tiles = new SlidingTile[this.numRows][this.numCols];
 
         for (int row = 0; row != this.numRows; row++) {
             for (int col = 0; col != this.numCols; col++) {
@@ -116,7 +118,7 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<Tile> {
      * @param col the tile column
      * @return the tile at (row, col)
      */
-    Tile getTile(int row, int col) {
+    SlidingTile getTile(int row, int col) {
         return tiles[row][col];
     }
 
@@ -129,7 +131,7 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<Tile> {
      * @param col2 the second tile col
      */
     void swapTiles(int row1, int col1, int row2, int col2) {
-        Tile temp = getTile(row1, col1);
+        SlidingTile temp = getTile(row1, col1);
         this.tiles[row1][col1] = this.tiles[row2][col2];
         this.tiles[row2][col2] = temp;
         setChanged();
@@ -143,14 +145,14 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<Tile> {
      */
     @Override
     @NonNull
-    public Iterator<Tile> iterator() {
+    public Iterator<SlidingTile> iterator() {
         return new BoardIterator();
     }
 
     /**
      * The board iterator which checks the tiles in corresponding board position.
      */
-    private class BoardIterator implements Iterator<Tile> {
+    private class BoardIterator implements Iterator<SlidingTile> {
 
         /**
          * The index of the next item in the class list.
@@ -173,11 +175,11 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<Tile> {
          * @return the next tile.
          */
         @Override
-        public Tile next() {
+        public SlidingTile next() {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            Tile nextTile = getTile(nextIndex / numRows, nextIndex % numCols);
+            SlidingTile nextTile = getTile(nextIndex / numRows, nextIndex % numCols);
             nextIndex++;
             return nextTile;
         }
