@@ -61,9 +61,10 @@ public class TofeTile extends Tile{
      * A tile with a background id and image id; look up and set the id.
      *
      * @param value current tile's displayed value such as 1024, 2048...
+     * @param id representing the position of the tile.
      */
-    public TofeTile(int value) {
-        //setId(id + 1);
+    public TofeTile(int value, int id) {
+        setId(id);
         if(value != 0)
             this.drawableId = FirstTofeTileDrawableId + powerOfTwo(value) - 1;
         else
