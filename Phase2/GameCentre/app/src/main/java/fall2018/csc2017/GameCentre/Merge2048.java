@@ -21,6 +21,10 @@ class Merge2048 {
     private TofeTile[] inputArray;
 
     /**
+     * The input list without removing blank tiles.
+     */
+    private TofeTile[] originalArray;
+    /**
      * The position the next tile to be put in the resulting list
      */
     private int posInResult = 0;
@@ -30,33 +34,17 @@ class Merge2048 {
      */
     private int currentPosition = 0;
 
-    /**
-     * The role of the inputArray, row or column.
-     */
-    private String identity;
-
-    /**
-     * The whether the inputArray is inverted before merging.
-     */
-    private boolean inverted;
-
-    /**
-     * The row/column number of the inputArray in the board to be merged.
-     */
-    private int numRC;
 
     /**
      * Initialize the list to be merged.
      * Precondition: the length of the inputArray should be 4.
      * Precondition: identity can only be "row" or "column".
      *
-     * @param inputArray the array to be merged.
+     * @param originalArray the array to be merged.
      */
-    Merge2048(TofeTile[] inputArray, String identity, int numRC, boolean inverted){
-        this.inputArray = removingBlank(inputArray);
-        this.identity = identity;
-        this.inverted = inverted;
-        this.numRC = numRC;
+    Merge2048(TofeTile[] originalArray){
+        this.originalArray = originalArray;
+        this.inputArray = removingBlank(originalArray);
     }
 
     /**
@@ -71,7 +59,11 @@ class Merge2048 {
             if(t.getValue() != 0)
                 temResult.add(t);
         }
-        return (TofeTile[])temResult.toArray();
+        TofeTile[] result = new TofeTile[temResult.size()];
+        for (int i = 0; i < temResult.size(); i++){
+            result[i] = temResult.get(i);
+        }
+        return result;
     }
 
     /**
@@ -82,17 +74,18 @@ class Merge2048 {
     TofeTile[] merge(){
         while (currentPosition < inputArray.length - 1){
             if(inputArray[currentPosition].getValue() == inputArray[currentPosition+1].getValue()){
-                resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue()*2, 0);
+                resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue()*2
+                        , originalArray[posInResult].getId());
                 currentPosition += 2;
                 posInResult += 1;
             }else{
-                resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue(), 0);
+                resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue()
+                        , originalArray[posInResult].getId());
                 currentPosition += 1;
                 posInResult += 1;
             }
         }
         this.addingToResultingList();
-        this.setResultingId();
         return resultingList;
     }
 
@@ -102,32 +95,14 @@ class Merge2048 {
      */
     private void addingToResultingList(){
         if (currentPosition == inputArray.length - 1){
-            resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue(), 0);
+            resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue()
+                    , originalArray[posInResult].getId());
             posInResult += 1;
         }
         while (posInResult < 4){
-            resultingList[posInResult] = new TofeTile(0, 0);
+            resultingList[posInResult] = new TofeTile(0, originalArray[posInResult].getId());
             posInResult += 1;
         }
     }
 
-    /**
-     * Setting the id of tiles in the resultingList, based on its identity, its position
-     * in the board and whether it is inverted
-     */
-    private void setResultingId(){
-        if(identity == "row" && !inverted){
-            for(int i = 0; i < 4; i++)
-                resultingList[i].setId(numRC * 4 + i);
-        }else if(identity == "row" && inverted){
-            for(int i = 3; i > 0; i--)
-                resultingList[i].setId(numRC * 4 + i);
-        }else if(identity == "column" && !inverted){
-            for(int i = 0; i < 4; i++)
-                resultingList[i].setId(4 * i + numRC);
-        }else if(identity == "column" && inverted){
-            for(int i = 3; i > 0; i--)
-                resultingList[i].setId(4 * i + numRC);
-        }
-    }
 }
