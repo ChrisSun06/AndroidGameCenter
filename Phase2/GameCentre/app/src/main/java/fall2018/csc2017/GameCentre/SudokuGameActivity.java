@@ -76,11 +76,12 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
                 GameCenterActivity.TEMP_SAVE_FILENAME);
         userAccManager = (UserAccManager) getIntent().getSerializableExtra("accManager");
         //loadFromFile(GameCenterActivity.TEMP_SAVE_FILENAME);
+        setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_sudoku_main);
 
         // Add View to activity
-        gridView = findViewById(R.id.grid);
+        gridView = findViewById(R.id.sudoku_grid);
         gridView.setNumColumns(boardManager.getBoard().getNumCols());
         gridView.setBoardManager(boardManager);
         boardManager.getBoard().addObserver(this);
@@ -116,8 +117,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
      * A method that set the game name based on gridSize.
      */
     private void setCurrentGameName(){
-        String gridSize = Integer.valueOf(boardManager.getBoard().getNumCols()).toString();
-        currentGame = gridSize + "X" + gridSize + "sliding";
+        currentGame = "Sudoku";
     }
 
     /**
