@@ -108,7 +108,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         for (int row = 0; row != boardManager.getBoard().getNumRows(); row++) {
             for (int col = 0; col != boardManager.getBoard().getNumCols(); col++) {
                 Button tmp = new Button(context);
-                tmp.setBackground(Drawable.createFromPath(board.getTile(row, col).getBackground()));
+                //tmp.setBackground(Drawable.createFromPath(board.getTile(row, col).getBackground()));
                 this.tileButtons.add(tmp);
             }
         }
@@ -123,7 +123,7 @@ public class GameActivity extends AppCompatActivity implements Observer {
         for (Button b : tileButtons) {
             int row = nextPos / boardManager.getBoard().getNumRows();
             int col = nextPos % boardManager.getBoard().getNumCols();
-            b.setBackground(Drawable.createFromPath(board.getTile(row, col).getBackground()));
+            //b.setBackground(Drawable.createFromPath(board.getTile(row, col).getBackground()));
             nextPos++;
         }
     }
