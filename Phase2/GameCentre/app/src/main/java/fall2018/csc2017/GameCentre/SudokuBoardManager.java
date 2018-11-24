@@ -1,8 +1,6 @@
 package fall2018.csc2017.GameCentre;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
@@ -21,7 +19,7 @@ public class SudokuBoardManager extends AbstractBoardManager {
     }
 
     SudokuBoardManager(){
-        for (int i = 1; i <= board.getNumCols(); i++) {
+        for (int i = 1; i <= 9; i++) {
             NUMBERS.add(i);
         }
         ArrayList<Integer> numbers = new ArrayList<>(Collections.nCopies(72, 0));
@@ -51,7 +49,9 @@ public class SudokuBoardManager extends AbstractBoardManager {
     }
 
     private void randomAdd(ArrayList<Integer> tiles){
-        Collections.addAll(NUMBERS);
+        for (int i = 0; i < NUMBERS.size(); i++) {
+            tiles.add(NUMBERS.get(i));
+        }
         Collections.shuffle(tiles);
     }
 

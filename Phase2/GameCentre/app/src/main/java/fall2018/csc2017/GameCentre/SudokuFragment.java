@@ -38,8 +38,8 @@ public class SudokuFragment extends GameCenterButtonFragment {
      * Activate the Sudoku game.
      */
     private void addSudokuButtonListener() {
-        Button start2048Game = view.findViewById(R.id.start2048);
-        start2048Game.setOnClickListener(new View.OnClickListener() {
+        Button startSudokuGame = view.findViewById(R.id.startSudoku);
+        startSudokuGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 activateGame();

@@ -176,9 +176,11 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
          */
         @Override
         public SudokuTile next() {
-            int curRow = (nextIndex % 18) / 3;
-            int curColumn = (nextIndex % 3) + (nextIndex / 18) * 3;
-            SudokuTile tile = tiles[curColumn][curRow];
+            int curRow = ((nextIndex / 9) / 3) * 3 + (nextIndex % 9) / 3;
+            int curCol = ((nextIndex / 9) % 3) * 3 + (nextIndex % 9) % 3;
+            //int curRow = (nextIndex % 18) / 3;
+            //int curCol = (nextIndex % 3) + (nextIndex / 18) * 3;
+            SudokuTile tile = tiles[curCol][curRow];
             nextIndex += 1;
             return tile;
         }

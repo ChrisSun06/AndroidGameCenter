@@ -41,6 +41,11 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     private ArrayList<Button> tileButtons;
 
     /**
+     * The current sliding tile game name.
+     */
+    private String currentGame;
+
+    /**
      * The buttons to display.
      */
     private HashMap<String, SudokuBoardManager> gameStateMap;
@@ -48,6 +53,11 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     // Grid View and calculated column height and width based on device size
     private SudokuGestureDetectGridView gridView;
     private static int columnWidth, columnHeight;
+
+    /**
+     * The user account manager
+     */
+    private UserAccManager userAccManager;
 
     /**
      * Set up the background image for each button based on the master list
@@ -62,9 +72,12 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadFromFile(GameCenterActivity.TEMP_SAVE_FILENAME);
+        boardManager = (SudokuBoardManager) FileSaver.loadFromFile(getApplicationContext(),
+                GameCenterActivity.TEMP_SAVE_FILENAME);
+        userAccManager = (UserAccManager) getIntent().getSerializableExtra("accManager");
+        //loadFromFile(GameCenterActivity.TEMP_SAVE_FILENAME);
         createTileButtons(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_sudoku_main);
 
         // Add View to activity
         gridView = findViewById(R.id.grid);
@@ -90,6 +103,24 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     }
 
     /**
+     * Set up the board and account manager.
+     */
+    private void setUpBoard() {
+        setCurrentGameName();
+        userAccManager = (UserAccManager) FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
+        userAccManager.setCurrentGame(currentGame);
+    }
+
+    /**
+     * A method that set the game name based on gridSize.
+     */
+    private void setCurrentGameName(){
+        String gridSize = Integer.valueOf(boardManager.getBoard().getNumCols()).toString();
+        currentGame = gridSize + "X" + gridSize + "sliding";
+    }
+
+    /**
      * create the buttons for displaying the tiles.
      *
      * @param context the context
@@ -100,10 +131,9 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         for (int row = 0; row != boardManager.getBoard().getNumRows(); row++) {
             for (int col = 0; col != boardManager.getBoard().getNumCols(); col++) {
                 Button tmp = new Button(context);
-                try {
+                if (board.getTile(row, col).getImageBitmap() != null) {
                     tmp.setBackground(new BitmapDrawable(getResources(), board.getTile(row, col).getImageBitmap()));
-                    this.tileButtons.add(tmp);
-                } catch (Exception e) {
+                } else {
                     int position = board.getNumCols() * row + col + 1;
                     // set up default background image
                     Bitmap tile = BitmapFactory.decodeResource(getResources(),
@@ -113,10 +143,17 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
                                 Tile.FirstSudokuNumberId + board.getTile(row, col).getNumber() - 1);
                         tile = superpose(tile, number);
                     }
+                    else {
+                        if (board.getTile(row, col).getNumber() != 0) {
+                            Bitmap number = BitmapFactory.decodeResource(getResources(),
+                                    Tile.FirstSudokuEditNumberId + board.getTile(row, col).getNumber() - 1);
+                            tile = superpose(tile, number);
+                        }
+                    }
                     board.getTile(row, col).setImageBitmap(tile);
                     tmp.setBackground(new BitmapDrawable(getResources(), board.getTile(row, col).getImageBitmap()));
-                    this.tileButtons.add(tmp);
                 }
+                this.tileButtons.add(tmp);
             }
         }
     }
@@ -132,7 +169,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
             int col = nextPos % boardManager.getBoard().getNumCols();
             Bitmap tile = board.getTile(row, col).getImageBitmap();
             Bitmap number = BitmapFactory.decodeResource(getResources(),
-                    Tile.FirstSudokuNumberId + board.getTile(row, col).getNumber() - 1);
+                    Tile.FirstSudokuEditNumberId + board.getTile(row, col).getNumber() - 1);
             tile = superpose(tile, number);
             board.getTile(row, col).setImageBitmap(tile);
             b.setBackground(new BitmapDrawable(getResources(), board.getTile(row, col).getImageBitmap()));
@@ -164,8 +201,12 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onPause() {
         super.onPause();
-        LoginActivity.accManager.writeAccManager(getApplicationContext());
-        saveToFile(GameCenterActivity.TEMP_SAVE_FILENAME);
+        FileSaver.saveToFile(getApplicationContext(), userAccManager,
+                LoginActivity.ACC_INFO);
+        FileSaver.saveToFile(getApplicationContext(), boardManager,
+                GameCenterActivity.TEMP_SAVE_FILENAME);
+        /*LoginActivity.accManager.writeAccManager(getApplicationContext());
+        saveToFile(GameCenterActivity.TEMP_SAVE_FILENAME);*/
     }
 
     /**
@@ -173,7 +214,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
      *
      * @param fileName the name of the file
      */
-    private void loadFromFile(String fileName) {
+    /*private void loadFromFile(String fileName) {
 
         try {
             InputStream inputStream = this.openFileInput(fileName);
@@ -187,7 +228,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         } catch (ClassNotFoundException e) {
             Log.e("login activity", "File contained unexpected data type: " + e.toString());
         }
-    }
+    }*/
 
     /**
      * Update the score of the current user if puzzle is solved.
@@ -206,8 +247,9 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onStop(){
         super.onStop();
-        LoginActivity.accManager.writeAccManager(getApplicationContext());
-        saveToFile(GameCenterActivity.SAVE_FILENAME);
+        saveToFile();
+        /*LoginActivity.accManager.writeAccManager(getApplicationContext());
+        saveToFile(GameCenterActivity.SAVE_FILENAME);*/
     }
 
     /**
@@ -218,7 +260,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
      * @throws IOException in/output exception
      * @throws ClassNotFoundException class not found exception
      */
-    private void loadGameState(InputStream inputStream) throws IOException, ClassNotFoundException {
+    /*private void loadGameState(InputStream inputStream) throws IOException, ClassNotFoundException {
         ObjectInputStream input = new ObjectInputStream(inputStream);
         gameStateMap = (HashMap<String, SudokuBoardManager>) input.readObject();
         if (gameStateMap.containsKey(LoginActivity.currentUser)){
@@ -228,16 +270,18 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
             Toast.makeText(this, "Game saves not found!", Toast.LENGTH_LONG).show();
         }
         inputStream.close();
-    }
+    }*/
 
 
     /**
      * Save the board manager to fileName.
-     *
-     * @param fileName the name of the file
      */
-    public void saveToFile(String fileName) {
-        gameStateMap.put(LoginActivity.currentUser, boardManager);
+    public void saveToFile() {
+        userAccManager.setCurrentGameState(boardManager);
+        FileSaver.saveToFile(getApplicationContext(), boardManager,
+                GameCenterActivity.TEMP_SAVE_FILENAME);
+        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
+        /*gameStateMap.put(LoginActivity.currentUser, boardManager);
         try {
             ObjectOutputStream outputStream = new ObjectOutputStream(
                     this.openFileOutput(fileName, MODE_PRIVATE));
@@ -245,12 +289,13 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
             outputStream.close();
         } catch (IOException e) {
             Log.e("Exception", "File write failed: " + e.toString());
-        }
+        }*/
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        saveToFile(GameCenterActivity.SAVE_FILENAME);
+        //saveToFile(GameCenterActivity.SAVE_FILENAME);
+        saveToFile();
         display();
         onSolved();
     }
