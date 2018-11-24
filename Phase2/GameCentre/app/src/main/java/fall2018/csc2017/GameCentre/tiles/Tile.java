@@ -18,7 +18,7 @@ public abstract class Tile implements Comparable<Tile>, Serializable {
      *
      * @param id background id
      */
-    void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -27,7 +27,7 @@ public abstract class Tile implements Comparable<Tile>, Serializable {
      *
      * @return tile's background id
      */
-    int getId() {
+    public int getId() {
         return this.id;
     }
 
