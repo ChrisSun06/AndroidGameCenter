@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import fall2018.csc2017.GameCentre.abstract_classes.BoardManager;
 import fall2018.csc2017.GameCentre.tiles.SudokuTile;
 
 public class SudokuBoardManager extends AbstractBoardManager {
@@ -17,12 +16,20 @@ public class SudokuBoardManager extends AbstractBoardManager {
 
     private ArrayList<Integer> NUMBERS = new ArrayList<>();
 
+    SudokuBoard getBoard(){
+        return board;
+    }
+
     SudokuBoardManager(){
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 1; i <= board.getNumCols(); i++) {
             NUMBERS.add(i);
         }
-        ArrayList<SudokuTile> tiles = new ArrayList<>(Collections.nCopies(30, 0));
-        randomAdd(tiles);
+        ArrayList<Integer> numbers = new ArrayList<>(Collections.nCopies(72, 0));
+        randomAdd(numbers);
+        ArrayList<SudokuTile> tiles = new ArrayList<>();
+        for (int i = 0; i < numbers.size(); i++) {
+            tiles.add(new SudokuTile(numbers.get(i), false));
+        }
         this.board = new SudokuBoard(tiles);
         solve();
         randomRemove();
@@ -36,16 +43,15 @@ public class SudokuBoardManager extends AbstractBoardManager {
         Random random = new Random();
         for (int i = 0; i < this.board.numTiles()/2; i++){
             int randomInt = random.nextInt(board.numTiles());
-            int col = randomInt % board.getCols();
-            int row = randomInt / board.getRows();
+            int col = randomInt % board.getNumCols();
+            int row = randomInt / board.getNumRows();
             board.setTile(row, col, 0);
+            board.setTileMutable(row, col);
         }
     }
 
-    private void randomAdd(ArrayList<SudokuTile> tiles){
-        for (Integer i: NUMBERS){
-            tiles.add(i);
-        }
+    private void randomAdd(ArrayList<Integer> tiles){
+        Collections.addAll(NUMBERS);
         Collections.shuffle(tiles);
     }
 
@@ -65,6 +71,19 @@ public class SudokuBoardManager extends AbstractBoardManager {
             }
         }
         return true;
+    }
+
+    /**
+     * Return whether the tap position is valid by checking if the change is available at such
+     * position.
+     *
+     * @param position the tile to check
+     * @return whether the tile is open to modify
+     */
+    boolean isValidTap(int position) {
+        int row = position / board.getNumRows();
+        int col = position % board.getNumCols();
+        return board.tileIsMutable(row, col);
     }
 
     boolean isValid() {
@@ -87,7 +106,7 @@ public class SudokuBoardManager extends AbstractBoardManager {
                     return false;
                 }
             }
-            if (totalCount == board.getRows()){
+            if (totalCount == board.getNumRows()){
                 totalCount = 0;
                 count = 0;
                 tempSet.clear();
@@ -171,15 +190,8 @@ public class SudokuBoardManager extends AbstractBoardManager {
     }
 
     void touchMove(int position){
-        int row = position / board.getRows();
-        int col = position % board.getCols();
+        int row = position / board.getNumRows();
+        int col = position % board.getNumCols();
         board.incrementTile(row, col);
     }
-
-    SudokuBoard getBoard(){
-        return board;
-    }
-
-
-
 }

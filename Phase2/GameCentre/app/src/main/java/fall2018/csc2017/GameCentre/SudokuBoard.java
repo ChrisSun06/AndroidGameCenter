@@ -7,9 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Observable;
 
-import fall2018.csc2017.GameCentre.abstract_classes.Tile;
+import fall2018.csc2017.GameCentre.tiles.SudokuTile;
 
-public class SudokuBoard extends Observable implements Serializable{
+public class SudokuBoard extends AbstractBoard implements Serializable{
     /**
      * The number of rows.
      */
@@ -46,6 +46,14 @@ public class SudokuBoard extends Observable implements Serializable{
         return tiles[row][col];
     }
 
+    void setTileMutable(int row, int col) {
+        tiles[row][col].setIsMutable(true);
+    }
+
+    boolean tileIsMutable(int row, int col) {
+        return tiles[row][col].getIsMutable();
+    }
+
     public Iterable<SudokuTile> horizontal(){return new Iterable<SudokuTile>() {
         @NonNull
         @Override
@@ -69,6 +77,16 @@ public class SudokuBoard extends Observable implements Serializable{
             return new SudokuSectionalIterator();
         }
     };}
+
+    @Override
+    void setMaxUndoTime(int i) {
+
+    }
+
+    @Override
+    int getMaxUndoTime() {
+        return 0;
+    }
 
     private class SudokuIterator implements Iterator<SudokuTile> {
 
@@ -101,10 +119,6 @@ public class SudokuBoard extends Observable implements Serializable{
             return tile;
         }
     }
-
-    public int getRows(){return numRows;}
-
-    public int getCols(){return numCols;}
 
     private class SudokuVerticalIterator implements Iterator<SudokuTile> {
 

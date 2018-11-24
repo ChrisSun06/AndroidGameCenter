@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
-import fall2018.csc2017.GameCentre.abstract_classes.Tile;
+import fall2018.csc2017.GameCentre.tiles.Tile;
 
 /**
  * The game activity.
@@ -46,7 +46,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     private HashMap<String, SudokuBoardManager> gameStateMap;
 
     // Grid View and calculated column height and width based on device size
-    private SlidingTileGestureDetectGridView gridView;
+    private SudokuGestureDetectGridView gridView;
     private static int columnWidth, columnHeight;
 
     /**
@@ -108,7 +108,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
                     // set up default background image
                     Bitmap tile = BitmapFactory.decodeResource(getResources(),
                             Tile.FirstSudokuTileId + position - 1);
-                    if (!board.getTile(row, col).getChangeAvailable()) {
+                    if (!board.getTile(row, col).getIsMutable()) {
                         Bitmap number = BitmapFactory.decodeResource(getResources(),
                                 Tile.FirstSudokuNumberId + board.getTile(row, col).getNumber() - 1);
                         tile = superpose(tile, number);
