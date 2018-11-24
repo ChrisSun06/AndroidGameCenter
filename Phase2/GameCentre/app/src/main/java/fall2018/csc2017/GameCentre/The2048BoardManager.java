@@ -23,6 +23,8 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      * The stack which keeps track of the previous board.
      */
 
+    private Stack<The2048Board> historyStack = new Stack<>();
+
     /**
      * Manage a board that has been pre-populated.
      *
@@ -86,8 +88,7 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     private The2048Board merge(String rOrC, boolean inverted) {
         TofeTile[] resultingTiles = new TofeTile[16];
         for (int i = 0; i < 4; i++) {
-            TofeTile[] mergedTiles = new Merge2048(board.getRowOrColumn(rOrC,
-                    i, inverted), rOrC, i, inverted).merge();
+            TofeTile[] mergedTiles = new Merge2048(board.getRowOrColumn(rOrC, i, inverted)).merge();
             for(int j = 0; j < 4; j++)
                 resultingTiles[mergedTiles[j].getId()] = mergedTiles[j];
         }
@@ -101,24 +102,15 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      */
     @Override
     boolean puzzleSolved() {
-        return merge("row", true).equals(board) && merge("column", true).equals(board);
+        return merge("row", true).equals(board) && merge("column", true).equals(board) &&
+                merge("row", false).equals(board) && merge("column", false).equals(board) ;
     }
 
     /**
      * the method will be used in Class MovementController.
      */
 
-    private Stack<The2048Board> historyStack = new Stack<>();
-
     void undo() {
         this.board = historyStack.pop();
     }
-
-//    /**
-//     * every time when user makes a move, historyStack will add the blankTile position.
-//     *
-//     */
-//    private void moveHistory(){
-//        board.historyStack.push(blankTilePosition());
-//    }
 }
