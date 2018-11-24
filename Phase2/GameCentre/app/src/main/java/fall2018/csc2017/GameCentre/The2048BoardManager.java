@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
@@ -63,6 +64,7 @@ class The2048BoardManager implements Serializable {
             }
         }
         this.board = new The2048Board(tiles);
+        historyStack.push(this.board);
     }
 
     void movingVertical(boolean down){
@@ -74,6 +76,7 @@ class The2048BoardManager implements Serializable {
             mergedBoard.setTile(randomPos/The2048Board.numRows, randomPos%The2048Board.numCols, randomTile);
         }
         this.board = mergedBoard;
+        historyStack.push(mergedBoard);
     }
 
     private The2048Board mergeVertical(boolean down) {
@@ -128,8 +131,11 @@ class The2048BoardManager implements Serializable {
     /**
      * the method will be used in Class MovementController.
      */
-    void undo() {
 
+    private Stack<The2048Board> historyStack = new Stack<>();
+
+    void undo() {
+        this.board = historyStack.pop();
     }
 
 //    /**
