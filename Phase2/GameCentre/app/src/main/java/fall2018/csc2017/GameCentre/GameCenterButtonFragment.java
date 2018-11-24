@@ -17,7 +17,7 @@ public abstract class GameCenterButtonFragment extends Fragment {
         // Required empty public constructor
     }
 
-    abstract void activateGame(int gridSize);
+    abstract void activateGame();
 
     /**
      * Switch to the GameActivity view to play the game.

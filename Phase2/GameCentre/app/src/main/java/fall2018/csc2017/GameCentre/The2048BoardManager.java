@@ -12,7 +12,7 @@ import fall2018.csc2017.GameCentre.tiles.TofeTile;
 /**
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  */
-class The2048BoardManager implements Serializable {
+class The2048BoardManager extends AbstractBoardManager implements Serializable {
 
     /**
      * The board being managed.
@@ -99,6 +99,7 @@ class The2048BoardManager implements Serializable {
      *
      * @return whether the tiles are in row-major order
      */
+    @Override
     boolean puzzleSolved() {
         return merge("row", true).equals(board) && merge("column", true).equals(board);
     }

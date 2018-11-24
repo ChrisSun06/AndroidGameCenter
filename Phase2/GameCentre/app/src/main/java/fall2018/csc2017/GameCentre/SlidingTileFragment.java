@@ -30,6 +30,8 @@ public class SlidingTileFragment extends GameCenterButtonFragment {
         // Required empty public constructor
     }
 
+    private int gridSizeSelected;
+
     private View view;
 
     @Override
@@ -54,7 +56,8 @@ public class SlidingTileFragment extends GameCenterButtonFragment {
         by3sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activateGame(3);
+                gridSizeSelected = 3;
+                activateGame();
             }
         });
 
@@ -69,7 +72,8 @@ public class SlidingTileFragment extends GameCenterButtonFragment {
         by4sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activateGame(4);
+                gridSizeSelected = 4;
+                activateGame();
             }
         });
     }
@@ -82,7 +86,8 @@ public class SlidingTileFragment extends GameCenterButtonFragment {
         by5sliding.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activateGame(5);
+                gridSizeSelected = 5;
+                activateGame();
             }
         });
     }
@@ -100,13 +105,12 @@ public class SlidingTileFragment extends GameCenterButtonFragment {
     }
 
     /**
-     * Activate the ixi game.
+     * Activate the gridSizeSelected size SlidingTile game.
      *
-     * @param gridSize the grid size of game
      */
     @Override
-    void activateGame(int gridSize) {
-        slidingTileBoardManager = new SlidingTileBoardManager(gridSize);
+    void activateGame() {
+        slidingTileBoardManager = new SlidingTileBoardManager(gridSizeSelected);
         slidingTileBoardManager.getBoard().setMaxUndoTime(accManager.getUserUndoTime());
         switchToGame();
     }

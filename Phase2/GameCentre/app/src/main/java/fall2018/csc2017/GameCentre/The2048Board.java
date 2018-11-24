@@ -17,7 +17,7 @@ import fall2018.csc2017.GameCentre.tiles.TofeTile;
 /**
  * The board for game 2048.
  */
-public class The2048Board extends Observable implements Serializable, Iterable<TofeTile> {
+public class The2048Board extends AbstractBoard implements Serializable, Iterable<TofeTile> {
 
     /**
      * The number of rows.
@@ -189,6 +189,7 @@ public class The2048Board extends Observable implements Serializable, Iterable<T
     public Iterator<TofeTile> iterator() {
         return new BoardIterator();
     }
+
 
     /**
      * The board iterator which checks the tiles in corresponding board position.

@@ -75,13 +75,13 @@ private void currentGameInfoSetup(){
         FragmentTransaction transaction = fm.beginTransaction();
         switch (game) {
             case GameSelectionActivity.GameSlidingTile:
-                Fragment fragment0 = new SlidingTileFragment();
+                GameCenterButtonFragment fragment0 = new SlidingTileFragment();
                 boardManager = new SlidingTileBoardManager(4);
                 transaction.replace(R.id.gameButtonFrame, fragment0);
                 break;
 
             case GameSelectionActivity.Game2048:
-                Fragment fragment1 = new The2048Fragment();
+                GameCenterButtonFragment fragment1 = new The2048Fragment();
                 transaction.replace(R.id.gameButtonFrame, fragment1);
                 break;
 

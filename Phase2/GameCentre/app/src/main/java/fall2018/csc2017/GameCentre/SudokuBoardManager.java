@@ -9,8 +9,9 @@ import java.util.Random;
 import java.util.Set;
 
 import fall2018.csc2017.GameCentre.abstract_classes.BoardManager;
+import fall2018.csc2017.GameCentre.tiles.SudokuTile;
 
-public class SudokuBoardManager extends BoardManager {
+public class SudokuBoardManager extends AbstractBoardManager {
 
     private SudokuBoard board;
 
