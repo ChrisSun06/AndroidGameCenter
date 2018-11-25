@@ -46,14 +46,6 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
         return tiles[row][col];
     }
 
-    void setTileMutable(int row, int col) {
-        tiles[row][col].setIsMutable(true);
-    }
-
-    boolean tileIsMutable(int row, int col) {
-        return tiles[row][col].getIsMutable();
-    }
-
     public Iterable<SudokuTile> horizontal(){return new Iterable<SudokuTile>() {
         @NonNull
         @Override
@@ -186,12 +178,14 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
         }
     }
 
-    public void incrementTile(int row, int col){
+    void incrementTile(int row, int col){
         if (tiles[row][col].getNumber() == numRows) {
             tiles[row][col].setNumber(0);
         } else {
-            tiles[row][col].setNumber(tiles[row][col].getNumber());
+            tiles[row][col].setNumber(tiles[row][col].getNumber() + 1);
         }
+        setChanged();
+        notifyObservers();
     }
 
 

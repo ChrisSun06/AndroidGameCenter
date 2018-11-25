@@ -41,7 +41,7 @@ public class SudokuBoardManager extends AbstractBoardManager {
             int col = randomInt % board.getNumCols();
             int row = randomInt / board.getNumRows();
             board.setTile(row, col, 0);
-            board.setTileMutable(row, col);
+            board.getTile(row, col).setIsMutable(true);
         }
     }
 
@@ -83,7 +83,7 @@ public class SudokuBoardManager extends AbstractBoardManager {
     boolean isValidTap(int position) {
         int row = position / board.getNumRows();
         int col = position % board.getNumCols();
-        return board.tileIsMutable(row, col);
+        return board.getTile(row, col).getIsMutable();
     }
 
     boolean isValid() {

@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 
 public class SudokuMovementController {
+
     /**
      * The boardManager.
      */
@@ -28,6 +29,10 @@ public class SudokuMovementController {
     void processTapMovement(Context context, int position) {
         if (boardManager.isValidTap(position)) {
             processValidTap(context, position);
+            int row = position / boardManager.getBoard().getNumRows();
+            int col = position % boardManager.getBoard().getNumCols();
+            String a = boardManager.getBoard().getTile(row, col).getIsMutable() ? "true" : "false";
+            Toast.makeText(context, a, Toast.LENGTH_SHORT).show();
         } /*else if (!boardManager.getBoard().historyStack.isEmpty() && position ==
                 boardManager.blankTilePosition()) {
             processUndo(context);

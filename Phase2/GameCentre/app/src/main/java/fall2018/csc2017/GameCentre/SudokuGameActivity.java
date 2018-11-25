@@ -75,11 +75,9 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         boardManager = (SudokuBoardManager) FileSaver.loadFromFile(getApplicationContext(),
                 GameCenterActivity.TEMP_SAVE_FILENAME);
         userAccManager = (UserAccManager) getIntent().getSerializableExtra("accManager");
-        //loadFromFile(GameCenterActivity.TEMP_SAVE_FILENAME);
         setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_sudoku_main);
-
         // Add View to activity
         gridView = findViewById(R.id.sudoku_grid);
         gridView.setNumColumns(boardManager.getBoard().getNumCols());
@@ -131,28 +129,12 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         for (int row = 0; row != boardManager.getBoard().getNumRows(); row++) {
             for (int col = 0; col != boardManager.getBoard().getNumCols(); col++) {
                 Button tmp = new Button(context);
-                if (board.getTile(row, col).getImageBitmap() != null) {
-                    tmp.setBackground(new BitmapDrawable(getResources(), board.getTile(row, col).getImageBitmap()));
-                } else {
-                    int position = board.getNumCols() * row + col + 1;
-                    // set up default background image
-                    Bitmap tile = BitmapFactory.decodeResource(getResources(),
-                            Tile.FirstSudokuTileId + position - 1);
-                    if (!board.getTile(row, col).getIsMutable()) {
-                        Bitmap number = BitmapFactory.decodeResource(getResources(),
-                                Tile.FirstSudokuNumberId + board.getTile(row, col).getNumber() - 1);
-                        tile = superpose(tile, number);
-                    }
-                    else {
-                        if (board.getTile(row, col).getNumber() != 0) {
-                            Bitmap number = BitmapFactory.decodeResource(getResources(),
-                                    Tile.FirstSudokuEditNumberId + board.getTile(row, col).getNumber() - 1);
-                            tile = superpose(tile, number);
-                        }
-                    }
-                    board.getTile(row, col).setImageBitmap(tile);
-                    tmp.setBackground(new BitmapDrawable(getResources(), board.getTile(row, col).getImageBitmap()));
-                }
+                int position = board.getNumCols() * row + col + 1;
+                // set up default background image
+                Bitmap tile = BitmapFactory.decodeResource(getResources(),
+                        Tile.FirstSudokuTileId + position - 1);
+                tile = getUpdatedBitmap(board, row, col, tile);
+                tmp.setBackground(new BitmapDrawable(getResources(), tile));
                 this.tileButtons.add(tmp);
             }
         }
@@ -167,14 +149,28 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         for (Button b : tileButtons) {
             int row = nextPos / boardManager.getBoard().getNumRows();
             int col = nextPos % boardManager.getBoard().getNumCols();
-            Bitmap tile = board.getTile(row, col).getImageBitmap();
-            Bitmap number = BitmapFactory.decodeResource(getResources(),
-                    Tile.FirstSudokuEditNumberId + board.getTile(row, col).getNumber() - 1);
-            tile = superpose(tile, number);
-            board.getTile(row, col).setImageBitmap(tile);
-            b.setBackground(new BitmapDrawable(getResources(), board.getTile(row, col).getImageBitmap()));
+            Bitmap tile = ((BitmapDrawable) b.getBackground()).getBitmap();
+            tile = getUpdatedBitmap(board, row, col, tile);
+            b.setBackground(new BitmapDrawable(getResources(), tile));
             nextPos++;
         }
+    }
+
+    private Bitmap getUpdatedBitmap(SudokuBoard board, int row, int col, Bitmap tile) {
+        Bitmap temp = tile;
+        if (!board.getTile(row, col).getIsMutable()) {
+            Bitmap number = BitmapFactory.decodeResource(getResources(),
+                    Tile.FirstSudokuNumberId + board.getTile(row, col).getNumber() - 1);
+            temp = superpose(tile, number);
+        }
+        else {
+            if (board.getTile(row, col).getNumber() != 0) {
+                Bitmap number = BitmapFactory.decodeResource(getResources(),
+                        Tile.FirstSudokuEditNumberId + board.getTile(row, col).getNumber() - 1);
+                temp = superpose(tile, number);
+            }
+        }
+        return temp;
     }
 
     /**
