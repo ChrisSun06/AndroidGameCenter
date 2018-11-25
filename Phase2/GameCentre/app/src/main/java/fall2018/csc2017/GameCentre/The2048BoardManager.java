@@ -23,7 +23,7 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      * The stack which keeps track of the previous board.
      */
 
-    private Stack<The2048Board> historyStack = new Stack<>();
+    private Stack<TofeTile[]> historyStack = new Stack<>();
 
     /**
      * Manage a board that has been pre-populated.
@@ -70,29 +70,14 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
             }
         }
         this.board = new The2048Board(tiles);
-        historyStack.push(this.board);
+        historyStack.push(this.board.getAllTiles());
     }
 
     void move(String rOrC, boolean inverted){
-        The2048Board mergedBoard = this.merge(rOrC, inverted);
-        Integer[] blankPositions = mergedBoard.getBlankPosition();
-        if (blankPositions.length != 0){
-            int randomPos = blankPositions[(int) (Math.random() * blankPositions.length)];
-            TofeTile randomTile = new TofeTile(((int) (Math.random() * 1) + 1) * 2, randomPos);
-            mergedBoard.setTile(randomPos/The2048Board.numRows, randomPos%The2048Board.numCols, randomTile);
-        }
-        this.board = mergedBoard;
-        historyStack.push(mergedBoard);
-    }
-
-    private The2048Board merge(String rOrC, boolean inverted) {
-        TofeTile[] resultingTiles = new TofeTile[16];
-        for (int i = 0; i < 4; i++) {
-            TofeTile[] mergedTiles = new Merge2048(board.getRowOrColumn(rOrC, i, inverted)).merge();
-            for(int j = 0; j < 4; j++)
-                resultingTiles[mergedTiles[j].getId()] = mergedTiles[j];
-        }
-        return new The2048Board(Arrays.asList(resultingTiles));
+        TofeTile[] mergedList = this.board.merge(rOrC, inverted);
+        historyStack.push(mergedList);
+        this.board.setAllTiles(mergedList);
+        this.board.generateNewTiles();
     }
 
     /**
@@ -102,8 +87,11 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      */
     @Override
     boolean puzzleSolved() {
-        return merge("row", true).equals(board) && merge("column", true).equals(board) &&
-                merge("row", false).equals(board) && merge("column", false).equals(board) ;
+        TofeTile[] currentTiles = this.board.getAllTiles();
+        return Arrays.equals(board.merge("row", true), currentTiles) &&
+                Arrays.equals(board.merge("row", false), currentTiles) &&
+                Arrays.equals(board.merge("column", true), currentTiles) &&
+                Arrays.equals(board.merge("column", false), currentTiles);
     }
 
     /**
@@ -111,6 +99,6 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      */
 
     void undo() {
-        this.board = historyStack.pop();
+        this.board.setAllTiles(historyStack.pop());
     }
 }
