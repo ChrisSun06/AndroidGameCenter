@@ -240,7 +240,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
          */
         @Override
         public boolean hasNext() {
-            return (nextIndex < numTiles - 1);
+            return (nextIndex < numTiles);
         }
 
         /**
@@ -259,16 +259,13 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         }
     }
 
-    /**
-     * the string representation.
-     *
-     * @return the tile number to string.
-     */
-    @Override
-    public String toString() {
-        return "Board{" +
-                "tiles=" + Arrays.toString(tiles) +
-                '}';
+    public int getScore(){
+        int result = 0;
+        Iterator<TofeTile> iter = this.iterator();
+        while(iter.hasNext()){
+            result += iter.next().getValue();
+        }
+        return result;
     }
 
     /**
