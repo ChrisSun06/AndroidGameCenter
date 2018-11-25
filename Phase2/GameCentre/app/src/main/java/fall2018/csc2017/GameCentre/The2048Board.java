@@ -154,7 +154,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
     void setAllTiles(TofeTile[] inputTiles){
         for (int row = 0; row != numRows; row++) {
             for (int col = 0; col != numCols; col++) {
-                this.setTile(row, col, inputTiles[row * 4 * 3]);
+                this.setTile(row, col, inputTiles[(row * 4) + col]);
             }
         }
     }
@@ -177,22 +177,24 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         return resultingTiles;
     }
 
-    private Integer[] getBlankPosition(){
+    private int[] getBlankPosition(){
         TofeTile[] allTiles = this.getAllTiles();
-        ArrayList<Integer> result = new ArrayList<>();
+        ArrayList<Integer> temResult = new ArrayList<>();
         for(int i = 0; i < allTiles.length; i++) {
-            if (allTiles[i].getValue() == 0) {
-                result.add(i);
-            }
+            if (allTiles[i].getValue() == 0)
+                temResult.add(i);
         }
-            return (Integer[])(result.toArray());
+        int[]result = new int[temResult.size()];
+        for(int i = 0; i < temResult.size(); i++)
+            result[i] = temResult.get(i);
+        return result;
     }
 
     void generateNewTiles(){
-        Integer[] blankPos = this.getBlankPosition();
+        int[] blankPos = this.getBlankPosition();
         if (blankPos.length != 0){
             int randomPos = blankPos[(int) (Math.random() * blankPos.length)];
-            TofeTile randomTile = new TofeTile(((int) (Math.random() * 1) + 1) * 2, randomPos);
+            TofeTile randomTile = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, randomPos);
             this.setTile(randomPos/The2048Board.numRows,randomPos%The2048Board.numCols,randomTile);
         }
     }
