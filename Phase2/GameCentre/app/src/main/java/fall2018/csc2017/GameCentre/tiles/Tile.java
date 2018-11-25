@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import java.io.Serializable;
 
 import fall2018.csc2017.GameCentre.R;
+import fall2018.csc2017.GameCentre.SerializableBitmap;
 
 /**
  * An abstract tile for polymorphism implementation.
@@ -24,14 +25,14 @@ public abstract class Tile implements Comparable<Tile>, Serializable {
      */
     private int id;
 
-    private Bitmap imageBitmap;
+    private SerializableBitmap imageBitmap;
 
     public void setImageBitmap(Bitmap imageBitmap) {
-        this.imageBitmap = imageBitmap;
+        this.imageBitmap = new SerializableBitmap(imageBitmap);
     }
 
     public Bitmap getImageBitmap() {
-        return imageBitmap;
+        return imageBitmap.byteArrayToBitmap();
     }
 
     /**
