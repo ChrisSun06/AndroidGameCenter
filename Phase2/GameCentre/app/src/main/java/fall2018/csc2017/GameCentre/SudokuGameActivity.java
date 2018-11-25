@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
+import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
+import fall2018.csc2017.GameCentre.Strategies.SudokuStrategy;
 import fall2018.csc2017.GameCentre.tiles.Tile;
 
 /**
@@ -74,7 +76,6 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         boardManager = (SudokuBoardManager) FileSaver.loadFromFile(getApplicationContext(),
                 GameCenterActivity.TEMP_SAVE_FILENAME);
-        userAccManager = (UserAccManager) getIntent().getSerializableExtra("accManager");
         setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_sudoku_main);
@@ -230,11 +231,9 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
      * Update the score of the current user if puzzle is solved.
      */
     public void onSolved(){
-        if (boardManager.puzzleSolved()){
-            // Todo: add score
-            /*LoginActivity.accManager.addScore(boardManager.getBoard().getNumOfMoves()+1,
-                    boardManager.getBoard());*/
-        }
+        ScoringStrategy strategy = new SudokuStrategy(userAccManager);
+        userAccManager.addScore(strategy, 0, boardManager);
+        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
     }
 
     /**

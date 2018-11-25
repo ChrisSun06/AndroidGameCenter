@@ -117,15 +117,10 @@ public class LoginActivity extends AppCompatActivity {
      * @param password password of the user
      */
     private void writeAccount(String email, String password) {
-        if (accManager.getAccountMap().containsKey(email)){
-            Toast.makeText(this, "Username already taken!", Toast.LENGTH_SHORT).show();
-        } else if (password.equals("") || email.equals("")){
-            Toast.makeText(this, "Field cannot be empty!", Toast.LENGTH_SHORT).show();
-        } else {
-            accManager.writeAcc(email, password);
-            FileSaver.saveToFile(getApplicationContext(), accManager
-                    , LoginActivity.ACC_INFO);
-        }
+        accManager.writeAcc(email, password, getApplicationContext());
+        FileSaver.saveToFile(getApplicationContext(), accManager
+                , LoginActivity.ACC_INFO);
     }
+
 
 }

@@ -1,7 +1,5 @@
 package fall2018.csc2017.GameCentre;
 
-import android.content.Intent;
-import android.icu.text.UnicodeSet;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -11,8 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 public class ScoreBoardActivity extends AppCompatActivity {
 
@@ -84,7 +80,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
             //
             GameScoresFragment game = new GameScoresFragment();
             //game.setUserAccManager(accManager);
-            game.setGame_type(UserAccount.GAMES[position]);
+            game.setGameType(UserAccount.GAMES[position]);
             return game;
         }
 

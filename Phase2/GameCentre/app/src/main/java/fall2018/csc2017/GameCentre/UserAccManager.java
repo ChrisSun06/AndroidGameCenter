@@ -1,5 +1,6 @@
 package fall2018.csc2017.GameCentre;
 
+import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
@@ -79,13 +80,20 @@ public class UserAccManager implements Serializable {
     }
 
     /**
-     * Write the accounts into accountMap.
+     *  Write the accounts into accountMap.
      *
      * @param email    the email/username
      * @param password the password
+     * @param context the current context
      */
-    public void writeAcc(String email, String password) {
-        accountMap.put(email, new UserAccount(email, password));
+    public void writeAcc(String email, String password, Context context) {
+        if (accountMap.containsKey(email)){
+            Toast.makeText(context, "Username already taken!", Toast.LENGTH_SHORT).show();
+        } else if (password.equals("") || email.equals("")){
+            Toast.makeText(context, "Field cannot be empty!", Toast.LENGTH_SHORT).show();
+        } else {
+            accountMap.put(email, new UserAccount(email, password));
+        }
     }
 
     /**
@@ -109,18 +117,6 @@ public class UserAccManager implements Serializable {
     }
 
     /**
-     * Set the current game user is playing, use specifically for games that
-     * has several sizes (e.g. sliding tile game).
-     *
-     * @param gridSize the grid size
-     * @param game the current game
-     */
-    public void setCurrentGame(int gridSize, String game) {
-        String size = String.valueOf(gridSize);
-        currentGame = size + "X" + size + game;
-    }
-
-    /**
      * Return the current game user is playing.
      *
      * @param accountMap the account hashMap.
@@ -132,26 +128,14 @@ public class UserAccManager implements Serializable {
     /**
      * Add score of a user based on how many moves he/she made.
      *
-     * @param moves number of moves user made.
-     * @param board board user is playing on.
-     */
-    void addScore(int moves, SlidingTileBoard board) {
-        int score = accountMap.get(currentUser).getScores().get(currentGame);
-        if (1000 * board.numTiles() / moves > score && moves != 1) {
-            accountMap.get(currentUser).setScore(currentGame,
-                    1000 * board.numTiles() / moves);
-        }
-    }
-
-    /**
-     * Add score of a user based on how many moves he/she made.
-     *
      * @param scoringStrategy the strategy to calculate score.
      * @param moves number of moves user made.
-     * @param board board user is playing on.
+     * @param boardManager board manager user is playing on.
      */
-    void addScore(ScoringStrategy scoringStrategy, int moves, AbstractBoard board) {
-        scoringStrategy.addScore(moves, board);
+    void addScore(ScoringStrategy scoringStrategy, int moves, AbstractBoardManager boardManager) {
+        if (boardManager.puzzleSolved()){
+            scoringStrategy.addScore(moves, boardManager.getBoard());
+        }
     }
 
     /**
@@ -173,13 +157,16 @@ public class UserAccManager implements Serializable {
     AbstractBoardManager getCurrentGameStateMap(String game){
         Map<String, AbstractBoardManager> tempGameSaves = accountMap.get(currentUser).getSaves();
         if (tempGameSaves.containsKey(game) && tempGameSaves.get(game) != null) {
+            currentGame = game;
             gameLoaded = true;
             return tempGameSaves.get(game);
         } else {
+            currentGame = null;
             gameLoaded = false;
             return null;
         }
     }
+
 
     /**
      * Make a toast message of whether game board is initialized successfully or not.

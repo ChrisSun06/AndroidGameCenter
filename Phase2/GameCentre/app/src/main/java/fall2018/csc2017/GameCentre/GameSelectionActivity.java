@@ -14,10 +14,14 @@ public class GameSelectionActivity extends AppCompatActivity {
     public static final String GameSlidingTile = "sliding";
     public static final String Game2048 = "2048";
 
+    private UserAccManager accManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_selection);
+
+        accManager = (UserAccManager) getIntent().getSerializableExtra("accountManager");
 
         goToSlidingTile();
         goToSudoku();
@@ -33,8 +37,6 @@ public class GameSelectionActivity extends AppCompatActivity {
                 Intent i = new Intent(GameSelectionActivity.this,
                         GameCenterActivity.class);
                 i.putExtra("GAME", GameSlidingTile);
-                i.putExtra("accManager", getIntent().
-                        getSerializableExtra("accountManager"));
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }
@@ -50,8 +52,6 @@ public class GameSelectionActivity extends AppCompatActivity {
                 Intent i = new Intent(GameSelectionActivity.this,
                         GameCenterActivity.class);
                 i.putExtra("GAME", GameSudoku);
-                i.putExtra("accManager", getIntent().
-                        getSerializableExtra("accountManager"));
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }
@@ -67,8 +67,6 @@ public class GameSelectionActivity extends AppCompatActivity {
                 Intent i = new Intent(GameSelectionActivity.this,
                         GameCenterActivity.class);
                 i.putExtra("GAME", Game2048);
-                i.putExtra("accManager", getIntent().
-                        getSerializableExtra("accountManager"));
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }

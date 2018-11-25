@@ -42,10 +42,10 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
             tiles.add(new SlidingTile(tileNum + 1, gridSize));
         }
 
-        Collections.shuffle(tiles);
-        while (!solvable(tiles, gridSize)){
-            Collections.shuffle(tiles);
-        }
+        //Collections.shuffle(tiles);
+        //while (!solvable(tiles, gridSize)){
+            //Collections.shuffle(tiles);
+        //}
         this.slidingTileBoard = new SlidingTileBoard(tiles, gridSize);
     }
 
@@ -173,7 +173,10 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
             int col = position % slidingTileBoard.getNumCols();
 
             int[] position2 = blankTilePos();
-            if (!ifUndo) moveHistory();
+            if (!ifUndo) {
+                moveHistory();
+                slidingTileBoard.increaseNumOfMoves();
+            }
             slidingTileBoard.swapTiles(row, col, position2[0], position2[1]);
     }
 

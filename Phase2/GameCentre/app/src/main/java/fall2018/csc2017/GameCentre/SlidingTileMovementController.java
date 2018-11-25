@@ -60,7 +60,6 @@ class SlidingTileMovementController {
      */
     private void processValidTap(Context context, int position) {
         boardManager.touchMove(position, false);
-        boardManager.getBoard().increaseNumOfMoves();
         if (boardManager.puzzleSolved()) {
             Toast.makeText(context, "YOU WIN!", Toast.LENGTH_SHORT).show();
         }

@@ -36,6 +36,8 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
      */
     private UserAccManager userAccManager;
 
+    private GameCenterActivityController gController;
+
 
 
     /**
@@ -48,7 +50,7 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        gController = new GameCenterActivityController();
         currentGameInfoSetup();
 
         setContentView(R.layout.activity_game_center);
@@ -61,40 +63,17 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
         addSettingButtonListener();
     }
 
-
-private void currentGameInfoSetup(){
-    currentGame = getIntent().getStringExtra("GAME");
-    userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
-            LoginActivity.ACC_INFO);
-
-}
+    private void currentGameInfoSetup(){
+        currentGame = getIntent().getStringExtra("GAME");
+        userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
+    }
 
     public void changeFragment(String game){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        switch (game) {
-            case GameSelectionActivity.GameSlidingTile:
-                GameCenterButtonFragment fragment0 = new SlidingTileFragment();
-                boardManager = new SlidingTileBoardManager(4);
-                transaction.replace(R.id.gameButtonFrame, fragment0);
-                break;
-
-            case GameSelectionActivity.Game2048:
-                GameCenterButtonFragment fragment1 = new The2048Fragment();
-                transaction.replace(R.id.gameButtonFrame, fragment1);
-                break;
-
-            case GameSelectionActivity.GameSudoku:
-                Fragment fragment2 = new SudokuFragment();
-                transaction.replace(R.id.gameButtonFrame, fragment2);
-                break;
-
-            default:
-                break;
-        }
-
+        transaction.replace(R.id.gameButtonFrame, gController.switchFragment(currentGame));
         transaction.commit();
-
     }
 
     /**
@@ -123,11 +102,7 @@ private void currentGameInfoSetup(){
             public void onClick(View v) {
                 loadFromFile();
                 FileSaver.saveToFile(getApplicationContext(), boardManager, TEMP_SAVE_FILENAME);
-                if (boardManager == null) {
-                    makeToastSavedText();
-                } else {
-                    switchToLoadedGame();
-                }
+                switchToLoadedGame();
             }
         });
     }
@@ -162,10 +137,11 @@ private void currentGameInfoSetup(){
      */
     private void switchToLoadedGame() {
         //from loaded slot, activate the game by current_game
-        Intent tmp = new Intent(this, SlidingTileGameActivity.class);
-        tmp.putExtra("accManager", userAccManager);
-        tmp.putExtra("currentGame", currentGame);
+        Intent tmp = new Intent(this, gController.
+                getIntent(userAccManager.getCurrentGame()));
+        tmp.putExtra("GAME", currentGame);
         saveToFile();
+        tmp.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivity(tmp);
     }
 

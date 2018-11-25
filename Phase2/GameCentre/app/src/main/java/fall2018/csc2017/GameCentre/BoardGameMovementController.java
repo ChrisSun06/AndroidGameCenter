@@ -5,8 +5,8 @@ import android.content.Context;
 interface BoardGameMovementController {
 
     void setBoardManager(AbstractBoardManager boardManager);
-    void processUndo(Context context);
-    void processValidTap(Context context, int position);
+
+    void processTapMovement(Context context, int position);
 
 }
 

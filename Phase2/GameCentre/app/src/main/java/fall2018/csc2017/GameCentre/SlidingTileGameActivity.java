@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
+import fall2018.csc2017.GameCentre.Strategies.SlidingTileStrategy;
 import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 import fall2018.csc2017.GameCentre.tiles.Tile;
 
@@ -59,7 +61,6 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
         super.onCreate(savedInstanceState);
         boardManager = (SlidingTileBoardManager) FileSaver.loadFromFile(getApplicationContext(),
                         GameCenterActivity.TEMP_SAVE_FILENAME);
-        userAccManager = (UserAccManager) getIntent().getSerializableExtra("accManager");
         setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_main);
@@ -212,11 +213,9 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
      * Update the score of the current user if puzzle is solved.
      */
     public void onSolved(){
-        if (boardManager.puzzleSolved()){
-            userAccManager.addScore(boardManager.getBoard().getNumOfMoves()+1,
-                    boardManager.getBoard());
-            FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
-        }
+        ScoringStrategy strategy = new SlidingTileStrategy(userAccManager);
+        userAccManager.addScore(strategy, boardManager.getBoard().getNumOfMoves(), boardManager);
+        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
     }
 
     /**

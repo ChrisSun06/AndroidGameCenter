@@ -15,8 +15,8 @@ import java.util.ArrayList;
 
 public class GameScoresFragment extends Fragment implements ScoresBoardFragmentInterface{
 
-    private String game_type;
-    TextView game_name;
+    private String gameType;
+    TextView gameName;
 
     /**
      * Return the view for the ScoreBoard
@@ -24,22 +24,24 @@ public class GameScoresFragment extends Fragment implements ScoresBoardFragmentI
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Scores scores = new Scores(game_type, getActivity());
+        UserAccManager userAccManager = (UserAccManager) FileSaver.
+                loadFromFile(getActivity(), LoginActivity.ACC_INFO);
+        Scores scores = new Scores(gameType, userAccManager);
         View rootView = inflater.inflate(R.layout.fragment_game_scores, container, false);
 
         //ScoreBoardActivity activity = (ScoreBoardActivity) getActivity();
 
-        game_name = rootView.findViewById(R.id.gametype);
-        game_name.setText(game_type);
+        gameName = rootView.findViewById(R.id.gametype);
+        gameName.setText(gameType);
 
-        castNameToView(scores.getAccountNames(), rootView);
-        castScoresToView(scores.getAccountScores(), rootView);
+        castNameToView((ArrayList<String>) scores.getAccountNames(), rootView);
+        castScoresToView((ArrayList<String>) scores.getAccountScores(), rootView);
 
         return rootView;
     }
 
-    public void setGame_type(String game_type) {
-        this.game_type = game_type;
+    public void setGameType(String gameType) {
+        this.gameType = gameType;
     }
 
 

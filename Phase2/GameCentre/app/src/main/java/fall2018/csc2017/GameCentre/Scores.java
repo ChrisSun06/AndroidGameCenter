@@ -10,36 +10,54 @@ import java.util.List;
 
 public class Scores {
 
-    static final int name = 0;
-    static final int scores = 1;
+    /**
+     * Position of name
+     */
+    static final int namePos = 0;
 
-    private ArrayList<String> accountNames;
-    private ArrayList<String> accountScores;
+    /**
+     * Position of user's scores corresponding to the user's name.
+     */
+    static final int scoresPos = 1;
+
+    /**
+     * List of account's usernames.
+     */
+    private List<String> accountNames;
+
+    /**
+     * List of scores corresponding to each user in accountNames.
+     */
+    private List<String> accountScores;
+
+    /**
+     * The user account manager.
+     */
     private UserAccManager userAccManager;
 
 
     /**
      * Construct all the scores for a specific game.
      */
-    public Scores(String game, Context context){
-        this.userAccManager = (UserAccManager) FileSaver.loadFromFile(context, LoginActivity.ACC_INFO);
+    public Scores(String game, UserAccManager userAccManager){
+        this.userAccManager = userAccManager;
         ArrayList<UserAccount> accList = sortingAccountsScores(game, loadAllAccountInfo());
-        List<ArrayList<String>> names_and_scores = accountsGetNamesScores(accList, game);
-        accountNames = names_and_scores.get(name);
-        accountScores = names_and_scores.get(scores);
+        List<List<String>> namesAndScores = accountsGetNamesScores(accList, game);
+        accountNames = namesAndScores.get(namePos);
+        accountScores = namesAndScores.get(scoresPos);
     }
 
     /**
      * Return the accountNames
      * @return An array list of all account names that have played  and won the game
      */
-    public ArrayList<String> getAccountNames(){return accountNames;}
+    public List<String> getAccountNames(){return accountNames;}
 
     /**
      * Return the accountScores
      * @return An array list of all the scores of the accounts in accountNames
      */
-    public ArrayList<String> getAccountScores(){return accountScores;}
+    public List<String> getAccountScores(){return accountScores;}
 
 
     /**
@@ -64,15 +82,15 @@ public class Scores {
      *
      * @return an List of 2 ArrayLists, one representing the name and one representing the scores
      */
-    List<ArrayList<String>> accountsGetNamesScores(ArrayList<UserAccount> accounts,
-                                                   String gametype){
-        ArrayList<String> names = new ArrayList<>(accounts.size());
-        ArrayList<String> scores = new ArrayList<>(accounts.size());
+    List<List<String>> accountsGetNamesScores(ArrayList<UserAccount> accounts,
+                                              String gametype){
+        List<String> names = new ArrayList<>(accounts.size());
+        List<String> scores = new ArrayList<>(accounts.size());
         for(UserAccount acc: accounts){
             names.add(acc.getName());
             scores.add(acc.getScores(gametype).toString());
         }
-        List<ArrayList<String>> result = new ArrayList<>(2);
+        List<List<String>> result = new ArrayList<>(2);
         result.add(names);
         result.add(scores);
         return result;
@@ -95,6 +113,13 @@ public class Scores {
             playersScoresSorted.add(acc.getScores().get(game));
         }
         Collections.sort(playersScoresSorted, Collections.<Integer>reverseOrder());
+        addPlayersByRank(game, players, ranks, playersScoresSorted);
+        return ranks;
+
+    }
+
+    private void addPlayersByRank(String game, List<UserAccount> players,
+                                  List<UserAccount> ranks, List<Integer> playersScoresSorted) {
         for(Integer score: playersScoresSorted){
             for(UserAccount player: players){
                 if(player.getScores().get(game).equals(score) && !ranks.contains(player)){
@@ -102,8 +127,6 @@ public class Scores {
                 }
             }
         }
-        return ranks;
-
     }
 
     /**

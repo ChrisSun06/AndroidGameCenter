@@ -23,10 +23,6 @@ public class SudokuStrategy implements ScoringStrategy{
 
     public void addScore(int moves, AbstractBoard board) {
         int score = accountMap.get(currentUser).getScores().get(currentGame);
-        SlidingTileBoard tempBoard = (SlidingTileBoard) board;
-        if (1000 * tempBoard.numTiles() / moves > score && moves != 1) {
-            accountMap.get(currentUser).setScore(currentGame,
-                    1000 * tempBoard.numTiles() / moves);
-        }
+        accountMap.get(currentUser).setScore(currentGame, score + 1);
     }
 }
