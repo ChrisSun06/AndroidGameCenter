@@ -61,29 +61,30 @@ public class SudokuTest {
     @Test
     public void testTouchMoveEmptyFirst(){
         setUp();
-        assertEquals(0, boardManager.getBoard().getTile(0, 0));
+        assertEquals(0, boardManager.getBoard().getTile(0, 0).getNumber());
         boardManager.touchMove(0);
-        assertEquals(1, boardManager.getBoard().getTile(0, 0));
+        assertEquals(1, boardManager.getBoard().getTile(0, 0).getNumber());
         boardManager.touchMove(0);
-        assertEquals(2, boardManager.getBoard().getTile(0, 0));
+        assertEquals(2, boardManager.getBoard().getTile(0, 0).getNumber());
     }
 
     @Test
     public void testTouchMoveEmptyLast(){
         setUp();
-        assertEquals(0, boardManager.getBoard().getTile(5, 5));
-        boardManager.touchMove(35);
-        assertEquals(1, boardManager.getBoard().getTile(5, 5));
-        boardManager.touchMove(35);
-        assertEquals(2, boardManager.getBoard().getTile(5, 5));
+        assertEquals(0, boardManager.getBoard().getTile(8, 8).getNumber());
+        boardManager.touchMove(80);
+        assertEquals(1, boardManager.getBoard().getTile(8, 8).getNumber());
+        boardManager.touchMove(80);
+        assertEquals(2, boardManager.getBoard().getTile(8, 8).getNumber());
     }
 
     @Test
     public void testTouchMoveSolved(){
         setUp();
-        SudokuTile tile = boardManager.getBoard().getTile(4,5);
+        SudokuTile temp = boardManager.getBoard().getTile(3,2);
+        SudokuTile tile = new SudokuTile(temp.getNumber(), temp.getIsMutable());
         boardManager.touchMove(29);
-        SudokuTile newTile = boardManager.getBoard().getTile(4, 5);
+        SudokuTile newTile = boardManager.getBoard().getTile(3, 2);
         if (tile.getNumber() == 9){
             assertEquals(0, newTile.getNumber());
         } else {
@@ -94,7 +95,7 @@ public class SudokuTest {
     @Test
     public void testTouchMoveReset(){
         setUp();
-        for (int i = 0; i <= 6; i++){
+        for (int i = 0; i <= 9; i++){
             boardManager.touchMove(1);
         }
         assertTrue(boardManager.getBoard().getTile(0, 1).getNumber() == 0);
