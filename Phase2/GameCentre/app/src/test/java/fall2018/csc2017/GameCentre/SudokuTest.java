@@ -13,9 +13,7 @@ import static org.junit.Assert.*;
 
 public class SudokuTest {
 
-    SudokuBoardManager boardManager;
-
-    SudokuBoard board;
+    private SudokuBoardManager boardManager;
 
     /**
      * Make a partially solved Board.
@@ -44,18 +42,18 @@ public class SudokuTest {
         for (int i = 0; i < numbers.size(); i++) {
             tiles.add(new SudokuTile(numbers.get(i), false));
         }
-        this.board = new SudokuBoard(tiles);
+        SudokuBoard board = new SudokuBoard(tiles);
         boardManager = new SudokuBoardManager(board);
     }
 
     @Test
     public void testIsSolved(){
         setUpCorrect();
-        assertEquals(false, boardManager.puzzleSolved());
+        assertFalse(boardManager.puzzleSolved());
         boardManager.solve();
-        assertEquals(true, boardManager.puzzleSolved());
+        assertTrue(boardManager.puzzleSolved());
         boardManager.touchMove(1);
-        assertEquals(false, boardManager.puzzleSolved());
+        assertFalse(boardManager.puzzleSolved());
     }
 
     @Test
@@ -98,13 +96,13 @@ public class SudokuTest {
         for (int i = 0; i <= 9; i++){
             boardManager.touchMove(1);
         }
-        assertTrue(boardManager.getBoard().getTile(0, 1).getNumber() == 0);
+        assertEquals(0, boardManager.getBoard().getTile(0, 1).getNumber());
     }
 
     @Test
     public void testIsValid(){
         setUpCorrect();
-        assertEquals(true, boardManager.isValid());
+        assertTrue(boardManager.isValid());
     }
 
     @Test
