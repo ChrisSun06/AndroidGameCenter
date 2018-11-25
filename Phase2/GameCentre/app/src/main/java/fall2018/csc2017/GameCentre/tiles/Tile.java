@@ -32,7 +32,12 @@ public abstract class Tile implements Comparable<Tile>, Serializable {
     }
 
     public Bitmap getImageBitmap() {
-        return imageBitmap.byteArrayToBitmap();
+        try {
+            return imageBitmap.byteArrayToBitmap();
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     /**
