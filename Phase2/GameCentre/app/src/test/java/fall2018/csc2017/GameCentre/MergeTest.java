@@ -34,6 +34,18 @@ public class MergeTest {
         merge2048 = new Merge2048(tiles);
     }
 
+    private void setUpUp() {
+        TofeTile[] tiles = {new TofeTile(4, 0), new TofeTile(4, 4),
+                new TofeTile(4, 8), new TofeTile(4, 12)};
+        merge2048 = new Merge2048(tiles);
+    }
+
+    private void setUpDown() {
+        TofeTile[] tiles = {new TofeTile(2, 12), new TofeTile(4, 8),
+                new TofeTile(2, 4), new TofeTile(4, 0)};
+        merge2048 = new Merge2048(tiles);
+    }
+
     /**
      * Test merge works if we are trying to move to left
      */
@@ -53,6 +65,28 @@ public class MergeTest {
         setUpRight();
         TofeTile[] result = {new TofeTile(4, 7), new TofeTile(2, 6),
                 new TofeTile(0, 5), new TofeTile(0, 4)};
+        assertTrue(Arrays.equals(result, merge2048.merge()));
+    }
+
+    /**
+     * Test merge works if we are trying to move to right
+     */
+    @Test
+    public void testMergeUp() {
+        setUpUp();
+        TofeTile[] result = {new TofeTile(8, 0), new TofeTile(8, 4),
+                new TofeTile(0, 8), new TofeTile(0, 12)};
+        assertTrue(Arrays.equals(result, merge2048.merge()));
+    }
+
+    /**
+     * Test merge works if we are trying to move to right
+     */
+    @Test
+    public void testMergeDown() {
+        setUpDown();
+        TofeTile[] result = {new TofeTile(2, 12), new TofeTile(4, 8),
+                new TofeTile(2, 4), new TofeTile(4, 0)};
         assertTrue(Arrays.equals(result, merge2048.merge()));
     }
 }
