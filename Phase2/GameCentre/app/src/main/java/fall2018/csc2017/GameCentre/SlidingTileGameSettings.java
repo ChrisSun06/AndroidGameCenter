@@ -1,5 +1,6 @@
 package fall2018.csc2017.GameCentre;
 
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,6 +8,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -14,12 +17,18 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
-public class SlidingTileGameSettings extends ImageOperationActivity {
+public class SlidingTileGameSettings extends AppCompatActivity implements TileNamingInterface {
 
+    /**
+     * The request code to pick image.
+     */
     public final static int PICK_IMAGE = 1046;
     /**
      * The edit text of number of undo user chose.
@@ -33,14 +42,17 @@ public class SlidingTileGameSettings extends ImageOperationActivity {
 
     private UserAccManager accManager;
 
+    private ImageOperation imageOperation;
+
     /**
-     * Activate all the buttons when InGameSettings is created
+     * Activate all the buttons when SlidingTileGameSettings is created
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_game_settings);
         accManager = (UserAccManager) getIntent().getSerializableExtra("accManager");
+        imageOperation = new ImageOperation();
         addConfirmUndoNumButtonListener();
         addUrlButtonListener();
         addChooseFromGalleryButtonListener();
@@ -89,8 +101,10 @@ public class SlidingTileGameSettings extends ImageOperationActivity {
                         try {
                             URL url = new URL(address);
                             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                            Bitmap resized = resizeSourceImage(bmp);
-                            createAllCroppedTiles(resized);
+                            Bitmap resized = imageOperation.resizeSourceImage(bmp);
+                            cropAndSave(resized);
+                            accManager.getAccountMap().get(accManager.getCurrentUser()).
+                                    setImageType(UserAccount.ImageType.Imported);
                         }
                         catch (MalformedURLException e) {
                             e.printStackTrace();
@@ -115,7 +129,8 @@ public class SlidingTileGameSettings extends ImageOperationActivity {
         setDefaultButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createAllDefaultNumberTiles(true);
+                accManager.getAccountMap().get(accManager.getCurrentUser()).
+                        setImageType(UserAccount.ImageType.Default);
                 makeToastChangeBackground();
             }
         });
@@ -129,8 +144,10 @@ public class SlidingTileGameSettings extends ImageOperationActivity {
         setBatmanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bitmap batman = BitmapFactory.decodeFile(getImagePath("batman"));
-                createAllCroppedTiles(batman);
+                Bitmap batman = BitmapFactory.decodeResource(getResources(), R.drawable.z_batman);
+                cropAndSave(batman);
+                accManager.getAccountMap().get(accManager.getCurrentUser()).
+                        setImageType(UserAccount.ImageType.Resource);
                 makeToastChangeBackground();
             }
         });
@@ -144,8 +161,10 @@ public class SlidingTileGameSettings extends ImageOperationActivity {
         setSupermanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bitmap superman = BitmapFactory.decodeFile(getImagePath("superman"));
-                createAllCroppedTiles(superman);
+                Bitmap superman = BitmapFactory.decodeResource(getResources(), R.drawable.z_superman);
+                cropAndSave(superman);
+                accManager.getAccountMap().get(accManager.getCurrentUser()).
+                        setImageType(UserAccount.ImageType.Resource);
                 makeToastChangeBackground();
             }
         });
@@ -168,7 +187,6 @@ public class SlidingTileGameSettings extends ImageOperationActivity {
         });
     }
 
-
     /**
      * Recieve pick image request
      */
@@ -179,14 +197,68 @@ public class SlidingTileGameSettings extends ImageOperationActivity {
                 Uri photoUri = data.getData();
                 Bitmap selectedImage = MediaStore.Images.Media.
                         getBitmap(this.getContentResolver(), photoUri);
-                Bitmap resized = resizeSourceImage(selectedImage);
-                createAllCroppedTiles(resized);
+                Bitmap resized = imageOperation.resizeSourceImage(selectedImage);
+                cropAndSave(resized);
+                accManager.getAccountMap().get(accManager.getCurrentUser()).
+                        setImageType(UserAccount.ImageType.Imported);
                 makeToastChangeBackground();
             }
             catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void cropAndSave(Bitmap bitmap) {
+        for (int gridSize = 3; gridSize <= 5; gridSize++) {
+            List<Bitmap> bitmaps = imageOperation.cropImage(bitmap, gridSize, gridSize);
+            for (int id = 1; id <= bitmaps.size(); id++) {
+                String tileName = createTileName(gridSize, gridSize, id);
+                savePNGToInternalStorage(bitmaps.get(id - 1), accManager.getCurrentUser(), tileName);
+            }
+        }
+    }
+
+    /**
+     * Save a given bitmap to internal storage as a PNG file.
+     *
+     * @param bitmapImage bitmap of the image
+     * @param userName name of the data directory
+     * @param fileName name of the png
+     */
+    public void savePNGToInternalStorage(Bitmap bitmapImage, String userName, String fileName) {
+        ContextWrapper cw = new ContextWrapper(this.getApplicationContext());
+        File directory = cw.getDir(userName, MODE_PRIVATE);
+        File myPath = new File(directory,fileName);
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(myPath, false);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * create the name of a specific tile.
+     *
+     * @param numRows board's num rows
+     * @param numCols board's num cols
+     * @param tileId tile's id
+     * @return generated tile's file name
+     */
+    @Override
+    @NonNull
+    public String createTileName(int numRows, int numCols, int tileId) {
+        String grid = numRows + "x" + numCols;
+        return "tile_" + grid + "_" + tileId + ".png";
     }
 
     /**

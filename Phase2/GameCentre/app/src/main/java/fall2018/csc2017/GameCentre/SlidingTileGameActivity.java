@@ -2,6 +2,7 @@ package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ViewTreeObserver;
@@ -11,10 +12,13 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import fall2018.csc2017.GameCentre.tiles.SlidingTile;
+import fall2018.csc2017.GameCentre.tiles.Tile;
+
 /**
  * The game activity.
  */
-public class SlidingTileGameActivity extends AppCompatActivity implements Observer {
+public class SlidingTileGameActivity extends AppCompatActivity implements Observer, TileNamingInterface{
 
     /**
      * The board manager.
@@ -106,27 +110,78 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
      * @param context the context
      */
     private void createTileButtons(Context context) {
-        SlidingTileBoard slidingTileBoard = boardManager.getBoard();
+        SlidingTileBoard board = boardManager.getBoard();
         tileButtons = new ArrayList<>();
-        for (int row = 0; row != boardManager.getBoard().getNumRows(); row++) {
-            for (int col = 0; col != boardManager.getBoard().getNumCols(); col++) {
+        for (int row = 0; row != board.getNumRows(); row++) {
+            for (int col = 0; col != board.getNumCols(); col++) {
                 Button tmp = new Button(context);
-                //tmp.setBackground(Drawable.createFromPath(slidingTileBoard.getTile(row, col).getBackground()));
+                UserAccount userAccount = userAccManager.getAccountMap().get(userAccManager.getCurrentUser());
+                if (userAccount.getImageType() == UserAccount.ImageType.Default) {
+                    if (board.getTile(row, col).getId() == board.getBoardSize()) {
+                        tmp.setBackgroundResource(R.drawable.white);
+                    }
+                    else tmp.setBackgroundResource(Tile.FirstSlidingTileDefaultId +
+                            board.getTile(row, col).getId() - 1);
+                } else {
+                    if (board.getTile(row, col).getId() == board.getBoardSize()) {
+                        tmp.setBackgroundResource(R.drawable.white);
+                    } else {
+                        int tileId = board.getTile(row, col).getId();
+                        String tileName = createTileName(boardManager.getBoard().getNumRows(),
+                                board.getNumCols(), tileId);
+                        String path = getDataDir().getPath() + "/app_" +
+                                userAccManager.getCurrentUser() + "/" + tileName;
+                        tmp.setBackground(Drawable.createFromPath(path));
+                    }
+                }
                 this.tileButtons.add(tmp);
             }
         }
     }
 
     /**
+     * create the name of a specific tile.
+     *
+     * @param numRows board's num rows
+     * @param numCols board's num cols
+     * @param tileId tile's id
+     * @return generated tile's file name
+     */
+    @Override
+    @NonNull
+    public String createTileName(int numRows, int numCols, int tileId) {
+        String grid = numRows + "x" + numCols;
+        return "tile_" + grid + "_" + tileId + ".png";
+    }
+
+    /**
      * Update the backgrounds on the buttons to match the tiles.
      */
     private void updateTileButtons() {
-        SlidingTileBoard slidingTileBoard = boardManager.getBoard();
+        SlidingTileBoard board = boardManager.getBoard();
         int nextPos = 0;
         for (Button b : tileButtons) {
             int row = nextPos / boardManager.getBoard().getNumRows();
             int col = nextPos % boardManager.getBoard().getNumCols();
-            //b.setBackground(Drawable.createFromPath(slidingTileBoard.getTile(row, col).getBackground()));
+            UserAccount userAccount = userAccManager.getAccountMap().get(userAccManager.getCurrentUser());
+            if (userAccount.getImageType() == UserAccount.ImageType.Default) {
+                if (board.getTile(row, col).getId() == board.getBoardSize()) {
+                    b.setBackgroundResource(R.drawable.white);
+                }
+                else b.setBackgroundResource(Tile.FirstSlidingTileDefaultId +
+                        board.getTile(row, col).getId() - 1);
+            } else {
+                if (board.getTile(row, col).getId() == board.getBoardSize()) {
+                    b.setBackgroundResource(R.drawable.white);
+                } else {
+                    int tileId = board.getTile(row, col).getId();
+                    String tileName = createTileName(boardManager.getBoard().getNumRows(),
+                            board.getNumCols(), tileId);
+                    String path = getDataDir().getPath() + "/app_" +
+                            userAccManager.getCurrentUser() + "/" + tileName;
+                    b.setBackground(Drawable.createFromPath(path));
+                }
+            }
             nextPos++;
         }
     }

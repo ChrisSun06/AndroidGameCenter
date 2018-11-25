@@ -28,6 +28,11 @@ public class UserAccount implements Serializable {
     private int maxUndo = 3;
 
     /**
+     * The current image type of sliding tiles game.
+     */
+    private ImageType imageType;
+
+    /**
      * The HashMap of game map to user's corresponding score for each game.
      */
     private HashMap<String, Integer> scores;
@@ -65,6 +70,31 @@ public class UserAccount implements Serializable {
         for (String key : gameSaves.keySet()){
             if (game.contains(key)){gameSaves.put(key, boardManager);}
         }
+    }
+
+    /**
+     * Set the image type of the current sliding tile game of the current user.
+     *
+     * @param imageType image type of sliding tiles
+     */
+    public void setImageType(ImageType imageType) {
+        this.imageType = imageType;
+    }
+
+    /**
+     * Return the image type of the current sliding tile game of the current user.
+     *
+     * @return image type of sliding tiles
+     */
+    public ImageType getImageType() {
+        return imageType;
+    }
+
+    /**
+     * Image types that affect how the images are chosen from
+     */
+    public enum ImageType {
+        Default, Resource, Imported
     }
 
     /**
@@ -115,6 +145,7 @@ public class UserAccount implements Serializable {
     UserAccount(String n, String p) {
         this.name = n;
         this.password = p;
+        this.imageType = ImageType.Default;
         this.scores = new HashMap<>();
         this.gameSaves = new HashMap<>();
 

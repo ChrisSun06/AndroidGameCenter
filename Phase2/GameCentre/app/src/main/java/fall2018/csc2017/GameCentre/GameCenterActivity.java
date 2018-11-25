@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -13,7 +14,7 @@ import android.widget.Toast;
 /**
  * The initial activity for the sliding puzzle tile game.
  */
-public class GameCenterActivity extends ImageOperationActivity implements FragmentBasedInterface{
+public class GameCenterActivity extends AppCompatActivity implements FragmentBasedInterface{
 
     /**
      * A temporary save file.
@@ -49,8 +50,6 @@ public class GameCenterActivity extends ImageOperationActivity implements Fragme
         super.onCreate(savedInstanceState);
 
         currentGameInfoSetup();
-
-        setupDefault();
 
         setContentView(R.layout.activity_game_center);
 

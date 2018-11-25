@@ -103,6 +103,15 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
     }
 
     /**
+     * Return the board size.
+     *
+     * @return the board size
+     */
+    public int getBoardSize() {
+        return numRows * numCols;
+    }
+
+    /**
      * Return the number of tiles on the board.
      *
      * @return the number of tiles on the board

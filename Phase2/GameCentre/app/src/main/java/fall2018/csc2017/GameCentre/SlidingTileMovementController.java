@@ -33,7 +33,7 @@ class SlidingTileMovementController {
                 boardManager.blankTilePosition()) {
             processUndo(context);
         } else {
-            Toast.makeText(context, "Invalid Tap", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, context.getDataDir().getPath(), Toast.LENGTH_SHORT).show();
         }
     }
 

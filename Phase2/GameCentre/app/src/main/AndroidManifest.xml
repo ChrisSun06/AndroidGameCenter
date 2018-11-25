@@ -19,15 +19,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GameActivity" />
-        <activity android:name=".SudokuGameActivity" />
         <activity
             android:name=".ScoreBoardActivity"
             android:label="@string/title_activity_score_board"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".InGameSettings" />
+        <activity android:name=".SlidingTileGameSettings" />
         <activity android:name=".GameSelectionActivity" />
         <activity android:name=".SlidingTileGameActivity" />
+        <activity android:name=".SudokuGameActivity" />
     </application>
 
 </manifest>

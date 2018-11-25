@@ -8,33 +8,11 @@ import fall2018.csc2017.GameCentre.R;
  * A Tile in a sliding tiles game.
  */
 public class SlidingTile extends Tile {
-    /**
-     * Bitmap of the background image.
-     */
-    private Bitmap imageBitmap;
 
     private int gridSize;
 
     public int getGridSize() {
         return gridSize;
-    }
-
-    /**
-     * Set the bitmap of the background image.
-     *
-     * @param imageBitmap bitmap of the background image
-     */
-    public void setImageBitmap(Bitmap imageBitmap) {
-        this.imageBitmap = imageBitmap;
-    }
-
-    /**
-     * Return the bitmap of the background image.
-     *
-     * @return the bitmap of the background image
-     */
-    public Bitmap getImageBitmap() {
-        return imageBitmap;
     }
 
     /**
