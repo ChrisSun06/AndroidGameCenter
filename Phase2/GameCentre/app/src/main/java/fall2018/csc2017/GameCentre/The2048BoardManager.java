@@ -26,15 +26,6 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     private Stack<TofeTile[]> historyStack = new Stack<>();
 
     /**
-     * Manage a board that has been pre-populated.
-     *
-     * @param board the board
-     */
-    The2048BoardManager(The2048Board board) {
-        this.board = board;
-    }
-
-    /**
      * Return the current board.
      */
     The2048Board getBoard() {
@@ -46,13 +37,13 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      */
     private int[] beginBoardList() {
         int[] boardNumber = new int[16];
-        int set1 = (int) (Math.random() * 15);
-        int set2 = (int) (Math.random() * 15);
+        int set1 = (int) (Math.random() * 16);
+        int set2 = (int) (Math.random() * 16);
         while (set1 == set2) {
-            set2 = (int) (Math.random() * 15);
+            set2 = (int) (Math.random() * 16);
         }
-        boardNumber[set1] = ((int) (Math.random() * 1) + 1) * 2;
-        boardNumber[set2] = ((int) (Math.random() * 1) + 1) * 2;
+        boardNumber[set1] = ((int) (Math.random() * 2) + 1) * 2;
+        boardNumber[set2] = ((int) (Math.random() * 2) + 1) * 2;
         return boardNumber;
     }
 
@@ -70,12 +61,11 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
             }
         }
         this.board = new The2048Board(tiles);
-        historyStack.push(this.board.getAllTiles());
     }
 
     void move(String rOrC, boolean inverted){
+        historyStack.push(board.getAllTiles());
         TofeTile[] mergedList = this.board.merge(rOrC, inverted);
-        historyStack.push(mergedList);
         this.board.setAllTiles(mergedList);
         this.board.generateNewTiles();
     }
@@ -99,6 +89,8 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      */
 
     void undo() {
-        this.board.setAllTiles(historyStack.pop());
+        if(!historyStack.empty()) {
+            this.board.setAllTiles(historyStack.pop());
+        }
     }
 }
