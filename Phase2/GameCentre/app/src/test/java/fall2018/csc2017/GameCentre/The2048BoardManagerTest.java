@@ -99,7 +99,7 @@ public class The2048BoardManagerTest {
         setUp();
         SetUnfinihsedBoard();
         TofeTile[] previousTiles = boardManager.getBoard().getAllTiles();
-        boardManager.move("row", false);
+        boardManager.move("row", true);
         TofeTile[] tilesAfterMove = boardManager.getBoard().getAllTiles();
         boardManager.undo();
         TofeTile[] tilesAfterUndo = boardManager.getBoard().getAllTiles();
