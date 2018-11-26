@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 public class BoardAndTileTest {
 
     /** The board manager for testing. */
-    SlidingTileBoardManager boardManager;
+    SlidingTileBoardManager boardManager = new SlidingTileBoardManager(4);
 
     /**
      * Make a set of tiles that are in order.
@@ -95,8 +95,45 @@ public class BoardAndTileTest {
     public void testIsValidTap() {
         setUpCorrect();
         assertEquals(true, boardManager.isValidTap(11));
-        assertEquals(true, boardManager.isValidTap(15));
+        assertEquals(false, boardManager.isValidTap(15));
         assertEquals(false, boardManager.isValidTap(10));
     }
+
+    /**
+     * Test whether touchMove works.
+     */
+    @Test
+    public void testTouchMove() {
+        setUpCorrect();
+        assertEquals(15, boardManager.blankTilePosition());
+        boardManager.touchMove(11, false);
+        assertEquals(11, boardManager.blankTilePosition());
+    }
+
+    /**
+     * Test whether undo works.
+     */
+    @Test
+    public void testUndo() {
+        setUpCorrect();
+        boardManager.touchMove(11, false);
+        assertEquals(11, boardManager.blankTilePosition());
+        boardManager.undo();
+        assertEquals(15, boardManager.blankTilePosition());
+    }
+
+    /**
+     * Test whether getNumMoves and increasing the number of moves works.
+     */
+    @Test
+    public void testGetSetNumMoves() {
+        setUpCorrect();
+        assertEquals(0, boardManager.getBoard().getNumOfMoves());
+        boardManager.touchMove(14, false);
+        assertEquals(1, boardManager.getBoard().getNumOfMoves());
+        boardManager.undo();
+        assertEquals(1, boardManager.getBoard().getNumOfMoves());
+    }
+
 }
 

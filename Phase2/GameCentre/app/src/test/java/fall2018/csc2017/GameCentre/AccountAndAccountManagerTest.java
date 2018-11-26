@@ -11,6 +11,7 @@ import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 import fall2018.csc2017.GameCentre.Strategies.SlidingTileStrategy;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
 
 public class AccountAndAccountManagerTest {
 
@@ -19,6 +20,8 @@ public class AccountAndAccountManagerTest {
     private UserAccount testAccount;
 
     private Map<String, UserAccount> accountMap = new HashMap<>();
+
+    private Context context = mock(Context.class);
 
     private void setUpAccountAndGame(){
         accManager = new UserAccManager();
@@ -36,7 +39,7 @@ public class AccountAndAccountManagerTest {
     @Test
     public void testAccountExist(){
         setUp();
-        accManager.writeAcc("CSC207", "hello");
+        accManager.writeAcc("CSC207", "hello", context);
         assertTrue(accManager.accountExist("CSC207", "hello"));
         assertFalse(accManager.accountExist("CSC207", "???"));
         assertFalse(accManager.accountExist("???", "hello"));
@@ -92,8 +95,7 @@ public class AccountAndAccountManagerTest {
         setUpAccountAndGame();
         ScoringStrategy slidingTileStrategy = new SlidingTileStrategy(accManager);
         AbstractBoardManager boardManager = new SlidingTileBoardManager(5);
-        AbstractBoard board = boardManager.getBoard();
-        accManager.addScore(slidingTileStrategy, 4, board);
+        accManager.addScore(slidingTileStrategy, 4, boardManager);
         assertEquals(true, accManager.getAccountMap().get("207").
                 getScores("5X5sliding") == 6250);
     }

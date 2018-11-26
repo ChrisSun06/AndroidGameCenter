@@ -51,7 +51,8 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_game_settings);
-        accManager = (UserAccManager) getIntent().getSerializableExtra("accManager");
+        accManager = (UserAccManager) FileSaver.loadFromFile(getApplicationContext(),
+                LoginActivity.ACC_INFO);
         imageOperation = new ImageOperation();
         addConfirmUndoNumButtonListener();
         addUrlButtonListener();
@@ -74,6 +75,7 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
                 try{
                 int num = Integer.parseInt(undoNum.getText().toString());
                 accManager.updateUndoTime(num);
+                FileSaver.saveToFile(getApplicationContext(), accManager, LoginActivity.ACC_INFO);
                 makeToastSetUndo(num);
                 InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);}
