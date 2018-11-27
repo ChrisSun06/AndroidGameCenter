@@ -53,7 +53,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     public void display() {
         updateTileButtons();
         gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
-        gridView.updateUndoNumber();
+
     }
 
     @Override
@@ -85,6 +85,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
                         display();
                     }
                 });
+        gridView.updateUndoNumber();
     }
 
     /**

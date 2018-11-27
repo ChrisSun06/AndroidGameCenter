@@ -57,8 +57,9 @@ public class SlidingTileGestureDetectGridView extends GridView {
             public boolean onSingleTapConfirmed(MotionEvent event) {
                 int position = SlidingTileGestureDetectGridView.this.pointToPosition
                         (Math.round(event.getX()), Math.round(event.getY()));
-                updateUndoNumber();
+
                 mController.processTapMovement(context, position);
+                updateUndoNumber();
 
                 return true;
             }
@@ -99,6 +100,7 @@ public class SlidingTileGestureDetectGridView extends GridView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        updateUndoNumber();
         return gDetector.onTouchEvent(ev);
     }
 
