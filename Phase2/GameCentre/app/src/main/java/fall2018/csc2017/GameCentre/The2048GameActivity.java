@@ -48,6 +48,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     public void display() {
         updateTileButtons();
         gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth/2, columnHeight/2));
+        gridView.UpdateScore();
     }
 
     @Override
@@ -65,6 +66,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         gridView.setNumColumns(The2048Board.numCols);
         gridView.setBoardManager(boardManager);
         boardManager.getBoard().addObserver(this);
+        //gridView.UpdateScore();
         // Observer sets up desired dimensions as well as calls our display function
         //TODO this has to be changed
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
