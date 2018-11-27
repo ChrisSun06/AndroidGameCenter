@@ -13,6 +13,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.GridView;
 
 public class The2048GestureDetectGridView extends GridView {
@@ -46,12 +47,19 @@ public class The2048GestureDetectGridView extends GridView {
         init(context);
     }
 
-    private void init(final Context context) {
+    private void init(Context context) {
         mController = new The2048MovementController();
         The2048GestureListener gListener = new The2048GestureListener();
         gListener.setContext(context);
+        gListener.setController(mController);
         gDetector = new GestureDetector(context, gListener);
-
+        this.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                gDetector.onTouchEvent(event);
+                return false;
+            }
+        });
     }
 
 
@@ -65,4 +73,7 @@ public class The2048GestureDetectGridView extends GridView {
         this.boardManager = boardManager;
         mController.setBoardManager(boardManager);
     }
+
+
 }
+
