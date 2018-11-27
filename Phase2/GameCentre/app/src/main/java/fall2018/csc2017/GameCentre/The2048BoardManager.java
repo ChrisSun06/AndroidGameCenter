@@ -22,8 +22,12 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     /**
      * The stack which keeps track of the previous board.
      */
-
     private Stack<TofeTile[]> historyStack = new Stack<>();
+
+    /**
+     * The stack which keeps track of the previous add score.
+     */
+    private Stack<Integer> scoreStack = new Stack<>();
 
     /**
      * Return the current board.
@@ -68,6 +72,8 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
         TofeTile[] previousTiles = board.getAllTiles();
         TofeTile[] mergedList = this.board.merge(rOrC, inverted);
         this.board.setAllTiles(mergedList);
+        scoreStack.push(this.board.getScore());
+        addScore(mergedList);
         if(!Arrays.equals(previousTiles, mergedList))
             this.board.generateNewTiles();
     }
@@ -87,12 +93,70 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     }
 
     /**
+     * add score from previous board to merged board
+     * @param mergeTiles The array of TofeTiles (after the merge method in board class)
+     */
+    private void addScore(TofeTile[] mergeTiles){
+        TofeTile[] previous = historyStack.peek();
+        int score = this.board.getScore();
+        if (previous == null){
+            this.board.setScore(0);
+        }else if (count(mergeTiles, 0) > count(previous, 0)){
+            int i = max(mergeTiles);
+            int difference = 0;
+            while (i >= 4){
+                difference = count(mergeTiles, i) - count(previous, i) + 2 * difference;
+                if (difference > 0){
+                    score = score + difference * i;
+                    this.board.setScore(score);
+                }
+                i = i/2;
+            }
+        }
+
+    }
+
+    /**
+     * get the maximum int from a array TofeTiles
+     * @param mergeTiles The array of TofeTiles (after the merge method in board class)
+     * @return the maximum int from a array TofeTiles
+     */
+    private int max(TofeTile[] mergeTiles){
+        int theMax = mergeTiles[0].getValue();
+        int size = mergeTiles.length;
+        for (int i = 1; i < size; i++){
+            if (mergeTiles[i].getValue() > theMax){
+                theMax = mergeTiles[i].getValue();
+            }
+        }
+        return theMax;
+    }
+
+    /**
+     * count the number from a array TofeTiles
+     * @param mergeTiles The array of TofeTiles (after the merge method in board class)
+     * @param number the number we want to count
+     * @return return count
+     */
+    private int count(TofeTile[] mergeTiles, int number){
+        int total = 0;
+        int size = mergeTiles.length;
+        for (int i = 0; i < size; i++){
+            if (mergeTiles[i].getValue() == number){
+                total = total + 1;
+            }
+        }
+        return total;
+    }
+
+    /**
      * the method will be used in Class MovementController.
      */
 
     void undo() {
         if(!historyStack.empty()) {
             this.board.setAllTiles(historyStack.pop());
+            this.board.setScore(scoreStack.pop());
         }
     }
 }

@@ -1,9 +1,11 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 
@@ -46,6 +48,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     public void display() {
         updateTileButtons();
         gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth/2, columnHeight/2));
+        gridView.UpdateScore();
     }
 
     @Override
@@ -56,12 +59,14 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_the2048_main);
+        addUndoButtonListener();
         // Add View to activity
 
         gridView = findViewById(R.id.the2048_grid);
         gridView.setNumColumns(The2048Board.numCols);
         gridView.setBoardManager(boardManager);
         boardManager.getBoard().addObserver(this);
+        //gridView.UpdateScore();
         // Observer sets up desired dimensions as well as calls our display function
         //TODO this has to be changed
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
@@ -95,7 +100,6 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
      *
      * @param context the context
      */
-    //todo: needs to rewrite into a 2048 version
     private void createTileButtons(Context context) {
         The2048Board the2048Board = boardManager.getBoard();
         tileButtons = new ArrayList<>();
@@ -173,5 +177,18 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         saveToFile();
         display();
         onSolved();
+    }
+
+    /**
+     * Activate the start button.
+     */
+    private void addUndoButtonListener() {
+        Button undoButton = findViewById(R.id.the2048UndoButton);
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gridView.processUndo();
+            }
+        });
     }
 }

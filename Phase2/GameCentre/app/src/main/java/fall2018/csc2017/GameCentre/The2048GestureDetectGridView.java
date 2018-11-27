@@ -15,6 +15,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.TextView;
 
 public class The2048GestureDetectGridView extends GridView {
     public static final int flingMin = 100;
@@ -53,13 +54,6 @@ public class The2048GestureDetectGridView extends GridView {
         gListener.setContext(context);
         gListener.setController(mController);
         gDetector = new GestureDetector(context, gListener);
-        this.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                gDetector.onTouchEvent(event);
-                return false;
-            }
-        });
     }
 
 
@@ -74,6 +68,13 @@ public class The2048GestureDetectGridView extends GridView {
         mController.setBoardManager(boardManager);
     }
 
+    public void processUndo(){
+        mController.processUndo(getContext());
+    }
 
+    public void UpdateScore(){
+        TextView score = (TextView) ((The2048GameActivity)getContext()).findViewById(R.id.scoreTextView);
+        score.setText("Score: " + boardManager.getBoard().getScore());
+    }
 }
 

@@ -30,6 +30,7 @@ class The2048MovementController {
     void processMovement(Context context, String direction, boolean directionValue) {
         //ToDo: process a slide movement
         boardManager.move(direction, directionValue);
+        Toast.makeText(context, "Your score: " + boardManager.getBoard().getScore(), Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -37,7 +38,7 @@ class The2048MovementController {
      *
      * @param context the current context
      */
-    private void processUndo(Context context) {
+     void processUndo(Context context) {
         if (boardManager.getBoard().getMaxUndoTime() <= 0) {
             Toast.makeText(context, "Cannot Undo anymore", Toast.LENGTH_SHORT).show();
         } else {
