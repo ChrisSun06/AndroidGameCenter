@@ -1,9 +1,11 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -48,6 +50,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     public void display() {
         updateTileButtons();
         gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
+        gridView.UpdateScore();
     }
 
     @Override
@@ -56,6 +59,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         boardManager = (The2048BoardManager) FileSaver.loadFromFile(getApplicationContext(),
                 GameCenterActivity.TEMP_SAVE_FILENAME);
         setUpBoard();
+
         createTileButtons(this);
         setContentView(R.layout.activity_the2048_main);
         // Add View to activity
@@ -81,6 +85,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
                         display();
                     }
                 });
+        addUndoButton();
     }
 
     /**
@@ -175,5 +180,15 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         saveToFile();
         display();
         onSolved();
+    }
+
+    private void addUndoButton(){
+        Button undoButton = findViewById(R.id.the2048UndoButton);
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gridView.processUndo();
+            }
+        });
     }
 }
