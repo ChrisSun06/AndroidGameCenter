@@ -44,6 +44,10 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      */
     private int maxUndoTime = 3;
 
+    /**
+     * The score of game.
+     */
+    private int score = 0;
 
     /**
      * A new board of tiles in row-major order.
@@ -265,7 +269,26 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         }
     }
 
+    /**
+     * set the score
+     * @param renew the score we want to set
+     */
+    public void setScore(int renew){
+        score = renew;
+    }
+
+
+    /**
+     * get the score.
+     *
+     * @return the score
+     */
     public int getScore(){
+        return score;
+    }
+
+
+    /*public int getScore(){
         int result = 0;
         Iterator<TofeTile> iter = this.iterator();
         while(iter.hasNext()){
@@ -273,6 +296,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         }
         return result;
     }
+    */
 
     /**
      * get the max undo times.
