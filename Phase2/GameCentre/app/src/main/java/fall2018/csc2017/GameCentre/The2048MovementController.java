@@ -29,6 +29,7 @@ class The2048MovementController {
      */
     void processMovement(Context context, String direction, boolean directionValue) {
         //ToDo: process a slide movement
+        boardManager.move(direction, directionValue);
     }
 
     /**
