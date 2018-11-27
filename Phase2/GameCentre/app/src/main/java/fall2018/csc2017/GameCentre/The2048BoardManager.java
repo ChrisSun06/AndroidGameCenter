@@ -22,8 +22,12 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     /**
      * The stack which keeps track of the previous board.
      */
-
     private Stack<TofeTile[]> historyStack = new Stack<>();
+
+    /**
+     * The stack which keeps track of the previous add score.
+     */
+    private Stack<Integer> scoreStack = new Stack<>();
 
     /**
      * Return the current board.
@@ -68,6 +72,7 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
         TofeTile[] previousTiles = board.getAllTiles();
         TofeTile[] mergedList = this.board.merge(rOrC, inverted);
         this.board.setAllTiles(mergedList);
+        scoreStack.push(this.board.getScore());
         addScore(mergedList);
         if(!Arrays.equals(previousTiles, mergedList))
             this.board.generateNewTiles();
@@ -151,6 +156,7 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     void undo() {
         if(!historyStack.empty()) {
             this.board.setAllTiles(historyStack.pop());
+            this.board.setScore(scoreStack.pop());
         }
     }
 }
