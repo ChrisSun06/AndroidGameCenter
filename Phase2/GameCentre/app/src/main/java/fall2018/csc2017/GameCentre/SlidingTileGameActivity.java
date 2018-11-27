@@ -14,7 +14,6 @@ import java.util.Observer;
 
 import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 import fall2018.csc2017.GameCentre.Strategies.SlidingTileStrategy;
-import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 import fall2018.csc2017.GameCentre.tiles.Tile;
 
 /**
@@ -54,6 +53,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     public void display() {
         updateTileButtons();
         gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
+        gridView.updateUndoNumber();
     }
 
     @Override
@@ -63,7 +63,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
                         GameCenterActivity.TEMP_SAVE_FILENAME);
         setUpBoard();
         createTileButtons(this);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_slidingtile_game);
         // Add View to activity
         gridView = findViewById(R.id.grid);
         gridView.setNumColumns(boardManager.getBoard().getNumCols());

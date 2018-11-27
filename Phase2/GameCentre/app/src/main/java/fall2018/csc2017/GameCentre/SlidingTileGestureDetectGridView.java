@@ -14,6 +14,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.GridView;
+import android.widget.TextView;
 
 public class SlidingTileGestureDetectGridView extends GridView {
     public static final int SWIPE_MIN_DISTANCE = 100;
@@ -56,8 +57,9 @@ public class SlidingTileGestureDetectGridView extends GridView {
             public boolean onSingleTapConfirmed(MotionEvent event) {
                 int position = SlidingTileGestureDetectGridView.this.pointToPosition
                         (Math.round(event.getX()), Math.round(event.getY()));
-
+                updateUndoNumber();
                 mController.processTapMovement(context, position);
+
                 return true;
             }
 
@@ -73,7 +75,6 @@ public class SlidingTileGestureDetectGridView extends GridView {
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         int action = ev.getActionMasked();
         gDetector.onTouchEvent(ev);
-
         if (action == MotionEvent.ACTION_CANCEL || action == MotionEvent.ACTION_UP) {
             mFlingConfirmed = false;
         } else if (action == MotionEvent.ACTION_DOWN) {
@@ -104,5 +105,10 @@ public class SlidingTileGestureDetectGridView extends GridView {
     public void setBoardManager(SlidingTileBoardManager boardManager) {
         this.boardManager = boardManager;
         mController.setBoardManager(boardManager);
+    }
+
+    public void updateUndoNumber(){
+        TextView score = (TextView) ((SlidingTileGameActivity)getContext()).findViewById(R.id.undoSlidingTileTextView);
+        score.setText("Undo left: " + boardManager.getBoard().getMaxUndoTime());
     }
 }

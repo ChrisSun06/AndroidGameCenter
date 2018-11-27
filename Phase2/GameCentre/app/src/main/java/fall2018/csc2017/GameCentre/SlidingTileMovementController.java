@@ -1,7 +1,10 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import static java.security.AccessController.getContext;
 
 
 class SlidingTileMovementController {
@@ -47,8 +50,6 @@ class SlidingTileMovementController {
             Toast.makeText(context, "Cannot Undo anymore", Toast.LENGTH_SHORT).show();
         } else {
             boardManager.undo();
-            Toast.makeText(context, boardManager.getBoard().getMaxUndoTime() +
-                    " Undo chance(s) left", Toast.LENGTH_SHORT).show();
         }
     }
 
