@@ -47,7 +47,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
 
     public void display() {
         updateTileButtons();
-        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight*3/4));
+        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
     }
 
     @Override
