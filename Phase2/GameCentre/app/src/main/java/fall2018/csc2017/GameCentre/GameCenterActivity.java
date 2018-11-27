@@ -113,11 +113,11 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
      */
     private void addSaveButtonListener() {
         Button saveButton = findViewById(R.id.SaveButton);
-        userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
-                LoginActivity.ACC_INFO);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
+                        LoginActivity.ACC_INFO);
                 saveToFile();
                 FileSaver.saveToFile(getApplicationContext(), boardManager, TEMP_SAVE_FILENAME);
                 makeToastSavedText();

@@ -4,11 +4,14 @@ import android.content.Context;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 import fall2018.csc2017.GameCentre.Strategies.SlidingTileStrategy;
+import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -61,12 +64,14 @@ public class AccountAndAccountManagerTest {
     }
 
     @Test
-    public void testSetCurrentGameState(){
+    public void testSetGetCurrentGameState(){
         setUpAccountAndGame();
         accManager.setAccountMap(accountMap);
         AbstractBoardManager boardManager = new SlidingTileBoardManager(5);
         accManager.setCurrentGameState(boardManager);
         assertSame(accManager.getCurrentGameStateMap("sliding"), boardManager);
+        assertSame(accManager.getCurrentGameStateMap("Sudoku"), null);
+        assertSame(accManager.getCurrentGameStateMap("abc"), null);
     }
 
     @Test
@@ -94,11 +99,18 @@ public class AccountAndAccountManagerTest {
     public void testAddScoreSlidingTile(){
         setUpAccountAndGame();
         ScoringStrategy slidingTileStrategy = new SlidingTileStrategy(accManager);
-        AbstractBoardManager boardManager = new SlidingTileBoardManager(5);
+        List<SlidingTile> tiles = new ArrayList<>();
+        for (int tileNum = 0; tileNum != 25; tileNum++) {
+            tiles.add(new SlidingTile(tileNum + 1, tileNum));
+        }
+        SlidingTileBoard board = new SlidingTileBoard(tiles, 5);
+        AbstractBoardManager boardManager = new SlidingTileBoardManager(board);
         accManager.addScore(slidingTileStrategy, 4, boardManager);
-        assertEquals(true, accManager.getAccountMap().get("207").
-                getScores("5X5sliding") == 6250);
+        assertEquals(true,
+                6250 == accManager.getAccountMap().get("207").
+                        getScores("5X5sliding"));
     }
+
 
 
 }

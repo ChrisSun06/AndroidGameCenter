@@ -37,11 +37,17 @@ public class LoginActivity extends AppCompatActivity {
      */
     public UserAccManager accManager;
 
+    /**
+     * The login activity controller
+     */
+    private LoginActivityController lController;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        lController = new LoginActivityController();
         mEmailView = findViewById(R.id.emailEdit);
         mPasswordView = findViewById(R.id.passwordEdit);
         loadAccounts();
@@ -55,12 +61,8 @@ public class LoginActivity extends AppCompatActivity {
     private void loadAccounts(){
         UserAccManager tempManager = (UserAccManager)FileSaver.loadFromFile
                 (getApplicationContext(), ACC_INFO);
-        if (tempManager != null){
-            accManager = tempManager;
-        } else {
-            accManager = new UserAccManager();
-            FileSaver.saveToFile(getApplicationContext(), accManager, ACC_INFO);
-        }
+        accManager = lController.loadAccount(tempManager);
+        FileSaver.saveToFile(getApplicationContext(), accManager, ACC_INFO);
     }
 
     /**
@@ -72,28 +74,19 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 accManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(), ACC_INFO);
-                if (accManager.accountExist(mEmailView.getText().toString(),
-                        mPasswordView.getText().toString())) {
-                    accManager.setCurrentUser(mEmailView.getText().toString());
-                    FileSaver.saveToFile(getApplicationContext(), accManager, ACC_INFO);
-                    Intent intent = new Intent(LoginActivity.this,
-                            GameSelectionActivity.class);
-                    intent.putExtra("accountManager", accManager);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
-                } else {
-                    makeToastInvalidText();
-                }
+                Intent intent = new Intent(LoginActivity.this,
+                        lController.accountExistListener(mEmailView.getText().toString(),
+                                mPasswordView.getText().toString(), accManager,
+                                getApplicationContext()));
+                intent.putExtra("accountManager", accManager);
+                FileSaver.saveToFile(getApplicationContext(), accManager, LoginActivity.ACC_INFO);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }
         });
     }
 
-    /**
-     * Make a toast message for invalid password or email
-     */
-    private void makeToastInvalidText() {
-        Toast.makeText(this, "Invalid password or email", Toast.LENGTH_SHORT).show();
-    }
 
     /**
      * Activate register button

@@ -38,7 +38,8 @@ public class FileSaver {
             Log.e("login activity", "Can not read file: " + ioe.toString());
             return null;
         } catch (ClassNotFoundException cne) {
-            Log.e("login activity", "File contained unexpected data type: " + cne.toString());
+            Log.e("login activity", "File contained unexpected data type: " +
+                    cne.toString());
             return null;
         }
     }
