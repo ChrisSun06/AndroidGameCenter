@@ -46,7 +46,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     //todo: not sure how to display() --- Jin
     public void display() {
         updateTileButtons();
-        gridView.setAdapter(new CustomAdapter(tileButtons, 4, 4));
+        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
     }
 
     @Override
@@ -104,7 +104,6 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
             for (int col = 0; col != The2048Board.numCols; col++) {
                 Button tmp = new Button(context);
                 tmp.setBackgroundResource(the2048Board.getTile(row, col).getDrawableId());
-                //tmp.setBackground(Drawable.createFromPath(the2048Board.getTile(row, col).getBackground()));
                 this.tileButtons.add(tmp);
             }
         }
