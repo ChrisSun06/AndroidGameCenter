@@ -69,11 +69,11 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @param col the tile column
      * @return the tile at (row, col)
      */
-    private TofeTile getTile(int row, int col) {
+    TofeTile getTile(int row, int col) {
         return tiles[row][col];
     }
 
-    private void setTile(int row, int col, TofeTile tile){
+    void setTile(int row, int col, TofeTile tile){
         tiles[row][col] = tile;
     }
     /**

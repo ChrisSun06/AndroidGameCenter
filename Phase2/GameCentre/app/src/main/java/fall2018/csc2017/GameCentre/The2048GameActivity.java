@@ -56,11 +56,11 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
                 GameCenterActivity.TEMP_SAVE_FILENAME);
         setUpBoard();
         createTileButtons(this);
-        setContentView(R.layout.activity_the2048_game);
+        setContentView(R.layout.activity_the2048_main);
         // Add View to activity
 
-        gridView = findViewById(R.id.grid);
-        //gridView.setNumColumns(boardManager.getBoard().getNumCols());
+        gridView = findViewById(R.id.the2048_grid);
+        gridView.setNumColumns(The2048Board.numCols);
         gridView.setBoardManager(boardManager);
         boardManager.getBoard().addObserver(this);
         // Observer sets up desired dimensions as well as calls our display function
@@ -74,8 +74,8 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
 
-                        columnWidth = displayWidth / boardManager.getBoard().numCols;
-                        columnHeight = displayHeight / boardManager.getBoard().numRows;
+                        columnWidth = displayWidth / The2048Board.numCols;
+                        columnHeight = displayHeight / The2048Board.numRows;
 
                         display();
                     }
@@ -100,9 +100,10 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     private void createTileButtons(Context context) {
         The2048Board the2048Board = boardManager.getBoard();
         tileButtons = new ArrayList<>();
-        for (int row = 0; row != boardManager.getBoard().numRows; row++) {
-            for (int col = 0; col != boardManager.getBoard().numCols; col++) {
+        for (int row = 0; row != The2048Board.numRows; row++) {
+            for (int col = 0; col != The2048Board.numCols; col++) {
                 Button tmp = new Button(context);
+                tmp.setBackgroundResource(the2048Board.getTile(row, col).getDrawableId());
                 //tmp.setBackground(Drawable.createFromPath(the2048Board.getTile(row, col).getBackground()));
                 this.tileButtons.add(tmp);
             }
@@ -119,6 +120,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         for (Button b : tileButtons) {
             int row = nextPos / The2048Board.numRows;
             int col = nextPos % The2048Board.numCols;
+            b.setBackgroundResource(the2048Board.getTile(row, col).getDrawableId());
             //b.setBackground(Drawable.createFromPath(the2048Board.getTile(row, col).getBackground()));
             nextPos++;
         }
