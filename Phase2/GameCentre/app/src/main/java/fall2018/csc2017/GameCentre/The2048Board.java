@@ -75,6 +75,8 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
 
     void setTile(int row, int col, TofeTile tile){
         tiles[row][col] = tile;
+        setChanged();
+        notifyObservers();
     }
     /**
      * Return the column corresponding to colNum, can be inverted if specified.
@@ -157,6 +159,8 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
                 this.setTile(row, col, inputTiles[(row * 4) + col]);
             }
         }
+        setChanged();
+        notifyObservers();
     }
 
      /**
