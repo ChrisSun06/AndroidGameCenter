@@ -53,13 +53,6 @@ public class The2048GestureDetectGridView extends GridView {
         gListener.setContext(context);
         gListener.setController(mController);
         gDetector = new GestureDetector(context, gListener);
-        this.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                gDetector.onTouchEvent(event);
-                return false;
-            }
-        });
     }
 
 
@@ -74,6 +67,9 @@ public class The2048GestureDetectGridView extends GridView {
         mController.setBoardManager(boardManager);
     }
 
+    public void processUndo(){
+        mController.processUndo(getContext());
+    }
 
 }
 
