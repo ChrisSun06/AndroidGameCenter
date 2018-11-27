@@ -1,7 +1,11 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.widget.Toast;
+
+import fall2018.csc2017.GameCentre.tiles.Tile;
 
 
 public class SudokuMovementController {

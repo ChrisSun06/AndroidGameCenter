@@ -134,7 +134,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
                 // set up default background image
                 Bitmap tile = BitmapFactory.decodeResource(getResources(),
                         Tile.FirstSudokuTileId + position - 1);
-                tile = getUpdatedBitmap(board, row, col, tile);
+                tile = boardManager.getUpdatedBitmap(context, board, row, col, tile);
                 tmp.setBackground(new BitmapDrawable(getResources(), tile));
                 this.tileButtons.add(tmp);
             }
@@ -151,45 +151,10 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
             int row = nextPos / boardManager.getBoard().getNumRows();
             int col = nextPos % boardManager.getBoard().getNumCols();
             Bitmap tile = ((BitmapDrawable) b.getBackground()).getBitmap();
-            tile = getUpdatedBitmap(board, row, col, tile);
+            tile = boardManager.getUpdatedBitmap(this, board, row, col, tile);
             b.setBackground(new BitmapDrawable(getResources(), tile));
             nextPos++;
         }
-    }
-
-    private Bitmap getUpdatedBitmap(SudokuBoard board, int row, int col, Bitmap tile) {
-        Bitmap temp = tile;
-        if (!board.getTile(row, col).getIsMutable()) {
-            Bitmap number = BitmapFactory.decodeResource(getResources(),
-                    Tile.FirstSudokuNumberId + board.getTile(row, col).getNumber() - 1);
-            temp = superpose(tile, number);
-        }
-        else {
-            if (board.getTile(row, col).getNumber() != 0) {
-                Bitmap number = BitmapFactory.decodeResource(getResources(),
-                        Tile.FirstSudokuEditNumberId + board.getTile(row, col).getNumber() - 1);
-                temp = superpose(tile, number);
-            }
-        }
-        return temp;
-    }
-
-    /**
-     * Superpose one bitmap above the centre of one another.
-     *
-     * @param back back image
-     * @param front front image
-     * @return the superposed image
-     */
-    private Bitmap superpose(Bitmap back, Bitmap front) {
-        Bitmap superposed= Bitmap.createBitmap(back.getWidth(), back.getHeight(), back.getConfig());
-        Canvas canvas = new Canvas(superposed);
-        canvas.drawBitmap(back, new Matrix(), null);
-        canvas.drawBitmap(front,
-                (back.getWidth() - front.getWidth()) / 2,
-                (back.getHeight() - front.getHeight()) / 2,
-                null);
-        return superposed;
     }
 
     /**

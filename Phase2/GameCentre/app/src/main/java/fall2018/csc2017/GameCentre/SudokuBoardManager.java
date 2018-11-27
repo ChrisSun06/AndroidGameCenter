@@ -1,5 +1,9 @@
 package fall2018.csc2017.GameCentre;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -8,6 +12,7 @@ import java.util.Random;
 import java.util.Set;
 
 import fall2018.csc2017.GameCentre.tiles.SudokuTile;
+import fall2018.csc2017.GameCentre.tiles.Tile;
 
 public class SudokuBoardManager extends AbstractBoardManager {
 
@@ -43,6 +48,23 @@ public class SudokuBoardManager extends AbstractBoardManager {
             board.setTile(row, col, 0);
             board.getTile(row, col).setIsMutable(true);
         }
+    }
+
+    Bitmap getUpdatedBitmap(Context context, SudokuBoard board, int row, int col, Bitmap tile) {
+        Bitmap temp = tile;
+        if (!board.getTile(row, col).getIsMutable()) {
+            Bitmap number = BitmapFactory.decodeResource(context.getResources(),
+                    Tile.FirstSudokuNumberId + board.getTile(row, col).getNumber() - 1);
+            temp = ImageOperation.superpose(tile, number);
+        }
+        else {
+            if (board.getTile(row, col).getNumber() != 0) {
+                Bitmap number = BitmapFactory.decodeResource(context.getResources(),
+                        Tile.FirstSudokuEditNumberId + board.getTile(row, col).getNumber() - 1);
+                temp = ImageOperation.superpose(tile, number);
+            }
+        }
+        return temp;
     }
 
     private void randomAdd(List<SudokuTile> tiles){
