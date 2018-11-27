@@ -27,6 +27,7 @@
         <activity android:name=".GameSelectionActivity" />
         <activity android:name=".SlidingTileGameActivity" />
         <activity android:name=".SudokuGameActivity" />
+        <activity android:name=".The2048GameActivity" />
     </application>
 
 </manifest>
