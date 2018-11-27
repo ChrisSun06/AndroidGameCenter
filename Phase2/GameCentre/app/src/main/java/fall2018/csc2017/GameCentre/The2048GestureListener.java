@@ -9,23 +9,23 @@ import java.util.List;
 import java.util.Set;
 
 class The2048GestureListener extends GestureDetector.SimpleOnGestureListener {
+
     private float flingMin = 100;
     private float velocityMin = 100;
-    private String direction;
-    private boolean directionValue;
     private The2048MovementController mController;
-
-    @Override
-    public boolean onDown(MotionEvent e) {
-        return true;
-    }
-
-    public Context context;
+    private Context context;
 
     public void setContext(Context context) {
         this.context = context;
     }
 
+    public void setController(The2048MovementController mController) {
+        this.mController = mController;
+    }
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -40,22 +40,20 @@ class The2048GestureListener extends GestureDetector.SimpleOnGestureListener {
         if (absHDiff > absVDiff && absHDiff > flingMin && absVelocityX > absVelocityY) {
             if (horizontalDiff > 0) {
                 //swipe left
-                mController.processMovement(context, "row", false);
+                mController.processMovement(context, "row", true);
             } else {
                 //swipe right
-                mController.processMovement(context, "row", true);
+                mController.processMovement(context, "row", false);
             }
         } else if (absVDiff > flingMin && absVelocityY > velocityMin) {
             if (verticalDiff > 0) {
                 //swipe down
-                mController.processMovement(context, "col", true);
+                mController.processMovement(context, "column", true);
             } else {
                 //swipe up
-                mController.processMovement(context, "col", false);
+                mController.processMovement(context, "column", false);
             }
         }
-
         return true;
     }
-
 }
