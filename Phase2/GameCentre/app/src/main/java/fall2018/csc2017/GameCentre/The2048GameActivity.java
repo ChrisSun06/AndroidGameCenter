@@ -1,13 +1,13 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -28,7 +28,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     /**
      * The buttons to display.
      */
-    private ArrayList<Button> tileButtons;
+    private ArrayList<ImageView> tileButtons;
 
     /**
      * The user account manager
@@ -47,8 +47,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
 
     public void display() {
         updateTileButtons();
-        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth/2, columnHeight/2));
-        gridView.UpdateScore();
+        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight*3/4));
     }
 
     @Override
@@ -59,14 +58,12 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_the2048_main);
-        addUndoButtonListener();
         // Add View to activity
 
         gridView = findViewById(R.id.the2048_grid);
         gridView.setNumColumns(The2048Board.numCols);
         gridView.setBoardManager(boardManager);
         boardManager.getBoard().addObserver(this);
-        //gridView.UpdateScore();
         // Observer sets up desired dimensions as well as calls our display function
         //TODO this has to be changed
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
@@ -100,12 +97,13 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
      *
      * @param context the context
      */
+    //todo: needs to rewrite into a 2048 version
     private void createTileButtons(Context context) {
         The2048Board the2048Board = boardManager.getBoard();
         tileButtons = new ArrayList<>();
         for (int row = 0; row != The2048Board.numRows; row++) {
             for (int col = 0; col != The2048Board.numCols; col++) {
-                Button tmp = new Button(context);
+                ImageView tmp = new ImageView(context);
                 tmp.setBackgroundResource(the2048Board.getTile(row, col).getDrawableId());
                 this.tileButtons.add(tmp);
             }
@@ -119,7 +117,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     private void updateTileButtons() {
         The2048Board the2048Board = boardManager.getBoard();
         int nextPos = 0;
-        for (Button b : tileButtons) {
+        for (ImageView b : tileButtons) {
             int row = nextPos / The2048Board.numRows;
             int col = nextPos % The2048Board.numCols;
             b.setBackgroundResource(the2048Board.getTile(row, col).getDrawableId());
@@ -177,18 +175,5 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         saveToFile();
         display();
         onSolved();
-    }
-
-    /**
-     * Activate the start button.
-     */
-    private void addUndoButtonListener() {
-        Button undoButton = findViewById(R.id.the2048UndoButton);
-        undoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                gridView.processUndo();
-            }
-        });
     }
 }
