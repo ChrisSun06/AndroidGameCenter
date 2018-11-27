@@ -42,8 +42,6 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
 
     private UserAccManager accManager;
 
-    private ImageOperation imageOperation;
-
     /**
      * Activate all the buttons when SlidingTileGameSettings is created
      */
@@ -53,7 +51,6 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
         setContentView(R.layout.activity_in_game_settings);
         accManager = (UserAccManager) FileSaver.loadFromFile(getApplicationContext(),
                 LoginActivity.ACC_INFO);
-        imageOperation = new ImageOperation();
         addConfirmUndoNumButtonListener();
         addUrlButtonListener();
         addChooseFromGalleryButtonListener();
@@ -103,7 +100,7 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
                         try {
                             URL url = new URL(address);
                             Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-                            Bitmap resized = imageOperation.resizeSourceImage(bmp);
+                            Bitmap resized = ImageOperation.resizeSourceImage(bmp);
                             cropAndSave(resized);
                             accManager.getAccountMap().get(accManager.getCurrentUser()).
                                     setImageType(UserAccount.ImageType.Imported);
@@ -199,7 +196,7 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
                 Uri photoUri = data.getData();
                 Bitmap selectedImage = MediaStore.Images.Media.
                         getBitmap(this.getContentResolver(), photoUri);
-                Bitmap resized = imageOperation.resizeSourceImage(selectedImage);
+                Bitmap resized = ImageOperation.resizeSourceImage(selectedImage);
                 cropAndSave(resized);
                 accManager.getAccountMap().get(accManager.getCurrentUser()).
                         setImageType(UserAccount.ImageType.Imported);
@@ -213,7 +210,7 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
 
     private void cropAndSave(Bitmap bitmap) {
         for (int gridSize = 3; gridSize <= 5; gridSize++) {
-            List<Bitmap> bitmaps = imageOperation.cropImage(bitmap, gridSize, gridSize);
+            List<Bitmap> bitmaps = ImageOperation.cropImage(bitmap, gridSize, gridSize);
             for (int id = 1; id <= bitmaps.size(); id++) {
                 String tileName = createTileName(gridSize, gridSize, id);
                 savePNGToInternalStorage(bitmaps.get(id - 1), accManager.getCurrentUser(), tileName);

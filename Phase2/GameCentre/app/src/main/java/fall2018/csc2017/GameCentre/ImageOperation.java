@@ -1,29 +1,21 @@
 package fall2018.csc2017.GameCentre;
 
-import android.content.ContextWrapper;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import fall2018.csc2017.GameCentre.R;
 
 class ImageOperation {
     /**
      * The default source image width.
      */
-    public static final int SourceImageWidth = 992;
+    static final int SourceImageWidth = 992;
     /**
      * The default source image height.
      */
-    public static final int SourceImageHeight = 1276;
+    static final int SourceImageHeight = 1276;
 
     /**
      * Resize the source image into 992x1276 and return the resized image bitmap.
@@ -31,9 +23,27 @@ class ImageOperation {
      * @param image the bitmap of the given image
      * @return the resized source image
      */
-    public Bitmap resizeSourceImage(Bitmap image) {
+    static Bitmap resizeSourceImage(Bitmap image) {
         return Bitmap.createScaledBitmap(image,
                 SourceImageWidth, SourceImageHeight, false);
+    }
+
+    /**
+     * Superpose one bitmap above the centre of one another.
+     *
+     * @param back back image
+     * @param front front image
+     * @return the superposed image
+     */
+    static Bitmap superpose(Bitmap back, Bitmap front) {
+        Bitmap superposed= Bitmap.createBitmap(back.getWidth(), back.getHeight(), back.getConfig());
+        Canvas canvas = new Canvas(superposed);
+        canvas.drawBitmap(back, new Matrix(), null);
+        canvas.drawBitmap(front,
+                (back.getWidth() - front.getWidth()) / 2,
+                (back.getHeight() - front.getHeight()) / 2,
+                null);
+        return superposed;
     }
 
     /**
@@ -114,7 +124,7 @@ class ImageOperation {
      * @param numRows the # of rows
      * @param numCols the # of cols
      */
-    public List<Bitmap> cropImage(Bitmap image, int numRows, int numCols) {
+    static List<Bitmap> cropImage(Bitmap image, int numRows, int numCols) {
         int segWidth = SourceImageWidth / numCols;
         int segHeight = SourceImageHeight / numRows;
         List<Bitmap> bitmaps = new ArrayList<>();
