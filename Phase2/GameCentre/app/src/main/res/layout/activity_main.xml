@@ -6,4 +6,4 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/joker"
-    tools:context="fall2018.csc2017.GameCentre.GameActivity" />
+    tools:context="fall2018.csc2017.GameCentre.SlidingTileGameActivity" />
