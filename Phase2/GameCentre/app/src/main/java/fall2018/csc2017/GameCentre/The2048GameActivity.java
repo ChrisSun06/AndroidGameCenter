@@ -42,11 +42,10 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
      * Set up the background image for each button based on the master list
      * of positions, and then call the adapter to set the view.
      */
-    // Display
-    //todo: not sure how to display() --- Jin
+
     public void display() {
         updateTileButtons();
-        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
+        gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth/2, columnHeight/2));
     }
 
     @Override
