@@ -20,7 +20,7 @@ public abstract class Tile implements Comparable<Tile>, Serializable {
     public static final int FirstSudokuNumberId = R.drawable.sudoku_i_01;
     public static final int FirstSudokuEditNumberId = R.drawable.sudoku_i_11;
     public static final int FirstSudokuErrorNumberId = R.drawable.sudoku_i_21;
-    public static final int FirstTofeTileDrawableId = R.drawable.tofe_01;
+    public static final int First2048TileDrawableId = R.drawable.tofe_01;
     /**
      * Tile's background id on the board.
      */

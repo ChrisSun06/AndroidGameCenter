@@ -62,7 +62,7 @@ public class TofeTile extends Tile{
     public TofeTile(int value, int id) {
         setId(id);
         if(value != 0)
-            this.drawableId = FirstTofeTileDrawableId + powerOfTwo(value) - 1;
+            this.drawableId = First2048TileDrawableId + powerOfTwo(value) - 1;
         else
             this.drawableId = R.drawable.white;
         this.value = value;
