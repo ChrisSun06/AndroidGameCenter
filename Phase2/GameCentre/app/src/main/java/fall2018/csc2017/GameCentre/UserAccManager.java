@@ -92,6 +92,7 @@ public class UserAccManager implements Serializable {
         } else if (password.equals("") || email.equals("")){
             Toast.makeText(context, "Field cannot be empty!", Toast.LENGTH_SHORT).show();
         } else {
+            Toast.makeText(context, "Registered!", Toast.LENGTH_SHORT).show();
             accountMap.put(email, new UserAccount(email, password));
         }
     }
@@ -166,7 +167,6 @@ public class UserAccManager implements Serializable {
             return null;
         }
     }
-
 
     /**
      * Make a toast message of whether game board is initialized successfully or not.

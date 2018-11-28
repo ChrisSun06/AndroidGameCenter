@@ -46,6 +46,8 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     private SlidingTileGestureDetectGridView gridView;
     private static int columnWidth, columnHeight;
 
+    private GameActivityOverController gController;
+
     /**
      * Set up the background image for each button based on the master list
      * of positions, and then call the adapter to set the view.
@@ -62,6 +64,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
         super.onCreate(savedInstanceState);
         boardManager = (SlidingTileBoardManager) FileSaver.loadFromFile(getApplicationContext(),
                         GameCenterActivity.TEMP_SAVE_FILENAME);
+        gController = new GameActivityOverController();
         setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_slidingtile_game);
@@ -215,16 +218,10 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
      * Update the score of the current user if puzzle is solved.
      */
     public void onSolved(){
-        if(boardManager.puzzleSolved()){
-            SlidingTileStrategy strategy = new SlidingTileStrategy(userAccManager);
-            userAccManager.addScore(strategy, boardManager.getBoard().getNumOfMoves(), boardManager);
-            FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
-            Intent i = new Intent(SlidingTileGameActivity.this,
-                    GameOverActivity.class);
-            i.putExtra("GAME", GameSelectionActivity.GameSlidingTile);
-            i.putExtra(GameOverActivity.GameOverMessageName, "Your Score is: " + strategy.getScore());
-            startActivity(i);
-        }
+        SlidingTileStrategy strategy = new SlidingTileStrategy(userAccManager);
+        userAccManager.addScore(strategy, boardManager.getBoard().getNumOfMoves(), boardManager);
+        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
+        gController.startOverControl(boardManager, getApplicationContext(), strategy, currentGame);
     }
 
     /**

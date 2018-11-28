@@ -131,6 +131,7 @@ public class Scores {
 
     /**
      * Return a ArrayList of UserAccount that have played the game
+     *
      * @param game the game type
      * @param accounts all the accounts of GameCenter
      * @return An array list of accounts that have played this game.

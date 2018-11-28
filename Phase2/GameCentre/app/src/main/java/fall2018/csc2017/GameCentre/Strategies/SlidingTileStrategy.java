@@ -19,6 +19,7 @@ public class SlidingTileStrategy implements ScoringStrategy {
 
     private int numMoves;
     private SlidingTileBoard tempBoard;
+
     public SlidingTileStrategy(UserAccManager accManager) {
         this.accountMap = accManager.getAccountMap();
         this.currentUser = accManager.getCurrentUser();

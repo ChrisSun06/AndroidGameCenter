@@ -2,7 +2,6 @@ package fall2018.csc2017.GameCentre;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -137,12 +136,8 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
      */
     private void switchToLoadedGame() {
         //from loaded slot, activate the game by current_game
-        Intent tmp = new Intent(this, gController.
-                getIntent(userAccManager.getCurrentGame()));
-        tmp.putExtra("GAME", currentGame);
         saveToFile();
-        tmp.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-        startActivity(tmp);
+        gController.startGame(currentGame, getApplicationContext(), boardManager);
     }
 
     /**
@@ -175,7 +170,6 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
             public void onClick(View v) {
                 Intent scoreBoard = new Intent(GameCenterActivity.this,
                         ScoreBoardActivity.class);
-                scoreBoard.putExtra("accManager", userAccManager);
                 startActivity(scoreBoard);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }

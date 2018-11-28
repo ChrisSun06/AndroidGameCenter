@@ -10,12 +10,12 @@ public abstract class AbstractBoard  extends Observable implements Serializable 
     /**
      * The max times player can undo(default is 3, player could set any positive integer).
      */
-    int maxUndoTime = 3;
+    int maxUndoTime;
 
     /**
      * How many moves players make
      */
-    int numOfMoves = 0;
+    int numOfMoves;
 
     abstract void setMaxUndoTime(int i);
     abstract int getMaxUndoTime();

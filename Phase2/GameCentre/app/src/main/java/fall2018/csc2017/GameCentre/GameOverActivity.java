@@ -12,9 +12,9 @@ import android.widget.TextView;
 public class GameOverActivity extends AppCompatActivity {
 
     static final String GameOverMessageName = "GameOverMessage";
-    //GameOverController gController;
     private String current_game;
     private String displayMessage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

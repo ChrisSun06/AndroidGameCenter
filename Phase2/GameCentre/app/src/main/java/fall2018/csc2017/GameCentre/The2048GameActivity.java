@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
+import fall2018.csc2017.GameCentre.Strategies.SudokuStrategy;
+import fall2018.csc2017.GameCentre.Strategies.The2048Strategy;
+
 public class The2048GameActivity extends AppCompatActivity implements Observer{
 
     /**
@@ -42,6 +46,8 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
 
     private static int columnWidth, columnHeight;
 
+    private GameActivityOverController gController;
+
     /**
      * Set up the background image for each button based on the master list
      * of positions, and then call the adapter to set the view.
@@ -58,6 +64,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         super.onCreate(savedInstanceState);
         boardManager = (The2048BoardManager) FileSaver.loadFromFile(getApplicationContext(),
                 GameCenterActivity.TEMP_SAVE_FILENAME);
+        gController = new GameActivityOverController();
         setUpBoard();
 
         createTileButtons(this);
@@ -92,6 +99,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
      * Set up the board and account manager.
      */
     private void setUpBoard() {
+        currentGame = "2048";
         userAccManager = (UserAccManager) FileSaver.loadFromFile(getApplicationContext(),
                 LoginActivity.ACC_INFO);
         userAccManager.setCurrentGame(currentGame);
@@ -158,16 +166,10 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
      */
     public void onSolved(){
         //todo: currently userAccManager add score can only be apply to SlidinTile, needs to change
-        if (boardManager.puzzleSolved()){
-            //userAccManager.addScore(boardManager.getBoard().getNumOfMoves()+1,
-              //      boardManager.getBoard());
-            FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
-            Intent i = new Intent(The2048GameActivity.this,
-                    GameOverActivity.class);
-            i.putExtra("GAME", GameSelectionActivity.Game2048);
-            i.putExtra(GameOverActivity.GameOverMessageName, "Your Score is: " + boardManager.getBoard().getScore());
-            startActivity(i);
-        }
+        ScoringStrategy strategy = new The2048Strategy(userAccManager);
+        userAccManager.addScore(strategy, 0, boardManager);
+        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
+        gController.startOverControl(boardManager, getApplicationContext(), strategy, currentGame);
     }
 
     /**

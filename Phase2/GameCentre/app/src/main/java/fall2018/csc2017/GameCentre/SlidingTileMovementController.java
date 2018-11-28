@@ -35,7 +35,7 @@ class SlidingTileMovementController {
 
         } else if (!boardManager.getBoard().historyStack.isEmpty() && position ==
                 boardManager.blankTilePosition()) {
-            processUndo(context);
+            processUndo();
 
         } else {
             //Toast.makeText(context, context.getDataDir().getPath(), Toast.LENGTH_SHORT).show();
@@ -45,10 +45,8 @@ class SlidingTileMovementController {
 
     /**
      * Process the undo movement for each tap.
-     *
-     * @param context the current context
      */
-    public void processUndo(Context context) {
+    public void processUndo() {
         if (boardManager.getBoard().getMaxUndoTime() > 0) {
             boardManager.undo();
         }

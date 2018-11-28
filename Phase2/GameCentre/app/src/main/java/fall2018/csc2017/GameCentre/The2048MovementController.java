@@ -28,7 +28,6 @@ class The2048MovementController {
      * @param directionValue deciding vector if "row" is left or right, and if "col" is up or down.
      */
     void processMovement(Context context, String direction, boolean directionValue) {
-        //ToDo: process a slide movement
         boardManager.move(direction, directionValue);
     }
 

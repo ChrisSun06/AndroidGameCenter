@@ -110,6 +110,8 @@ public class SlidingTileFragment extends GameCenterButtonFragment {
      */
     @Override
     void activateGame() {
+        accManager = (UserAccManager) FileSaver.loadFromFile(getActivity(),
+                LoginActivity.ACC_INFO);
         slidingTileBoardManager = new SlidingTileBoardManager(gridSizeSelected);
         slidingTileBoardManager.getBoard().setMaxUndoTime(accManager.getUserUndoTime());
         switchToGame();

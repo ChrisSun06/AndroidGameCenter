@@ -68,7 +68,7 @@ public class UserAccount implements Serializable {
      */
     void setSaves(String game, AbstractBoardManager boardManager){
         for (String key : gameSaves.keySet()){
-            if (game.contains(key)){gameSaves.put(key, boardManager);}
+            if (game.contains(key) && boardManager != null){gameSaves.put(key, boardManager);}
         }
     }
 

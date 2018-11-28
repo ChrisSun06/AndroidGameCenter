@@ -73,8 +73,9 @@ public class The2048GestureDetectGridView extends GridView {
     }
 
     public void UpdateScore(){
-        TextView score = (TextView) ((The2048GameActivity)getContext()).findViewById(R.id.scoreTextView);
-        score.setText("Score: " + boardManager.getBoard().getScore());
+        TextView score = ((The2048GameActivity)getContext()).findViewById(R.id.scoreTextView);
+        score.setText(getResources().getString(R.string.Score,
+                String.valueOf(boardManager.getBoard().getScore())));
     }
 }
 

@@ -3,12 +3,11 @@ package fall2018.csc2017.GameCentre.Strategies;
 import java.util.Map;
 
 import fall2018.csc2017.GameCentre.AbstractBoard;
-import fall2018.csc2017.GameCentre.SlidingTileBoard;
+import fall2018.csc2017.GameCentre.The2048Board;
 import fall2018.csc2017.GameCentre.UserAccManager;
 import fall2018.csc2017.GameCentre.UserAccount;
 
-public class SudokuStrategy implements ScoringStrategy{
-
+public class The2048Strategy implements ScoringStrategy {
     private Map<String, UserAccount> accountMap;
 
     private String currentUser;
@@ -17,14 +16,15 @@ public class SudokuStrategy implements ScoringStrategy{
 
     private int score;
 
-    public SudokuStrategy(UserAccManager accManager) {
+    public The2048Strategy(UserAccManager accManager) {
         this.accountMap = accManager.getAccountMap();
         this.currentUser = accManager.getCurrentUser();
         this.currentGame = accManager.getCurrentGame();
     }
 
     public void addScore(int moves, AbstractBoard board) {
-        score = accountMap.get(currentUser).getScores().get(currentGame) + 1;
+        The2048Board tempBoard = (The2048Board) board;
+        score = tempBoard.getScore();
         accountMap.get(currentUser).setScore(currentGame, score);
     }
 

@@ -41,7 +41,7 @@ public class SudokuBoardManager extends AbstractBoardManager {
 
     private void randomRemove(){
         Random random = new Random();
-        for (int i = 0; i < this.board.numTiles()/2; i++){
+        for (int i = 0; i < 2; i++){
             int randomInt = random.nextInt(board.numTiles());
             int col = randomInt % board.getNumCols();
             int row = randomInt / board.getNumRows();

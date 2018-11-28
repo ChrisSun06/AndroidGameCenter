@@ -1,6 +1,8 @@
 package fall2018.csc2017.GameCentre;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 public class GameCenterActivityController {
@@ -25,19 +27,20 @@ public class GameCenterActivityController {
         }
     }
 
-    Class<? extends Activity> getIntent(String game){
-        if (game == null){
-            return GameCenterActivity.class;
-        } else {
+    void startGame(String game, Context context, AbstractBoardManager manager){
+        if (game != null && manager != null){
             switch (game) {
                 case "sliding":
-                    return SlidingTileGameActivity.class;
+                    context.startActivity(new Intent(context, SlidingTileGameActivity.class));
+                    break;
                 case "Sudoku":
-                    return SudokuGameActivity.class;
+                    context.startActivity(new Intent(context, SudokuGameActivity.class));
+                    break;
                 case "2048":
-                    return The2048GameActivity.class;
+                    context.startActivity(new Intent(context, The2048GameActivity.class));
+                    break;
                 default:
-                    return GameCenterActivity.class;
+                    break;
             }
         }
     }

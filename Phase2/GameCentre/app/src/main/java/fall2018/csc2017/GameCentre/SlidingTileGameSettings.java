@@ -283,6 +283,6 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
      * Make toast for undo SetUndo
      */
     private void makeToastSetUndo(int i) {
-        Toast.makeText(this, "Undo Set To" + i, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Undo Set To " + i, Toast.LENGTH_SHORT).show();
     }
 }

@@ -48,14 +48,12 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
      */
     private String currentGame;
 
-    /**
-     * The buttons to display.
-     */
-    private HashMap<String, SudokuBoardManager> gameStateMap;
 
     // Grid View and calculated column height and width based on device size
     private SudokuGestureDetectGridView gridView;
     private static int columnWidth, columnHeight;
+
+    private GameActivityOverController gController;
 
     /**
      * The user account manager
@@ -77,6 +75,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         super.onCreate(savedInstanceState);
         boardManager = (SudokuBoardManager) FileSaver.loadFromFile(getApplicationContext(),
                 GameCenterActivity.TEMP_SAVE_FILENAME);
+        gController = new GameActivityOverController();
         setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_sudoku_main);
@@ -197,16 +196,10 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
      * Update the score of the current user if puzzle is solved.
      */
     public void onSolved(){
-        if(boardManager.puzzleSolved()) {
-            ScoringStrategy strategy = new SudokuStrategy(userAccManager);
-            userAccManager.addScore(strategy, 0, boardManager);
-            FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
-            Intent i = new Intent(SudokuGameActivity.this,
-                    GameOverActivity.class);
-            i.putExtra("GAME", GameSelectionActivity.GameSudoku);
-            i.putExtra(GameOverActivity.GameOverMessageName, "You Won!");
-            startActivity(i);
-        }
+        ScoringStrategy strategy = new SudokuStrategy(userAccManager);
+        userAccManager.addScore(strategy, 0, boardManager);
+        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
+        gController.startOverControl(boardManager, getApplicationContext(), strategy, currentGame);
     }
 
     /**
