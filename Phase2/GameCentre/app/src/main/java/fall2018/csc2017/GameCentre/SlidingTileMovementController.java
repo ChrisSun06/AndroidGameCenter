@@ -32,11 +32,14 @@ class SlidingTileMovementController {
     void processTapMovement(Context context, int position) {
         if (boardManager.isValidTap(position)) {
             processValidTap(context, position);
+
         } else if (!boardManager.getBoard().historyStack.isEmpty() && position ==
                 boardManager.blankTilePosition()) {
             processUndo(context);
+
         } else {
-            Toast.makeText(context, context.getDataDir().getPath(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, context.getDataDir().getPath(), Toast.LENGTH_SHORT).show();
+
         }
     }
 
@@ -45,13 +48,12 @@ class SlidingTileMovementController {
      *
      * @param context the current context
      */
-    private void processUndo(Context context) {
-
-        if (boardManager.getBoard().getMaxUndoTime() <= 0) {
-            Toast.makeText(context, "Cannot Undo anymore", Toast.LENGTH_SHORT).show();
-        } else {
+    public void processUndo(Context context) {
+        if (boardManager.getBoard().getMaxUndoTime() > 0) {
             boardManager.undo();
         }
+
+
     }
 
     /**
@@ -62,9 +64,6 @@ class SlidingTileMovementController {
      */
     private void processValidTap(Context context, int position) {
         boardManager.touchMove(position, false);
-        if (boardManager.puzzleSolved()) {
-            Toast.makeText(context, "YOU WIN!", Toast.LENGTH_SHORT).show();
-        }
     }
 
 

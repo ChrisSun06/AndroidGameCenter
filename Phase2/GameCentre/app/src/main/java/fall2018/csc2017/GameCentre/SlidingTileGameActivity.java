@@ -1,6 +1,7 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -85,7 +86,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
                         display();
                     }
                 });
-        gridView.updateUndoNumber();
+        gridView.setUndoText("Undo left: " + boardManager.getBoard().getMaxUndoTime());
     }
 
     /**
@@ -214,9 +215,15 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
      * Update the score of the current user if puzzle is solved.
      */
     public void onSolved(){
-        ScoringStrategy strategy = new SlidingTileStrategy(userAccManager);
-        userAccManager.addScore(strategy, boardManager.getBoard().getNumOfMoves(), boardManager);
-        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
+        if(boardManager.puzzleSolved()){
+            ScoringStrategy strategy = new SlidingTileStrategy(userAccManager);
+            userAccManager.addScore(strategy, boardManager.getBoard().getNumOfMoves(), boardManager);
+            FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
+            Intent i = new Intent(SlidingTileGameActivity.this,
+                    GameOverActivity.class);
+            i.putExtra("GAME", GameSelectionActivity.GameSlidingTile);
+            startActivity(i);
+        }
     }
 
     /**

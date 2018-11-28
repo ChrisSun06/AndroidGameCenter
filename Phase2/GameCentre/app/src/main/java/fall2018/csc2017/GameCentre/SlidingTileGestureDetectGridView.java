@@ -100,7 +100,6 @@ public class SlidingTileGestureDetectGridView extends GridView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        updateUndoNumber();
         return gDetector.onTouchEvent(ev);
     }
 
@@ -110,7 +109,17 @@ public class SlidingTileGestureDetectGridView extends GridView {
     }
 
     public void updateUndoNumber(){
-        TextView score = (TextView) ((SlidingTileGameActivity)getContext()).findViewById(R.id.undoSlidingTileTextView);
-        score.setText("Undo left: " + boardManager.getBoard().getMaxUndoTime());
+        if (boardManager.getBoard().getMaxUndoTime() <= 0) {
+            setUndoText("No More UNDO!");
+        } else{
+            //boardManager.undo();
+            setUndoText("Undo left: " + boardManager.getBoard().getMaxUndoTime());
+        }
+
+    }
+
+    void setUndoText(String txt){
+        TextView undoNum = (TextView) ((SlidingTileGameActivity)getContext()).findViewById(R.id.undoSlidingTileTextView);
+        undoNum.setText(txt);
     }
 }
