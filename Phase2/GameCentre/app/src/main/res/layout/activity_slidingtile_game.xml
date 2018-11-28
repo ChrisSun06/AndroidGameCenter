@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SlidingTileGameActivity">
+
+
+    <TextView
+        android:id="@+id/undoSlidingTileTextView"
+        android:layout_width="81dp"
+        android:layout_height="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Undo:"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <fall2018.csc2017.GameCentre.SlidingTileGestureDetectGridView
+        android:id="@+id/grid"
+        android:layout_width="382dp"
+        android:layout_height="527dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/undoSlidingTileTextView"
+        app:layout_constraintVertical_bias="1.0"
+        tools:context="fall2018.csc2017.GameCentre.SlidingTileGameActivity" />
+
+</android.support.constraint.ConstraintLayout>
