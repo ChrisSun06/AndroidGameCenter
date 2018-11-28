@@ -15,6 +15,10 @@ public class SlidingTileStrategy implements ScoringStrategy {
 
     private String currentGame;
 
+    private int currScore;
+
+    private int numMoves;
+    private SlidingTileBoard tempBoard;
     public SlidingTileStrategy(UserAccManager accManager) {
         this.accountMap = accManager.getAccountMap();
         this.currentUser = accManager.getCurrentUser();
@@ -23,10 +27,17 @@ public class SlidingTileStrategy implements ScoringStrategy {
 
     public void addScore(int moves, AbstractBoard board) {
         int score = accountMap.get(currentUser).getScores().get(currentGame);
-        SlidingTileBoard tempBoard = (SlidingTileBoard) board;
-        if (1000 * tempBoard.numTiles() / moves > score && moves != 1) {
+        numMoves = moves;
+        tempBoard = (SlidingTileBoard) board;
+        if (getScore()/ moves > score && moves != 1) {
             accountMap.get(currentUser).setScore(currentGame,
-                    1000 * tempBoard.numTiles() / moves);
+                    currScore);
         }
     }
+
+    public int getScore(){
+            currScore =  1000 * tempBoard.numTiles() / numMoves;
+            return currScore;
+    }
 }
+

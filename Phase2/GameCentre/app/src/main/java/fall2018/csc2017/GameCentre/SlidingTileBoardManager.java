@@ -42,7 +42,7 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
             tiles.add(new SlidingTile(tileNum + 1, gridSize));
         }
 
-        Collections.shuffle(tiles);
+        //Collections.shuffle(tiles);
         while (!solvable(tiles, gridSize)){
             Collections.shuffle(tiles);
         }

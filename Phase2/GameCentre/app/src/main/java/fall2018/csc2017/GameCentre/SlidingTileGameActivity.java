@@ -216,12 +216,13 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
      */
     public void onSolved(){
         if(boardManager.puzzleSolved()){
-            ScoringStrategy strategy = new SlidingTileStrategy(userAccManager);
+            SlidingTileStrategy strategy = new SlidingTileStrategy(userAccManager);
             userAccManager.addScore(strategy, boardManager.getBoard().getNumOfMoves(), boardManager);
             FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
             Intent i = new Intent(SlidingTileGameActivity.this,
                     GameOverActivity.class);
             i.putExtra("GAME", GameSelectionActivity.GameSlidingTile);
+            i.putExtra(GameOverActivity.GameOverMessageName, "Your Score is: " + strategy.getScore());
             startActivity(i);
         }
     }
