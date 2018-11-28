@@ -162,6 +162,11 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
             //userAccManager.addScore(boardManager.getBoard().getNumOfMoves()+1,
               //      boardManager.getBoard());
             FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
+            Intent i = new Intent(The2048GameActivity.this,
+                    GameOverActivity.class);
+            i.putExtra("GAME", GameSelectionActivity.Game2048);
+            i.putExtra(GameOverActivity.GameOverMessageName, "Your Score is: " + boardManager.getBoard().getScore());
+            startActivity(i);
         }
     }
 

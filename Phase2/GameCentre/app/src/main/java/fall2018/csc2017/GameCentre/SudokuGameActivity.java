@@ -1,6 +1,7 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -196,9 +197,16 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
      * Update the score of the current user if puzzle is solved.
      */
     public void onSolved(){
-        ScoringStrategy strategy = new SudokuStrategy(userAccManager);
-        userAccManager.addScore(strategy, 0, boardManager);
-        FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
+        if(boardManager.puzzleSolved()) {
+            ScoringStrategy strategy = new SudokuStrategy(userAccManager);
+            userAccManager.addScore(strategy, 0, boardManager);
+            FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
+            Intent i = new Intent(SudokuGameActivity.this,
+                    GameOverActivity.class);
+            i.putExtra("GAME", GameSelectionActivity.GameSudoku);
+            i.putExtra(GameOverActivity.GameOverMessageName, "You Won!");
+            startActivity(i);
+        }
     }
 
     /**
