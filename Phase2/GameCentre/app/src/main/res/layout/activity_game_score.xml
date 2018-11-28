@@ -32,20 +32,19 @@
         android:id="@+id/gameViewScores"
         android:layout_width="89dp"
         android:layout_height="519dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/gameViewName"
         app:layout_constraintTop_toBottomOf="@+id/gametype" />
 
     <ListView
         android:id="@+id/gameViewName"
         android:layout_width="263dp"
         android:layout_height="516dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/gameViewScores"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/gameViewScores"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gametype">
 

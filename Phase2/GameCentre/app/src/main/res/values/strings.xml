@@ -161,6 +161,8 @@
 
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
+    <string name="Score">Score: %1$s</string>
+
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
 
