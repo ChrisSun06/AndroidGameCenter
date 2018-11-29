@@ -3,13 +3,11 @@ package fall2018.csc2017.GameCentre;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
 import fall2018.csc2017.GameCentre.tiles.SlidingTile;
-
+import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileBoardManager;
+import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileBoard;
 import static org.junit.Assert.*;
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *

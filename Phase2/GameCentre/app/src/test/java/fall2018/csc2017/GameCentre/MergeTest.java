@@ -3,11 +3,8 @@ package fall2018.csc2017.GameCentre;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.List;
-
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
-
-import static org.junit.Assert.assertEquals;
+import fall2018.csc2017.GameCentre.The2048.Merge2048;
 import static org.junit.Assert.assertTrue;
 
 public class MergeTest {

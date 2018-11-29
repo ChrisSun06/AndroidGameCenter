@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.Sudoku;
 
 
 import android.content.Intent;
@@ -8,6 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import fall2018.csc2017.GameCentre.FileSaver;
+import fall2018.csc2017.GameCentre.GameCenterActivity;
+import fall2018.csc2017.GameCentre.GameCenterButtonFragment;
+import fall2018.csc2017.GameCentre.LoginActivity;
+import fall2018.csc2017.GameCentre.R;
+import fall2018.csc2017.GameCentre.UserAccManager;
 
 
 /**
@@ -51,7 +58,7 @@ public class SudokuFragment extends GameCenterButtonFragment {
      * Switch to the GameActivity view to play the game.
      */
     @Override
-    void switchToGame() {
+    public void switchToGame() {
         Intent tmp = new Intent(getActivity(), SudokuGameActivity.class);
         tmp.putExtra("accManager", accManager);
         FileSaver.saveToFile(getActivity(), boardManager,
@@ -63,9 +70,8 @@ public class SudokuFragment extends GameCenterButtonFragment {
      * Activate the Sudoku game.
      */
     @Override
-    void activateGame() {
-         boardManager = new SudokuBoardManager();
-        //boardManager.getBoard().setMaxUndoTime(accManager.getUserUndoTime());
+    public void activateGame() {
+        boardManager = new SudokuBoardManager();
         switchToGame();
     }
 

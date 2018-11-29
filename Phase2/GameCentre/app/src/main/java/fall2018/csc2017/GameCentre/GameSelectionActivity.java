@@ -14,16 +14,10 @@ public class GameSelectionActivity extends AppCompatActivity {
     public static final String GameSlidingTile = "sliding";
     public static final String Game2048 = "2048";
 
-    public static final String GAME_SAVES = "game_save.ser";
-
-    private UserAccManager accManager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_selection);
-
-        accManager = (UserAccManager) getIntent().getSerializableExtra("accountManager");
 
         goToSlidingTile();
         goToSudoku();

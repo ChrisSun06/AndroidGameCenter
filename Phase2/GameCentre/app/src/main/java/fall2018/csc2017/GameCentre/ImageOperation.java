@@ -7,7 +7,7 @@ import android.graphics.Matrix;
 import java.util.ArrayList;
 import java.util.List;
 
-class ImageOperation {
+public class ImageOperation {
     /**
      * The default source image width.
      */
@@ -23,7 +23,7 @@ class ImageOperation {
      * @param image the bitmap of the given image
      * @return the resized source image
      */
-    static Bitmap resizeSourceImage(Bitmap image) {
+    public static Bitmap resizeSourceImage(Bitmap image) {
         return Bitmap.createScaledBitmap(image,
                 SourceImageWidth, SourceImageHeight, false);
     }
@@ -35,7 +35,7 @@ class ImageOperation {
      * @param front front image
      * @return the superposed image
      */
-    static Bitmap superpose(Bitmap back, Bitmap front) {
+    public static Bitmap superpose(Bitmap back, Bitmap front) {
         Bitmap superposed= Bitmap.createBitmap(back.getWidth(), back.getHeight(), back.getConfig());
         Canvas canvas = new Canvas(superposed);
         canvas.drawBitmap(back, new Matrix(), null);
@@ -54,7 +54,7 @@ class ImageOperation {
      * @param numRows the # of rows
      * @param numCols the # of cols
      */
-    static List<Bitmap> cropImage(Bitmap image, int numRows, int numCols) {
+    public static List<Bitmap> cropImage(Bitmap image, int numRows, int numCols) {
         int segWidth = SourceImageWidth / numCols;
         int segHeight = SourceImageHeight / numRows;
         List<Bitmap> bitmaps = new ArrayList<>();

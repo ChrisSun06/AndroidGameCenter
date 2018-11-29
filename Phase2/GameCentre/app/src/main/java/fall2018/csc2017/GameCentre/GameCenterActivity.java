@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileGameSettings;
+
 /**
  * The initial activity for the sliding puzzle tile game.
  */
@@ -60,6 +62,7 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
         addLoadButtonListener();
         addSaveButtonListener();
         addSettingButtonListener();
+        addBackButtonListener();
     }
 
     private void currentGameInfoSetup(){
@@ -125,6 +128,21 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
     }
 
     /**
+     * Activate the back button
+     */
+    private void addBackButtonListener(){
+        Button backButton = findViewById(R.id.Back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GameCenterActivity.this,
+                        GameSelectionActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    /**
      * Display that a game was saved successfully.
      */
     private void makeToastSavedText() {
@@ -147,7 +165,8 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
         userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
                 LoginActivity.ACC_INFO);
         boardManager = userAccManager.getCurrentGameStateMap(currentGame);
-        userAccManager.makeToastGameState(getApplicationContext());
+        Toast.makeText(getApplicationContext(), userAccManager.makeToastTextGameState(),
+                Toast.LENGTH_LONG).show();
     }
 
     /**

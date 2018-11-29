@@ -3,7 +3,7 @@ package fall2018.csc2017.GameCentre.Strategies;
 import java.util.Map;
 
 import fall2018.csc2017.GameCentre.AbstractBoard;
-import fall2018.csc2017.GameCentre.SlidingTileBoard;
+import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileBoard;
 import fall2018.csc2017.GameCentre.UserAccManager;
 import fall2018.csc2017.GameCentre.UserAccount;
 
@@ -30,6 +30,8 @@ public class SlidingTileStrategy implements ScoringStrategy {
         int score = accountMap.get(currentUser).getScores().get(currentGame);
         numMoves = moves;
         tempBoard = (SlidingTileBoard) board;
+        tempBoard.setNumRows(board.getNumRows());
+        tempBoard.setNumCols(board.getNumCols());
         if (getScore()/ moves > score && moves != 1) {
             accountMap.get(currentUser).setScore(currentGame,
                     currScore);
@@ -37,8 +39,8 @@ public class SlidingTileStrategy implements ScoringStrategy {
     }
 
     public int getScore(){
-            currScore =  1000 * tempBoard.numTiles() / numMoves;
-            return currScore;
+        currScore =  1000 * tempBoard.numTiles() / numMoves;
+        return currScore;
     }
 }
 

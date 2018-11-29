@@ -1,14 +1,13 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.Sudoku;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.widget.Toast;
 
-import fall2018.csc2017.GameCentre.tiles.Tile;
+import fall2018.csc2017.GameCentre.AbstractBoardManager;
+import fall2018.csc2017.GameCentre.MovementController;
 
 
-public class SudokuMovementController {
+public class SudokuMovementController implements MovementController {
 
     /**
      * The boardManager.
@@ -20,8 +19,8 @@ public class SudokuMovementController {
      *
      * @param boardManager the board manager
      */
-    void setBoardManager(SudokuBoardManager boardManager) {
-        this.boardManager = boardManager;
+    public void setBoardManager(AbstractBoardManager boardManager) {
+        this.boardManager = (SudokuBoardManager) boardManager;
     }
 
     /**

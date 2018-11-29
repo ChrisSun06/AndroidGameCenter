@@ -2,11 +2,11 @@ package fall2018.csc2017.GameCentre;
 
 import org.junit.Test;
 
-import fall2018.csc2017.GameCentre.tiles.SlidingTile;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertSame;
+import fall2018.csc2017.GameCentre.SlidingTile.*;
+import fall2018.csc2017.GameCentre.The2048.*;
+import fall2018.csc2017.GameCentre.Sudoku.*;
 
 public class GameActivityControllerTest {
 

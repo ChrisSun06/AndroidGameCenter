@@ -1,16 +1,16 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.SlidingTile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import fall2018.csc2017.GameCentre.AbstractBoardManager;
 import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 
 /**
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  */
-class SlidingTileBoardManager extends AbstractBoardManager implements Serializable{
+public class SlidingTileBoardManager extends AbstractBoardManager implements Serializable{
 
     /**
      * The board being managed.
@@ -21,21 +21,21 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
      * Manage a board that has been pre-populated.
      * @param slidingTileBoard the board
      */
-    SlidingTileBoardManager(SlidingTileBoard slidingTileBoard) {
+    public SlidingTileBoardManager(SlidingTileBoard slidingTileBoard) {
         this.slidingTileBoard = slidingTileBoard;
     }
 
     /**
      * Return the current board.
      */
-    SlidingTileBoard getBoard() {
+    public SlidingTileBoard getBoard() {
         return slidingTileBoard;
     }
 
     /**
      * Manage a new shuffled board.
      */
-    SlidingTileBoardManager(int gridSize) {
+    public SlidingTileBoardManager(int gridSize) {
         List<SlidingTile> tiles = new ArrayList<>();
         final int numTiles = gridSize * gridSize;
         for (int tileNum = 0; tileNum != numTiles; tileNum++) {
@@ -105,11 +105,22 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
     }
 
     /**
+     * Return the string representation
+     *
+     * @return string representation
+     */
+    @Override
+    public String toString(){
+        return "Sliding Tile Board Manager";
+    }
+
+
+    /**
      * Return whether the tiles are in row-major order.
      *
      * @return whether the tiles are in row-major order
      */
-    boolean puzzleSolved() {
+    public boolean puzzleSolved() {
         boolean solved = true;
 
         int tileId = 1;
@@ -127,7 +138,7 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
      * @param position the tile to check
      * @return whether the tile at position is surrounded by a blank tile
      */
-    boolean isValidTap(int position) {
+    public boolean isValidTap(int position) {
 
         int row = position / slidingTileBoard.getNumRows();
         int col = position % slidingTileBoard.getNumCols();
@@ -168,7 +179,7 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
      *
      * @param position the position
      */
-    void touchMove(int position, boolean ifUndo) {
+    public void touchMove(int position, boolean ifUndo) {
             int row = position / slidingTileBoard.getNumRows();
             int col = position % slidingTileBoard.getNumCols();
 
@@ -185,7 +196,7 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
      *
      * @return An int blankTile position.
      */
-    int blankTilePosition(){
+    public int blankTilePosition(){
         return blankTilePos()[0] * slidingTileBoard.getNumRows() + blankTilePos()[1];
     }
 
@@ -193,7 +204,7 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
      * the method will be used in Class MovementController.
      *
      */
-    void undo(){
+    public void undo(){
         touchMove(slidingTileBoard.historyStack.pop(), true);
         slidingTileBoard.setMaxUndoTime(slidingTileBoard.getMaxUndoTime()-1);
     }

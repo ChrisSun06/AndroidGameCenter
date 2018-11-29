@@ -1,9 +1,14 @@
 package fall2018.csc2017.GameCentre;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
+
+import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileFragment;
+import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileGameActivity;
+import fall2018.csc2017.GameCentre.Sudoku.SudokuFragment;
+import fall2018.csc2017.GameCentre.Sudoku.SudokuGameActivity;
+import fall2018.csc2017.GameCentre.The2048.The2048Fragment;
+import fall2018.csc2017.GameCentre.The2048.The2048GameActivity;
 
 public class GameCenterActivityController {
 
@@ -29,19 +34,24 @@ public class GameCenterActivityController {
 
     void startGame(String game, Context context, AbstractBoardManager manager){
         if (game != null && manager != null){
-            switch (game) {
-                case "sliding":
-                    context.startActivity(new Intent(context, SlidingTileGameActivity.class));
-                    break;
-                case "Sudoku":
-                    context.startActivity(new Intent(context, SudokuGameActivity.class));
-                    break;
-                case "2048":
-                    context.startActivity(new Intent(context, The2048GameActivity.class));
-                    break;
-                default:
-                    break;
+            if (!game.contains("sliding")) {
+                startNonSlidingTileGames(game, context);
+            } else {
+                context.startActivity(new Intent(context, SlidingTileGameActivity.class));
             }
+        }
+    }
+
+    private void startNonSlidingTileGames(String game, Context context) {
+        switch (game) {
+            case "Sudoku":
+                context.startActivity(new Intent(context, SudokuGameActivity.class));
+                break;
+            case "2048":
+                context.startActivity(new Intent(context, The2048GameActivity.class));
+                break;
+            default:
+                break;
         }
     }
 }

@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SlidingTileGameActivity">
+    tools:context=".SlidingTile.SlidingTileGameActivity">
 
 
-    <fall2018.csc2017.GameCentre.The2048GestureDetectGridView xmlns:android="http://schemas.android.com/apk/res/android"
+    <fall2018.csc2017.GameCentre.The2048.The2048GestureDetectGridView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/the2048_grid"
@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreTextView"
-        tools:context="fall2018.csc2017.GameCentre.The2048GameActivity" />
+        tools:context="fall2018.csc2017.GameCentre.The2048.The2048GameActivity" />
 
     <Button
         android:id="@+id/the2048UndoButton"

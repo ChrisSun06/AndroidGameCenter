@@ -7,16 +7,42 @@ import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
 public abstract class AbstractBoard  extends Observable implements Serializable {
 
-    /**
-     * The max times player can undo(default is 3, player could set any positive integer).
-     */
-    int maxUndoTime;
+    int numRows;
+    int numCols;
 
     /**
-     * How many moves players make
+     * get number of rows.
+     *
+     * @return the number of rows
      */
-    int numOfMoves;
+    public int getNumRows() {
+        return numRows;
+    }
 
-    abstract void setMaxUndoTime(int i);
-    abstract int getMaxUndoTime();
+    /**
+     * get number of columns.
+     *
+     * @return the number of columns
+     */
+    public int getNumCols() {
+        return numCols;
+    }
+
+    /**
+     * set number of rows.
+     *
+     * @param numRows number of rows
+     */
+    public void setNumRows(int numRows) {
+        this.numRows = numRows;
+    }
+
+    /**
+     * set number of columns.
+     *
+     * @param numCols number of columns
+     */
+    public void setNumCols(int numCols) {
+        this.numCols = numCols;
+    }
 }

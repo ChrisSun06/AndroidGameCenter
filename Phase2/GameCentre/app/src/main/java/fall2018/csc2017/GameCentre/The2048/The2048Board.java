@@ -1,33 +1,21 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.The2048;
 
 import android.support.annotation.NonNull;
-
-import java.util.ArrayList;
-import java.util.Observable;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
+import fall2018.csc2017.GameCentre.AbstractBoard;
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
+import java.util.Random;
 
 /**
  * The board for game 2048.
  */
 public class The2048Board extends AbstractBoard implements Serializable, Iterable<TofeTile> {
 
-    /**
-     * The number of rows.
-     */
-    static final int numCols = 4;
-
-    /**
-     * The number of rows.
-     */
-    static final int numRows = 4;
 
     /**
      * The number of tiles.
@@ -55,12 +43,14 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      *
      * @param tiles the tiles for the board
      */
-    The2048Board(List<TofeTile> tiles) {
+    public The2048Board(List<TofeTile> tiles) {
+        setNumCols(4);
+        setNumRows(4);
         Iterator<TofeTile> iter = tiles.iterator();
-        this.tiles = new TofeTile[numRows][numCols];
+        this.tiles = new TofeTile[getNumRows()][getNumCols()];
 
-        for (int row = 0; row != numRows; row++) {
-            for (int col = 0; col != numCols; col++) {
+        for (int row = 0; row != getNumRows(); row++) {
+            for (int col = 0; col != getNumCols(); col++) {
                 this.tiles[row][col] = iter.next();
             }
         }
@@ -73,14 +63,40 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @param col the tile column
      * @return the tile at (row, col)
      */
-    TofeTile getTile(int row, int col) {
+    public TofeTile getTile(int row, int col) {
         return tiles[row][col];
     }
 
-    void setTile(int row, int col, TofeTile tile){
+    /**
+     * Return whether two 2048 boards, or 1 2048 board and an object is equal.
+     *
+     * @return whether this and Object o is equal.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof The2048Board)) {
+            return false;
+        }
+        int i = 0;
+        for (TofeTile tile : (The2048Board)o) {
+            int row = i / getNumRows();
+            int col = i % getNumCols();
+            if (tile.getValue() != getTile(row, col).getValue()){
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+
+    /**
+     * Set the tile at the corresponding row and col
+     * @param tile the tile
+     * @param row the tile row
+     * @param col the tile column
+     */
+    private void setTile(int row, int col, TofeTile tile){
         tiles[row][col] = tile;
-        setChanged();
-        notifyObservers();
     }
     /**
      * Return the column corresponding to colNum, can be inverted if specified.
@@ -142,10 +158,10 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * Return a Array with length 16 that contains all tiles from the board.
      * @return the array with length 16 that contains all tiles from the board.
      */
-    TofeTile[] getAllTiles(){
+    public TofeTile[] getAllTiles(){
         TofeTile[] result = new TofeTile[16];
-        for (int row = 0; row != numRows; row++) {
-            for (int col = 0; col != numCols; col++) {
+        for (int row = 0; row != getNumRows(); row++) {
+            for (int col = 0; col != getNumCols(); col++) {
                 result[row * 4 + col] = getTile(row, col);
             }
         }
@@ -157,9 +173,9 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * Precondition: inputTiles has size of 16.
      * @param inputTiles tiles to be put in the board
      */
-    void setAllTiles(TofeTile[] inputTiles){
-        for (int row = 0; row != numRows; row++) {
-            for (int col = 0; col != numCols; col++) {
+    public void setAllTiles(TofeTile[] inputTiles){
+        for (int row = 0; row != getNumRows(); row++) {
+            for (int col = 0; col != getNumCols(); col++) {
                 this.setTile(row, col, inputTiles[(row * 4) + col]);
             }
         }
@@ -175,7 +191,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @return a list of TofeTile representing the result after merging. the position
      * is determined by row * 4 + col
      */
-     TofeTile[] merge(String rOrC, boolean inverted) {
+     public TofeTile[] merge(String rOrC, boolean inverted) {
         TofeTile[] resultingTiles = new TofeTile[16];
         for (int i = 0; i < 4; i++) {
             TofeTile[] mergedTiles = new Merge2048(this.getRowOrColumn(rOrC, i, inverted)).merge();
@@ -185,40 +201,35 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         return resultingTiles;
     }
 
-    private int[] getBlankPosition(){
-        TofeTile[] allTiles = this.getAllTiles();
-        ArrayList<Integer> temResult = new ArrayList<>();
-        for(int i = 0; i < allTiles.length; i++) {
-            if (allTiles[i].getValue() == 0)
-                temResult.add(i);
+    /**
+     * Return true if the input TofeTile Array contains blank tile
+     *
+     * @return whether the input TofeTile Array contains blank tile
+     */
+    private boolean containsBlank(TofeTile[] inputs) {
+        for (int i = 0; i < 16; i++) {
+            if(inputs[i].getValue() == 0)
+                return true;
         }
-        int[]result = new int[temResult.size()];
-        for(int i = 0; i < temResult.size(); i++)
-            result[i] = temResult.get(i);
-        return result;
+        return false;
     }
 
-    void generateNewTiles(){
-        int[] blankPos = this.getBlankPosition();
-        if (blankPos.length != 0){
-            int randomPos = blankPos[(int) (Math.random() * blankPos.length)];
-            TofeTile randomTile = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, randomPos);
-            this.setTile(randomPos/The2048Board.numRows,randomPos%The2048Board.numCols,randomTile);
+    /**
+     * Return the updated TofeTile list that contains a newly generated tile if there is blank
+     * position on the board.
+     * @param inputs input tiles
+     * @return the updated TofeTile list that contains a newly generated tile if there is blank
+     * position on the board.
+     */
+    public TofeTile[] generateNewTile(TofeTile[] inputs){
+        if((!(Arrays.equals(this.getAllTiles(), inputs))) && containsBlank(inputs)) {
+            Random rnd = new Random();
+            int pos = rnd.nextInt(16);
+            while(inputs[pos].getValue()!=0)
+                pos = rnd.nextInt(16);
+            inputs[pos] = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, pos);
         }
-    }
-
-    @Override
-    public boolean equals(Object other){
-        if(!(other instanceof The2048Board))
-            return false;
-        for(int i = 0; i < numRows; i++){
-            for(int j = 0; j < numCols; j++){
-                if(this.getTile(i,j).getDrawableId() !=
-                        ((The2048Board) other).getTile(i,j).getDrawableId())
-                    return false;
-            }
-        }
-        return true;
+        return inputs;
     }
 
     /**
@@ -263,7 +274,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            TofeTile nextTile = getTile(nextIndex / numRows, nextIndex % numCols);
+            TofeTile nextTile = getTile(nextIndex / getNumRows(), nextIndex % getNumCols());
             nextIndex++;
             return nextTile;
         }
@@ -286,32 +297,4 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
     public int getScore(){
         return score;
     }
-
-
-    /*public int getScore(){
-        int result = 0;
-        Iterator<TofeTile> iter = this.iterator();
-        while(iter.hasNext()){
-            result += iter.next().getValue();
-        }
-        return result;
-    }
-    */
-
-    /**
-     * get the max undo times.
-     *
-     * @return the number of max undo times
-     */
-    int getMaxUndoTime() {
-        return maxUndoTime;
-    }
-
-    /**
-     * user could set their own undo time instead of 3.
-     */
-    void setMaxUndoTime(int num) {
-        maxUndoTime = num;
-    }
-
 }

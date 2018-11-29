@@ -1,44 +1,37 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.SlidingTile;
 
-import android.content.Context;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import static java.security.AccessController.getContext;
+import fall2018.csc2017.GameCentre.AbstractBoardManager;
+import fall2018.csc2017.GameCentre.MovementController;
 
 
-class SlidingTileMovementController {
+public class SlidingTileMovementController implements MovementController {
 
     /**
      * The boardManager.
      */
-    private SlidingTileBoardManager boardManager = null;
+    private SlidingTileBoardManager boardManager;
 
     /**
      * Set the boardManager.
      *
      * @param boardManager the board manager
      */
-    void setBoardManager(SlidingTileBoardManager boardManager) {
-        this.boardManager = boardManager;
+    public void setBoardManager(AbstractBoardManager boardManager) {
+        this.boardManager = (SlidingTileBoardManager) boardManager;
     }
 
     /**
      * Process the movement for each tap on position.
      *
-     * @param context the current context
      * @param position the tapped position
      */
-    void processTapMovement(Context context, int position) {
+    public void processTapMovement(int position) {
         if (boardManager.isValidTap(position)) {
-            processValidTap(context, position);
+            processValidTap(position);
 
         } else if (!boardManager.getBoard().historyStack.isEmpty() && position ==
                 boardManager.blankTilePosition()) {
             processUndo();
-
-        } else {
-            //Toast.makeText(context, context.getDataDir().getPath(), Toast.LENGTH_SHORT).show();
 
         }
     }
@@ -50,17 +43,14 @@ class SlidingTileMovementController {
         if (boardManager.getBoard().getMaxUndoTime() > 0) {
             boardManager.undo();
         }
-
-
     }
 
     /**
      * process the valid tap.
      *
-     * @param context the current context
      * @param position the position tapped
      */
-    private void processValidTap(Context context, int position) {
+    private void processValidTap(int position) {
         boardManager.touchMove(position, false);
     }
 

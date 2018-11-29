@@ -1,9 +1,5 @@
-package fall2018.csc2017.GameCentre;
-
+package fall2018.csc2017.GameCentre.The2048;
 import android.content.Context;
-import android.widget.Toast;
-
-
 class The2048MovementController {
 
     /**
@@ -39,7 +35,5 @@ class The2048MovementController {
      void processUndo(Context context) {
             boardManager.undo();
     }
-
-
 
 }

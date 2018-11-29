@@ -1,8 +1,9 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.Sudoku;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +12,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import fall2018.csc2017.GameCentre.AbstractBoardManager;
+import fall2018.csc2017.GameCentre.ImageOperation;
 import fall2018.csc2017.GameCentre.tiles.SudokuTile;
 import fall2018.csc2017.GameCentre.tiles.Tile;
 
@@ -20,11 +23,11 @@ public class SudokuBoardManager extends AbstractBoardManager {
 
     private ArrayList<Integer> NUMBERS = new ArrayList<>();
 
-    SudokuBoard getBoard(){
+    public SudokuBoard getBoard(){
         return board;
     }
 
-    SudokuBoardManager(){
+    public SudokuBoardManager(){
         for (int i = 1; i <= 9; i++) {
             NUMBERS.add(i);
         }
@@ -35,8 +38,18 @@ public class SudokuBoardManager extends AbstractBoardManager {
         randomRemove();
     }
 
-    SudokuBoardManager(SudokuBoard board){
+    public SudokuBoardManager(SudokuBoard board){
         this.board = board;
+    }
+
+    /**
+     * Return the string representation
+     *
+     * @return string representation
+     */
+    @Override
+    public String toString(){
+        return "Sudoku Board Manager";
     }
 
     private void randomRemove(){
@@ -77,22 +90,29 @@ public class SudokuBoardManager extends AbstractBoardManager {
         Collections.shuffle(tiles);
     }
 
-    boolean solve() {
+    public boolean solve() {
         for (int row = 0; row < board.getNumRows(); row++) {
             for (int col = 0; col < board.getNumCols(); col++) {
-                if (board.getTile(row, col).getNumber() == 0) {
-                    for (Integer k : NUMBERS) {
-                        board.setTile(row, col, k);
-                        if (isValid() && solve()) {
-                            return true;
-                        }
-                        board.setTile(row, col, 0);
-                    }
-                    return false;
-                }
+                Boolean x = checkSolveAndValid(row, col);
+                if (x != null) return x;
             }
         }
         return true;
+    }
+
+    @Nullable
+    private Boolean checkSolveAndValid(int row, int col) {
+        if (board.getTile(row, col).getNumber() == 0) {
+            for (Integer k : NUMBERS) {
+                board.setTile(row, col, k);
+                if (isValid() && solve()) {
+                    return true;
+                }
+                board.setTile(row, col, 0);
+            }
+            return false;
+        }
+        return null;
     }
 
     /**
@@ -108,24 +128,29 @@ public class SudokuBoardManager extends AbstractBoardManager {
         return board.getTile(row, col).getIsMutable();
     }
 
-    boolean isValid() {
+    public boolean isValid() {
         return isPartialValid(board.horizontal()) &&
                 isPartialValid(board.vertical()) &&
                 isPartialValid(board.sectional());
     }
 
-    boolean isPartialValid(Iterable<SudokuTile> part) {
+    private boolean isPartialValid(Iterable<SudokuTile> part) {
         int count = 0;
         int totalCount = 0;
         Set<Integer> tempSet = new HashSet<>();
 
+        if (checkValid(part, count, totalCount, tempSet)) return false;
+        return true;
+    }
+
+    private boolean checkValid(Iterable<SudokuTile> part, int count, int totalCount, Set<Integer> tempSet) {
         for (SudokuTile i: part){
             totalCount ++;
             if (i.getNumber() != 0) {
                 count++;
                 tempSet.add(i.getNumber());
                 if (tempSet.size() != count){
-                    return false;
+                    return true;
                 }
             }
             if (totalCount == board.getNumRows()){
@@ -134,76 +159,10 @@ public class SudokuBoardManager extends AbstractBoardManager {
                 tempSet.clear();
             }
         }
-        return true;
+        return false;
     }
 
-    /*boolean isRowValid() {
-        int count = 0;
-        int totalCount = 0;
-        Set<SudokuTile> tempSet = new HashSet<>();
-        for (SudokuTile i: board.horizontal()){
-            totalCount ++;
-            if (i.getNumber() != 0) {
-                count++;
-                tempSet.add(i);
-                if (tempSet.size() != count){
-                    return false;
-                }
-            }
-            if (totalCount == board.getRows()){
-                totalCount = 0;
-                count = 0;
-                tempSet.clear();
-            }
-        }
-        return true;
-    }
-
-    boolean isColValid() {
-        int count = 0;
-        int totalCount = 0;
-        Set<SudokuTile> tempSet = new HashSet<>();
-        for (SudokuTile i: board.vertical()){
-            totalCount ++;
-            if (i.getNumber() != 0) {
-                count++;
-                tempSet.add(i);
-                if (tempSet.size() != count){
-                    return false;
-                }
-            }
-            if (totalCount == board.getRows()){
-                totalCount = 0;
-                count = 0;
-                tempSet.clear();
-            }
-        }
-        return true;
-    }
-
-    boolean isSectionValid() {
-        int count = 0;
-        int totalCount = 0;
-        Set<Integer> tempSet = new HashSet<>();
-        for (Integer i: board.sectional()){
-            totalCount ++;
-            if (i != 0) {
-                count++;
-                tempSet.add(i);
-                if (tempSet.size() != count){
-                    return false;
-                }
-            }
-            if (totalCount == board.getRows()){
-                totalCount = 0;
-                count = 0;
-                tempSet.clear();
-            }
-        }
-        return true;
-    }*/
-
-    boolean puzzleSolved(){
+    public boolean puzzleSolved(){
         boolean filled = true;
         for (SudokuTile i: board.horizontal()){
             if (i.getNumber() == 0){filled = false;}
@@ -211,7 +170,7 @@ public class SudokuBoardManager extends AbstractBoardManager {
         return isValid() && filled;
     }
 
-    void touchMove(int position){
+    public void touchMove(int position){
         int row = position / board.getNumRows();
         int col = position % board.getNumCols();
         board.incrementTile(row, col);

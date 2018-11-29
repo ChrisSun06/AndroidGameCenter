@@ -4,10 +4,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import fall2018.csc2017.GameCentre.tiles.SudokuTile;
-
 import static org.junit.Assert.*;
+import fall2018.csc2017.GameCentre.Sudoku.*;
 
 public class SudokuTest {
 

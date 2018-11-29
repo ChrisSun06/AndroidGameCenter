@@ -17,12 +17,12 @@ public abstract class GameCenterButtonFragment extends Fragment {
         // Required empty public constructor
     }
 
-    abstract void activateGame();
+    public abstract void activateGame();
 
     /**
      * Switch to the GameActivity view to play the game.
      */
-    abstract void switchToGame();
+    public abstract void switchToGame();
 
 
     @Override

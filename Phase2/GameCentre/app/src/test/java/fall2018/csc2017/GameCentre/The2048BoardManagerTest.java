@@ -2,14 +2,10 @@ package fall2018.csc2017.GameCentre;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
-
 import static org.junit.Assert.*;
+import fall2018.csc2017.GameCentre.The2048.*;
 
 public class The2048BoardManagerTest {
     private The2048BoardManager boardManager;
@@ -67,8 +63,10 @@ public class The2048BoardManagerTest {
     @Test
     public void testConstructor() {
         setUp();
-        int onBoardValue = boardManager.getBoard().getScore();
-        assertTrue((onBoardValue == 4 || onBoardValue == 6 || onBoardValue == 8));
+        //int onBoardValue = boardManager.getBoard().getScore();
+        //assertTrue((onBoardValue == 4 || onBoardValue == 6 || onBoardValue == 8));
+        int score = boardManager.getBoard().getScore();
+        assertTrue((score == 0));
     }
 
     @Test
@@ -76,8 +74,10 @@ public class The2048BoardManagerTest {
         setUp();
         SetUnfinihsedBoard();
         boardManager.move("column", false);
-        int onBoardValue = boardManager.getBoard().getScore();
-        assertTrue((onBoardValue == 66 || onBoardValue == 68));
+        //int onBoardValue = boardManager.getBoard().getScore();
+        //assertTrue((onBoardValue == 66 || onBoardValue == 68));
+        int score = boardManager.getBoard().getScore();
+        assertTrue((score == 64));
     }
 
     @Test
