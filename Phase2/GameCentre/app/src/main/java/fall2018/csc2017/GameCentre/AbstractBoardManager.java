@@ -9,4 +9,6 @@ abstract class AbstractBoardManager implements Serializable {
     AbstractBoard getBoard(){return board;}
 
     abstract boolean puzzleSolved();
+
+    public abstract String toString();
 }

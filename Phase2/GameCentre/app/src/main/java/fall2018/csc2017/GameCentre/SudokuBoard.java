@@ -10,18 +10,13 @@ import java.util.Observable;
 import fall2018.csc2017.GameCentre.tiles.SudokuTile;
 
 public class SudokuBoard extends AbstractBoard implements Serializable{
-    /**
-     * The number of rows.
-     */
-    private int numRows = 9;
-    /**
-     * The number of rows.
-     */
-    private int numCols= 9;
 
-    private SudokuTile[][] tiles = new SudokuTile[numRows][numCols];
+    private SudokuTile[][] tiles;
 
     SudokuBoard(List<SudokuTile> tiles) {
+        this.numRows = 9;
+        this.numCols = 9;
+        this.tiles = new SudokuTile[numRows][numCols];
         Iterator<SudokuTile> iter = tiles.iterator();
         for (int row = 0; row != numRows; row++) {
             for (int col = 0; col != numCols; col++) {
@@ -33,10 +28,6 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
     int numTiles(){
         return numCols * numRows;
     }
-
-    int getNumRows(){return numRows;}
-
-    int getNumCols(){return numCols;}
 
     void setTile(int row, int col, int value){
         tiles[row][col].setNumber(value);

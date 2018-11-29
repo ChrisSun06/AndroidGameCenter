@@ -8,7 +8,7 @@ import android.widget.Toast;
 import fall2018.csc2017.GameCentre.tiles.Tile;
 
 
-public class SudokuMovementController {
+public class SudokuMovementController implements MovementController{
 
     /**
      * The boardManager.
@@ -20,8 +20,8 @@ public class SudokuMovementController {
      *
      * @param boardManager the board manager
      */
-    void setBoardManager(SudokuBoardManager boardManager) {
-        this.boardManager = boardManager;
+    public void setBoardManager(AbstractBoardManager boardManager) {
+        this.boardManager = (SudokuBoardManager) boardManager;
     }
 
     /**

@@ -3,8 +3,8 @@ package fall2018.csc2017.GameCentre;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
 
 import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 

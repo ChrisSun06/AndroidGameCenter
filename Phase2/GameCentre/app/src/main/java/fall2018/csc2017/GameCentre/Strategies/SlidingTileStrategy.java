@@ -37,8 +37,8 @@ public class SlidingTileStrategy implements ScoringStrategy {
     }
 
     public int getScore(){
-            currScore =  1000 * tempBoard.numTiles() / numMoves;
-            return currScore;
+        currScore =  1000 * tempBoard.numTiles() / numMoves;
+        return currScore;
     }
 }
 

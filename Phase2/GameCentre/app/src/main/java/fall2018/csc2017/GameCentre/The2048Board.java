@@ -19,15 +19,6 @@ import fall2018.csc2017.GameCentre.tiles.TofeTile;
  */
 public class The2048Board extends AbstractBoard implements Serializable, Iterable<TofeTile> {
 
-    /**
-     * The number of rows.
-     */
-    static final int numCols = 4;
-
-    /**
-     * The number of rows.
-     */
-    static final int numRows = 4;
 
     /**
      * The number of tiles.
@@ -56,6 +47,8 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @param tiles the tiles for the board
      */
     The2048Board(List<TofeTile> tiles) {
+        this.numCols = 4;
+        this.numRows = 4;
         Iterator<TofeTile> iter = tiles.iterator();
         this.tiles = new TofeTile[numRows][numCols];
 
@@ -203,7 +196,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         if (blankPos.length != 0){
             int randomPos = blankPos[(int) (Math.random() * blankPos.length)];
             TofeTile randomTile = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, randomPos);
-            this.setTile(randomPos/The2048Board.numRows,randomPos%The2048Board.numCols,randomTile);
+            this.setTile(randomPos/numRows,randomPos% numCols, randomTile);
         }
     }
 

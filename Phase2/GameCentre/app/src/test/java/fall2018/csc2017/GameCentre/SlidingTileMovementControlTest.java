@@ -1,28 +1,18 @@
 package fall2018.csc2017.GameCentre;
 
-import android.content.Context;
-import fall2018.csc2017.GameCentre.tiles.TofeTile;
-import org.junit.Rule;
+
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import static org.junit.Assert.*;
-import fall2018.csc2017.GameCentre.SlidingTileMovementController;
-import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 
 public class SlidingTileMovementControlTest {
 
     private int gridSize = 4;
-    @Mock
-    SlidingTileMovementController movementController;
-    @Mock
+    SlidingTileMovementController movementController = new SlidingTileMovementController();
+
     SlidingTileBoardManager boardManager = new SlidingTileBoardManager(gridSize);
-    @Mock
-    Context context = mock(Context.class);
 
     static final int validTap = 2;
     static final int invalidTap = 4;
@@ -33,12 +23,6 @@ public class SlidingTileMovementControlTest {
 
     public void setup(){
         movementController.setBoardManager(boardManager);
-        //set up true valid tap position
-        when(boardManager.isValidTap(validTap)).thenReturn(true);
-        //set up a false valid tap
-        when(boardManager.isValidTap(invalidTap)).thenReturn(false);
-
-        when(boardManager.blankTilePosition()).thenReturn(blankPosition);
 
     }
 
@@ -48,7 +32,7 @@ public class SlidingTileMovementControlTest {
     @Test
      public void testValidTapMovement() {
         setup();
-        movementController.processTapMovement(context, validTap);
+        movementController.processTapMovement(validTap);
         //when(boardManager.touchMove(2, true)).thenAnswer("Successful tap!");
         when(boardManager.blankTilePosition()).thenCallRealMethod();
         assertEquals(validTap, boardManager.blankTilePosition());
@@ -62,7 +46,7 @@ public class SlidingTileMovementControlTest {
     public void testInvalidTapMovement() {
         setup();
         SlidingTileBoard origin = boardManager.getBoard();
-        movementController.processTapMovement(context, invalidTap);
+        movementController.processTapMovement(invalidTap);
         assertEquals(origin, boardManager.getBoard());
 
     }
@@ -74,9 +58,9 @@ public class SlidingTileMovementControlTest {
     public void testUndoTapMovement() {
         setup();
         SlidingTileBoard origin = boardManager.getBoard();
-        movementController.processTapMovement(context, validTap);
+        movementController.processTapMovement(validTap);
         SlidingTileBoard newBoard = boardManager.getBoard();
-        movementController.processTapMovement(context, blankPosition);
+        movementController.processTapMovement(blankPosition);
         SlidingTileBoard UndoBoard = boardManager.getBoard();
         assertNotEquals(origin, newBoard);
         assertEquals(origin, UndoBoard);
@@ -92,9 +76,9 @@ public class SlidingTileMovementControlTest {
         setup();
         SlidingTileBoard origin = boardManager.getBoard();
         boardManager.getBoard().setMaxUndoTime(0);
-        movementController.processTapMovement(context, validTap);
+        movementController.processTapMovement(validTap);
         SlidingTileBoard newBoard = boardManager.getBoard();
-        movementController.processTapMovement(context, blankPosition);
+        movementController.processTapMovement(blankPosition);
         SlidingTileBoard UndoBoard = boardManager.getBoard();
         assertNotEquals(origin, newBoard);
         assertEquals(newBoard, UndoBoard);

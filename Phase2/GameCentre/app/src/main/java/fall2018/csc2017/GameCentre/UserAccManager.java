@@ -85,15 +85,16 @@ public class UserAccManager implements Serializable {
      * @param email    the email/username
      * @param password the password
      * @param context the current context
+     * @return the string for which toast to display
      */
-    public void writeAcc(String email, String password, Context context) {
+    public String writeAcc(String email, String password, Context context) {
         if (accountMap.containsKey(email)){
-            Toast.makeText(context, "Username already taken!", Toast.LENGTH_SHORT).show();
+            return "Username already taken!";
         } else if (password.equals("") || email.equals("")){
-            Toast.makeText(context, "Field cannot be empty!", Toast.LENGTH_SHORT).show();
+            return "Field cannot be empty!";
         } else {
-            Toast.makeText(context, "Registered!", Toast.LENGTH_SHORT).show();
             accountMap.put(email, new UserAccount(email, password));
+            return "Registered!";
         }
     }
 
@@ -134,8 +135,13 @@ public class UserAccManager implements Serializable {
      * @param boardManager board manager user is playing on.
      */
     void addScore(ScoringStrategy scoringStrategy, int moves, AbstractBoardManager boardManager) {
-        if (boardManager.puzzleSolved()){
+        if (boardManager.toString().equals("2048 Board Manager")){
             scoringStrategy.addScore(moves, boardManager.getBoard());
+        }
+        else {
+            if (boardManager.puzzleSolved()) {
+                scoringStrategy.addScore(moves, boardManager.getBoard());
+            }
         }
     }
 

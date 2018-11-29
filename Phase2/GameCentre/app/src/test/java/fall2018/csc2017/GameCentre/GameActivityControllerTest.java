@@ -60,16 +60,4 @@ public class GameActivityControllerTest {
         assertNotEquals(gController.switchFragment("2048").getClass(),
                 slidingTileFragment.getClass());
     }
-
-    @Test
-    public void testGetIntent(){
-        setUp();
-        setUpClass();
-        assertEquals(gController.getIntent(null), gameCenterActivity.getClass());
-        assertNotEquals(gController.getIntent(null), sudokuGameActivity.getClass());
-        assertEquals(gController.getIntent("Sudoku"), sudokuGameActivity.getClass());
-        assertEquals(gController.getIntent("2048"), the2048GameActivity.getClass());
-        assertEquals(gController.getIntent("sliding"), slidingTileGameActivity.getClass());
-        assertEquals(gController.getIntent("abcd"), gameCenterActivity.getClass());
-    }
 }

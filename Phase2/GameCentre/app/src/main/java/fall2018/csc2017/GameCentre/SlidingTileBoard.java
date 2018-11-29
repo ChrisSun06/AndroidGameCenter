@@ -18,15 +18,6 @@ import fall2018.csc2017.GameCentre.tiles.SlidingTile;
  */
 public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingTile> {
 
-    /**
-     * The number of rows.
-     */
-    private int numCols;
-
-    /**
-     * The number of rows.
-     */
-    private int numRows;
 
     /**
      * The tiles on the board in row-major order.
@@ -82,24 +73,6 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
      */
     int getNumOfMoves() {
         return numOfMoves;
-    }
-
-    /**
-     * get number of rows.
-     *
-     * @return the number of rows
-     */
-    public int getNumRows() {
-        return numRows;
-    }
-
-    /**
-     * get number of columns.
-     *
-     * @return the number of columns
-     */
-    public int getNumCols() {
-        return numCols;
     }
 
     /**

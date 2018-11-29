@@ -110,7 +110,8 @@ public class LoginActivity extends AppCompatActivity {
      * @param password password of the user
      */
     private void writeAccount(String email, String password) {
-        accManager.writeAcc(email, password, getApplicationContext());
+        String toastMsg = accManager.writeAcc(email, password, getApplicationContext());
+        Toast.makeText(getApplicationContext(), toastMsg, Toast.LENGTH_SHORT).show();
         FileSaver.saveToFile(getApplicationContext(), accManager
                 , LoginActivity.ACC_INFO);
     }

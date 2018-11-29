@@ -72,7 +72,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         // Add View to activity
 
         gridView = findViewById(R.id.the2048_grid);
-        gridView.setNumColumns(The2048Board.numCols);
+        gridView.setNumColumns(boardManager.getBoard().getNumCols());
         gridView.setBoardManager(boardManager);
         boardManager.getBoard().addObserver(this);
         // Observer sets up desired dimensions as well as calls our display function
@@ -86,8 +86,8 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
                         int displayWidth = gridView.getMeasuredWidth();
                         int displayHeight = gridView.getMeasuredHeight();
 
-                        columnWidth = displayWidth / The2048Board.numCols;
-                        columnHeight = displayHeight / The2048Board.numRows;
+                        columnWidth = displayWidth / boardManager.getBoard().getNumCols();
+                        columnHeight = displayHeight / boardManager.getBoard().getNumRows();
 
                         display();
                     }
@@ -110,12 +110,11 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
      *
      * @param context the context
      */
-    //todo: needs to rewrite into a 2048 version
     private void createTileButtons(Context context) {
         The2048Board the2048Board = boardManager.getBoard();
         tileButtons = new ArrayList<>();
-        for (int row = 0; row != The2048Board.numRows; row++) {
-            for (int col = 0; col != The2048Board.numCols; col++) {
+        for (int row = 0; row != boardManager.getBoard().numRows; row++) {
+            for (int col = 0; col != boardManager.getBoard().getNumCols(); col++) {
                 ImageView tmp = new ImageView(context);
                 tmp.setBackgroundResource(the2048Board.getTile(row, col).getDrawableId());
                 this.tileButtons.add(tmp);
@@ -131,8 +130,8 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         The2048Board the2048Board = boardManager.getBoard();
         int nextPos = 0;
         for (ImageView b : tileButtons) {
-            int row = nextPos / The2048Board.numRows;
-            int col = nextPos % The2048Board.numCols;
+            int row = nextPos / boardManager.getBoard().getNumRows();
+            int col = nextPos % boardManager.getBoard().getNumCols();
             b.setBackgroundResource(the2048Board.getTile(row, col).getDrawableId());
             //b.setBackground(Drawable.createFromPath(the2048Board.getTile(row, col).getBackground()));
             nextPos++;
@@ -165,7 +164,6 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
      * Update the score of the current user if puzzle is solved.
      */
     public void onSolved(){
-        //todo: currently userAccManager add score can only be apply to SlidinTile, needs to change
         ScoringStrategy strategy = new The2048Strategy(userAccManager);
         userAccManager.addScore(strategy, 0, boardManager);
         FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);

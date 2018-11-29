@@ -58,7 +58,7 @@ public class SlidingTileGestureDetectGridView extends GridView {
                 int position = SlidingTileGestureDetectGridView.this.pointToPosition
                         (Math.round(event.getX()), Math.round(event.getY()));
 
-                mController.processTapMovement(context, position);
+                mController.processTapMovement(position);
                 updateUndoNumber();
 
                 return true;

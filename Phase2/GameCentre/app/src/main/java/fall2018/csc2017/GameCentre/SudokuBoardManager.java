@@ -39,6 +39,16 @@ public class SudokuBoardManager extends AbstractBoardManager {
         this.board = board;
     }
 
+    /**
+     * Return the string representation
+     *
+     * @return string representation
+     */
+    @Override
+    public String toString(){
+        return "Sudoku Board Manager";
+    }
+
     private void randomRemove(){
         Random random = new Random();
         for (int i = 0; i < 2; i++){

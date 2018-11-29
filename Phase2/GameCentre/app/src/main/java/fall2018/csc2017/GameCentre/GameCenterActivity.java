@@ -60,6 +60,7 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
         addLoadButtonListener();
         addSaveButtonListener();
         addSettingButtonListener();
+        addBackButtonListener();
     }
 
     private void currentGameInfoSetup(){
@@ -120,6 +121,21 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
                 saveToFile();
                 FileSaver.saveToFile(getApplicationContext(), boardManager, TEMP_SAVE_FILENAME);
                 makeToastSavedText();
+            }
+        });
+    }
+
+    /**
+     * Activate the back button
+     */
+    private void addBackButtonListener(){
+        Button backButton = findViewById(R.id.Back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GameCenterActivity.this,
+                        GameSelectionActivity.class);
+                startActivity(intent);
             }
         });
     }

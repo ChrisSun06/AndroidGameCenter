@@ -93,6 +93,16 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     }
 
     /**
+     * Return the string representation
+     *
+     * @return string representation
+     */
+    @Override
+    public String toString(){
+        return "2048 Board Manager";
+    }
+
+    /**
      * add score from previous board to merged board
      * @param mergeTiles The array of TofeTiles (after the merge method in board class)
      */

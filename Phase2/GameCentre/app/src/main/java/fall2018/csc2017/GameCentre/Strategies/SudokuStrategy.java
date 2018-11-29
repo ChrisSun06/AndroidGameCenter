@@ -17,17 +17,24 @@ public class SudokuStrategy implements ScoringStrategy{
 
     private int score;
 
+    /**
+     * Set up the strategy for Sudoku
+     *
+     * @param accManager
+     */
     public SudokuStrategy(UserAccManager accManager) {
         this.accountMap = accManager.getAccountMap();
         this.currentUser = accManager.getCurrentUser();
         this.currentGame = accManager.getCurrentGame();
     }
 
+    @Override
     public void addScore(int moves, AbstractBoard board) {
         score = accountMap.get(currentUser).getScores().get(currentGame) + 1;
         accountMap.get(currentUser).setScore(currentGame, score);
     }
 
+    @Override
     public int getScore(){
         return score;
     }

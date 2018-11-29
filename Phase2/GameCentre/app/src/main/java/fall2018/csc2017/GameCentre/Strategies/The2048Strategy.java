@@ -16,18 +16,27 @@ public class The2048Strategy implements ScoringStrategy {
 
     private int score;
 
+    /**
+     * Set up the strategy for 2048 game.
+     *
+     * @param accManager
+     */
     public The2048Strategy(UserAccManager accManager) {
         this.accountMap = accManager.getAccountMap();
         this.currentUser = accManager.getCurrentUser();
         this.currentGame = accManager.getCurrentGame();
     }
 
+    @Override
     public void addScore(int moves, AbstractBoard board) {
         The2048Board tempBoard = (The2048Board) board;
         score = tempBoard.getScore();
-        accountMap.get(currentUser).setScore(currentGame, score);
+        if (score > accountMap.get(currentUser).getScores().get(currentGame)) {
+            accountMap.get(currentUser).setScore(currentGame, score);
+        }
     }
 
+    @Override
     public int getScore(){
         return score;
     }

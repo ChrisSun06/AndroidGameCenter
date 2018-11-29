@@ -105,6 +105,17 @@ class SlidingTileBoardManager extends AbstractBoardManager implements Serializab
     }
 
     /**
+     * Return the string representation
+     *
+     * @return string representation
+     */
+    @Override
+    public String toString(){
+        return "Sliding Tile Board Manager";
+    }
+
+
+    /**
      * Return whether the tiles are in row-major order.
      *
      * @return whether the tiles are in row-major order
