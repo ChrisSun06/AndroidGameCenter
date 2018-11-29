@@ -5,12 +5,14 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Iterator;
 import java.util.List;
 
 import fall2018.csc2017.GameCentre.AbstractBoard;
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
+import java.util.Random;
 
 /**
  * The board for game 2048.
@@ -77,8 +79,6 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      */
     void setTile(int row, int col, TofeTile tile){
         tiles[row][col] = tile;
-        setChanged();
-        notifyObservers();
     }
     /**
      * Return the column corresponding to colNum, can be inverted if specified.
@@ -180,6 +180,13 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
             for(int j = 0; j < 4; j++)
                 resultingTiles[mergedTiles[j].getId()] = mergedTiles[j];
         }
+        if((!(Arrays.equals(this.getAllTiles(), resultingTiles))) && containsBlank(resultingTiles)) {
+            Random rnd = new Random();
+            int pos = rnd.nextInt(16);
+            while(resultingTiles[pos].getValue()!=0)
+                pos = rnd.nextInt(16);
+            resultingTiles[pos] = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, pos);
+        }
         return resultingTiles;
     }
 
@@ -188,31 +195,14 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      *
      * @return a list of int representing positions of all blank tiles
      */
-    private int[] getBlankPosition(){
-        TofeTile[] allTiles = this.getAllTiles();
-        ArrayList<Integer> temResult = new ArrayList<>();
-        for(int i = 0; i < allTiles.length; i++) {
-            if (allTiles[i].getValue() == 0)
-                temResult.add(i);
+    private boolean containsBlank(TofeTile[] inputs) {
+        for (int i = 0; i < 16; i++) {
+            if(inputs[i].getValue() == 0)
+                return true;
         }
-        int[]result = new int[temResult.size()];
-        for(int i = 0; i < temResult.size(); i++)
-            result[i] = temResult.get(i);
-        return result;
+        return false;
     }
 
-
-    /**
-     * Generating a new tile on the board if there is any blank tile on the board.
-     */
-    void generateNewTiles(){
-        int[] blankPos = this.getBlankPosition();
-        if (blankPos.length != 0){
-            int randomPos = blankPos[(int) (Math.random() * blankPos.length)];
-            TofeTile randomTile = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, randomPos);
-            this.setTile(randomPos/getNumRows(),randomPos% getNumCols(), randomTile);
-        }
-    }
 
     /**
      * Initiate a board iterator to keep track of the order of the tiles on the board.

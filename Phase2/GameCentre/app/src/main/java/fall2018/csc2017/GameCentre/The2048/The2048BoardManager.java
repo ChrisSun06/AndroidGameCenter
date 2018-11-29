@@ -78,13 +78,10 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      */
     void move(String rOrC, boolean inverted){
         historyStack.push(board.getAllTiles());
-        TofeTile[] previousTiles = board.getAllTiles();
         TofeTile[] mergedList = this.board.merge(rOrC, inverted);
         this.board.setAllTiles(mergedList);
         scoreStack.push(this.board.getScore());
         addScore(mergedList);
-        if(!Arrays.equals(previousTiles, mergedList))
-            this.board.generateNewTiles();
     }
 
     /**
@@ -94,18 +91,23 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      */
     @Override
     public boolean puzzleSolved() {
-        boolean solved = true;
-        for(int i = 0; i < 4; i++){
-            for(int j = 0; j < 3; j ++){
-                if(board.getTile(i,j).getValue() == board.getTile(i,j+1).getValue())
-                    solved = false;
-                if(board.getTile(j,i).getValue() == board.getTile(j+1,i).getValue())
-                    solved = false; } }
-        for(int i = 0; i< 4 ; i++) {
-            for (int j = 0; j < 4; j++) {
-                if (board.getTile(i, j).getValue() == 0) {
-                    solved = false; } } }
-                    return solved;
+//        for(int i = 0; i < 4; i++){
+//            for(int j = 0; j < 3; j++){
+//                if(board.getTile(i,j).getValue() == board.getTile(i,j+1).getValue())
+//                    return false;
+//                if(board.getTile(j,i).getValue() == board.getTile(j+1,i).getValue())
+//                    return false; } }
+//
+//        for(int i = 0; i < 4 ; i++) {
+//            for (int j = 0; j < 4; j++) {
+//                if (board.getTile(i, j).getValue() == 0)
+//                    return false; } }
+//        return true;
+        TofeTile[] currentTiles = board.getAllTiles();
+        return(Arrays.equals(currentTiles, board.merge("row", true)) &&
+                Arrays.equals(currentTiles, board.merge("row", false)) &&
+                Arrays.equals(currentTiles, board.merge("column", true)) &&
+                Arrays.equals(currentTiles, board.merge("column", false)));
     }
 
     /**

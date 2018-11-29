@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -21,6 +22,7 @@ import fall2018.csc2017.GameCentre.R;
 import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 import fall2018.csc2017.GameCentre.Strategies.The2048Strategy;
 import fall2018.csc2017.GameCentre.UserAccManager;
+import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
 public class The2048GameActivity extends AppCompatActivity implements Observer{
 
@@ -187,6 +189,8 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     public void update(Observable o, Object arg) {
         saveToFile();
         display();
+        TofeTile[] currentTiles = boardManager.getBoard().getAllTiles();
+        System.out.println(Arrays.equals(currentTiles, boardManager.getBoard().merge("row", true)));
         onSolved();
     }
 
