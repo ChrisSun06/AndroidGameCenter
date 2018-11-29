@@ -168,7 +168,7 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
      * the method will be used in Class MovementController.
      */
     public void undo() {
-        if(!historyStack.empty()) {
+        if(!historyStack.empty() && !puzzleSolved()) {
             this.board.setScore(scoreStack.pop());
             this.board.setAllTiles(historyStack.pop());
         }
