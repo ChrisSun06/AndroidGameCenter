@@ -50,22 +50,12 @@ public class The2048BoardTest {
         setUpBoardWithAll2();
         TofeTile[] result = board.merge("column", false);
         TofeTile[] expectedResult = new TofeTile[16];
-        expectedResult[0] = new TofeTile(4, 0);
-        expectedResult[1] = new TofeTile(4, 1);
-        expectedResult[2] = new TofeTile(4, 2);
-        expectedResult[3] = new TofeTile(4, 3);
-        expectedResult[4] = new TofeTile(4, 4);
-        expectedResult[5] = new TofeTile(4, 5);
-        expectedResult[6] = new TofeTile(4, 6);
-        expectedResult[7] = new TofeTile(4, 7);
-        expectedResult[8] = new TofeTile(0, 8);
-        expectedResult[9] = new TofeTile(0, 9);
-        expectedResult[10] = new TofeTile(0, 10);
-        expectedResult[11] = new TofeTile(0, 11);
-        expectedResult[12] = new TofeTile(0, 12);
-        expectedResult[13] = new TofeTile(0, 13);
-        expectedResult[14] = new TofeTile(0, 14);
-        expectedResult[15] = new TofeTile(0, 15);
+        for(int i = 0; i < 16; i++){
+            if(i<8)
+                expectedResult[i] = new TofeTile(4, i);
+            else
+                expectedResult[i] = new TofeTile(0, i);
+        }
         assertTrue(Arrays.equals(result, expectedResult));
     }
 
@@ -99,23 +89,14 @@ public class The2048BoardTest {
         setUpBoardWith3columnsAll2();
         TofeTile[] result = board.merge("row", false);
         TofeTile[] expectedResult = new TofeTile[16];
-        expectedResult[0] = new TofeTile(4, 0);
-        expectedResult[1] = new TofeTile(2, 1);
-        expectedResult[2] = new TofeTile(0, 2);
-        expectedResult[3] = new TofeTile(0, 3);
-        expectedResult[4] = new TofeTile(4, 4);
-        expectedResult[5] = new TofeTile(2, 5);
-        expectedResult[6] = new TofeTile(0, 6);
-        expectedResult[7] = new TofeTile(0, 7);
-        expectedResult[8] = new TofeTile(4, 8);
-        expectedResult[9] = new TofeTile(2, 9);
-        expectedResult[10] = new TofeTile(0, 10);
-        expectedResult[11] = new TofeTile(0, 11);
-        expectedResult[12] = new TofeTile(4, 12);
-        expectedResult[13] = new TofeTile(2, 13);
-        expectedResult[14] = new TofeTile(0, 14);
-        expectedResult[15] = new TofeTile(0, 15);
-        assertTrue(Arrays.equals(result, expectedResult));
+        for(int i = 0; i < 16; i++){
+            if(i % 4 == 0)
+                expectedResult[i] = new TofeTile(4, i);
+            else if(i % 4 == 1)
+                expectedResult[i] = new TofeTile(2, i);
+            else
+                expectedResult[i] = new TofeTile(0, i);
+        }
     }
 
     @Test
@@ -123,22 +104,14 @@ public class The2048BoardTest {
         setUpBoardWith3columnsAll2();
         TofeTile[] result = board.merge("row", true);
         TofeTile[] expectedResult = new TofeTile[16];
-        expectedResult[0] = new TofeTile(0, 0);
-        expectedResult[1] = new TofeTile(0, 1);
-        expectedResult[2] = new TofeTile(2, 2);
-        expectedResult[3] = new TofeTile(4, 3);
-        expectedResult[4] = new TofeTile(0, 4);
-        expectedResult[5] = new TofeTile(0, 5);
-        expectedResult[6] = new TofeTile(2, 6);
-        expectedResult[7] = new TofeTile(4, 7);
-        expectedResult[8] = new TofeTile(0, 8);
-        expectedResult[9] = new TofeTile(0, 9);
-        expectedResult[10] = new TofeTile(2, 10);
-        expectedResult[11] = new TofeTile(4, 11);
-        expectedResult[12] = new TofeTile(0, 12);
-        expectedResult[13] = new TofeTile(0, 13);
-        expectedResult[14] = new TofeTile(2, 14);
-        expectedResult[15] = new TofeTile(4, 15);
+        for(int i = 0; i < 16; i++){
+            if(i % 4 == 3)
+                expectedResult[i] = new TofeTile(4, i);
+            else if(i % 4 == 2)
+                expectedResult[i] = new TofeTile(2, i);
+            else
+                expectedResult[i] = new TofeTile(0, i);
+        }
         assertTrue(Arrays.equals(result, expectedResult));
     }
 
