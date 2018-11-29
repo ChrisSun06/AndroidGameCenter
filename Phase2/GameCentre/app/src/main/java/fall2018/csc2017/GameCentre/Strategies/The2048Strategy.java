@@ -24,7 +24,7 @@ public class The2048Strategy implements ScoringStrategy {
     public The2048Strategy(UserAccManager accManager) {
         this.accountMap = accManager.getAccountMap();
         this.currentUser = accManager.getCurrentUser();
-        this.currentGame = accManager.getCurrentGame();
+        this.currentGame = "2048";
     }
 
     @Override

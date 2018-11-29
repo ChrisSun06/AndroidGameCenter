@@ -28,6 +28,9 @@ public class The2048Fragment extends GameCenterButtonFragment {
     }
 
 
+    /**
+     * initialize the fragment
+     */
     private The2048BoardManager boardManager;
     private UserAccManager accManager;
     @Override
@@ -74,10 +77,12 @@ public class The2048Fragment extends GameCenterButtonFragment {
     @Override
     public void activateGame() {
         boardManager = new The2048BoardManager();
-        boardManager.getBoard().setMaxUndoTime(accManager.getUserUndoTime());
         switchToGame();
     }
 
 
+    /**
+     * View of the fragment
+     */
     private View view;
 }

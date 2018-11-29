@@ -1,16 +1,15 @@
 package fall2018.csc2017.GameCentre.The2048;
 
 import android.support.annotation.NonNull;
-
-import java.util.ArrayList;
-
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Iterator;
 import java.util.List;
 
 import fall2018.csc2017.GameCentre.AbstractBoard;
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
+import java.util.Random;
 
 /**
  * The board for game 2048.
@@ -64,10 +63,31 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @param col the tile column
      * @return the tile at (row, col)
      */
-    TofeTile getTile(int row, int col) {
+    public TofeTile getTile(int row, int col) {
         return tiles[row][col];
     }
 
+    /**
+     * Return whether two 2048 boards, or 1 2048 board and an object is equal.
+     *
+     * @return whether this and Object o is equal.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof The2048Board)) {
+            return false;
+        }
+        int i = 0;
+        for (TofeTile tile : (The2048Board)o) {
+            int row = i / getNumRows();
+            int col = i % getNumCols();
+            if (tile.getValue() != getTile(row, col).getValue()){
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
 
     /**
      * Set the tile at the corresponding row and col
@@ -75,10 +95,8 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @param row the tile row
      * @param col the tile column
      */
-    void setTile(int row, int col, TofeTile tile){
+    private void setTile(int row, int col, TofeTile tile){
         tiles[row][col] = tile;
-        setChanged();
-        notifyObservers();
     }
     /**
      * Return the column corresponding to colNum, can be inverted if specified.
@@ -140,7 +158,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * Return a Array with length 16 that contains all tiles from the board.
      * @return the array with length 16 that contains all tiles from the board.
      */
-    TofeTile[] getAllTiles(){
+    public TofeTile[] getAllTiles(){
         TofeTile[] result = new TofeTile[16];
         for (int row = 0; row != getNumRows(); row++) {
             for (int col = 0; col != getNumCols(); col++) {
@@ -155,7 +173,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * Precondition: inputTiles has size of 16.
      * @param inputTiles tiles to be put in the board
      */
-    void setAllTiles(TofeTile[] inputTiles){
+    public void setAllTiles(TofeTile[] inputTiles){
         for (int row = 0; row != getNumRows(); row++) {
             for (int col = 0; col != getNumCols(); col++) {
                 this.setTile(row, col, inputTiles[(row * 4) + col]);
@@ -173,7 +191,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @return a list of TofeTile representing the result after merging. the position
      * is determined by row * 4 + col
      */
-     TofeTile[] merge(String rOrC, boolean inverted) {
+     public TofeTile[] merge(String rOrC, boolean inverted) {
         TofeTile[] resultingTiles = new TofeTile[16];
         for (int i = 0; i < 4; i++) {
             TofeTile[] mergedTiles = new Merge2048(this.getRowOrColumn(rOrC, i, inverted)).merge();
@@ -184,34 +202,34 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
     }
 
     /**
-     * Return a list of int containing all positions of blank tiles on the board.
+     * Return true if the input TofeTile Array contains blank tile
      *
-     * @return a list of int representing positions of all blank tiles
+     * @return whether the input TofeTile Array contains blank tile
      */
-    private int[] getBlankPosition(){
-        TofeTile[] allTiles = this.getAllTiles();
-        ArrayList<Integer> temResult = new ArrayList<>();
-        for(int i = 0; i < allTiles.length; i++) {
-            if (allTiles[i].getValue() == 0)
-                temResult.add(i);
+    private boolean containsBlank(TofeTile[] inputs) {
+        for (int i = 0; i < 16; i++) {
+            if(inputs[i].getValue() == 0)
+                return true;
         }
-        int[]result = new int[temResult.size()];
-        for(int i = 0; i < temResult.size(); i++)
-            result[i] = temResult.get(i);
-        return result;
+        return false;
     }
 
-
     /**
-     * Generating a new tile on the board if there is any blank tile on the board.
+     * Return the updated TofeTile list that contains a newly generated tile if there is blank
+     * position on the board.
+     * @param inputs input tiles
+     * @return the updated TofeTile list that contains a newly generated tile if there is blank
+     * position on the board.
      */
-    void generateNewTiles(){
-        int[] blankPos = this.getBlankPosition();
-        if (blankPos.length != 0){
-            int randomPos = blankPos[(int) (Math.random() * blankPos.length)];
-            TofeTile randomTile = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, randomPos);
-            this.setTile(randomPos/getNumRows(),randomPos% getNumCols(), randomTile);
+    public TofeTile[] generateNewTile(TofeTile[] inputs){
+        if((!(Arrays.equals(this.getAllTiles(), inputs))) && containsBlank(inputs)) {
+            Random rnd = new Random();
+            int pos = rnd.nextInt(16);
+            while(inputs[pos].getValue()!=0)
+                pos = rnd.nextInt(16);
+            inputs[pos] = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, pos);
         }
+        return inputs;
     }
 
     /**
@@ -279,21 +297,4 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
     public int getScore(){
         return score;
     }
-
-    /**
-     * get the max undo times.
-     *
-     * @return the number of max undo times
-     */
-    public int getMaxUndoTime() {
-        return maxUndoTime;
-    }
-
-    /**
-     * user could set their own undo time instead of 3.
-     */
-    public void setMaxUndoTime(int num) {
-        maxUndoTime = num;
-    }
-
 }

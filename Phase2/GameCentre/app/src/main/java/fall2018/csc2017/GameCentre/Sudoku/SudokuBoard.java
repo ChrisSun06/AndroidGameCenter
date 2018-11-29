@@ -30,11 +30,11 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
         return getNumCols() * getNumRows();
     }
 
-    void setTile(int row, int col, int value){
+    public void setTile(int row, int col, int value){
         tiles[row][col].setNumber(value);
     }
 
-    SudokuTile getTile(int row, int col){
+    public SudokuTile getTile(int row, int col){
         return tiles[row][col];
     }
 
@@ -61,14 +61,6 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
             return new SudokuSectionalIterator();
         }
     };}
-
-    @Override
-    public void setMaxUndoTime(int i) {}
-
-    @Override
-    public int getMaxUndoTime() {
-        return 0;
-    }
 
     private class SudokuIterator implements Iterator<SudokuTile> {
 

@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -21,6 +22,7 @@ import fall2018.csc2017.GameCentre.R;
 import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 import fall2018.csc2017.GameCentre.Strategies.The2048Strategy;
 import fall2018.csc2017.GameCentre.UserAccManager;
+import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
 public class The2048GameActivity extends AppCompatActivity implements Observer{
 
@@ -45,23 +47,35 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     private UserAccManager userAccManager;
 
     // Grid View and calculated column height and width based on device size
+    /**
+     * Grid View
+     */
     private The2048GestureDetectGridView gridView;
 
+    /**
+     * width and column of board in game activity
+     */
     private static int columnWidth, columnHeight;
 
+    /**
+     * controller for the game
+     */
     private GameActivityOverController gController;
 
     /**
      * Set up the background image for each button based on the master list
      * of positions, and then call the adapter to set the view.
      */
-
     public void display() {
         updateTileButtons();
         gridView.setAdapter(new CustomAdapter(tileButtons, columnWidth, columnHeight));
         gridView.UpdateScore();
     }
 
+    /**
+     * Initialize the activity
+     * @param savedInstanceState the saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +93,6 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         gridView.setBoardManager(boardManager);
         boardManager.getBoard().addObserver(this);
         // Observer sets up desired dimensions as well as calls our display function
-        //TODO this has to be changed
         gridView.getViewTreeObserver().addOnGlobalLayoutListener(
                 new ViewTreeObserver.OnGlobalLayoutListener() {
                     @Override
@@ -128,7 +141,6 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     /**
      * Update the backgrounds on the buttons to match the tiles.
      */
-    //todo: update 2048 tile buttons
     private void updateTileButtons() {
         The2048Board the2048Board = boardManager.getBoard();
         int nextPos = 0;
@@ -182,14 +194,23 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         saveToFile();
     }
 
-
+    /**
+     * update the activity when needed
+     * @param o object being changed
+     * @param arg argument passed along with object being changed
+     */
     @Override
     public void update(Observable o, Object arg) {
         saveToFile();
         display();
+        TofeTile[] currentTiles = boardManager.getBoard().getAllTiles();
+        System.out.println(Arrays.equals(currentTiles, boardManager.getBoard().merge("row", true)));
         onSolved();
     }
 
+    /**
+     * add undo button to the board
+     */
     private void addUndoButton(){
         Button undoButton = findViewById(R.id.the2048UndoButton);
         undoButton.setOnClickListener(new View.OnClickListener() {

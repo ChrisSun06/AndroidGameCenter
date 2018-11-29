@@ -5,14 +5,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
-
 import fall2018.csc2017.GameCentre.AbstractBoardManager;
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
 /**
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  */
-class The2048BoardManager extends AbstractBoardManager implements Serializable {
+public class The2048BoardManager extends AbstractBoardManager implements Serializable {
 
     /**
      * The board being managed.
@@ -76,15 +75,12 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      * @param inverted up vs down; left vs right
      * Precondition: rOrC can only be row or column
      */
-    void move(String rOrC, boolean inverted){
-        historyStack.push(board.getAllTiles());
-        TofeTile[] previousTiles = board.getAllTiles();
-        TofeTile[] mergedList = this.board.merge(rOrC, inverted);
-        this.board.setAllTiles(mergedList);
+    public void move(String rOrC, boolean inverted){
         scoreStack.push(this.board.getScore());
+        historyStack.push(board.getAllTiles());
+        TofeTile[] mergedList = this.board.merge(rOrC, inverted);
         addScore(mergedList);
-        if(!Arrays.equals(previousTiles, mergedList))
-            this.board.generateNewTiles();
+        this.board.setAllTiles(this.board.generateNewTile(mergedList));
     }
 
     /**
@@ -94,11 +90,11 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      */
     @Override
     public boolean puzzleSolved() {
-        TofeTile[] currentTiles = this.board.getAllTiles();
-        return Arrays.equals(board.merge("row", true), currentTiles) &&
-                Arrays.equals(board.merge("row", false), currentTiles) &&
-                Arrays.equals(board.merge("column", true), currentTiles) &&
-                Arrays.equals(board.merge("column", false), currentTiles);
+        TofeTile[] currentTiles = board.getAllTiles();
+        return(Arrays.equals(currentTiles, board.merge("row", true)) &&
+                Arrays.equals(currentTiles, board.merge("row", false)) &&
+                Arrays.equals(currentTiles, board.merge("column", true)) &&
+                Arrays.equals(currentTiles, board.merge("column", false)));
     }
 
     /**
@@ -171,10 +167,10 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     /**
      * the method will be used in Class MovementController.
      */
-    void undo() {
-        if(!historyStack.empty()) {
-            this.board.setAllTiles(historyStack.pop());
+    public void undo() {
+        if(!historyStack.empty() && !puzzleSolved()) {
             this.board.setScore(scoreStack.pop());
+            this.board.setAllTiles(historyStack.pop());
         }
     }
 }

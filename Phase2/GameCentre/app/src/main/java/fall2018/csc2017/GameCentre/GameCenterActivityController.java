@@ -34,19 +34,24 @@ public class GameCenterActivityController {
 
     void startGame(String game, Context context, AbstractBoardManager manager){
         if (game != null && manager != null){
-            switch (game) {
-                case "sliding":
-                    context.startActivity(new Intent(context, SlidingTileGameActivity.class));
-                    break;
-                case "Sudoku":
-                    context.startActivity(new Intent(context, SudokuGameActivity.class));
-                    break;
-                case "2048":
-                    context.startActivity(new Intent(context, The2048GameActivity.class));
-                    break;
-                default:
-                    break;
+            if (!game.contains("sliding")) {
+                startNonSlidingTileGames(game, context);
+            } else {
+                context.startActivity(new Intent(context, SlidingTileGameActivity.class));
             }
+        }
+    }
+
+    private void startNonSlidingTileGames(String game, Context context) {
+        switch (game) {
+            case "Sudoku":
+                context.startActivity(new Intent(context, SudokuGameActivity.class));
+                break;
+            case "2048":
+                context.startActivity(new Intent(context, The2048GameActivity.class));
+                break;
+            default:
+                break;
         }
     }
 }
