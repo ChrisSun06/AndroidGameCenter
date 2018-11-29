@@ -84,7 +84,7 @@ public class The2048BoardTest {
         TofeTile[] result = board.merge("column", false);
         board.setAllTiles(result);
         board.generateNewTiles();
-        assertTrue((board.getScore() == 34 || board.getScore() == 36));
+        assertTrue((board.getScore() == 0));
     }
 
     @Test
