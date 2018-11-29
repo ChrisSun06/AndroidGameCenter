@@ -94,11 +94,18 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      */
     @Override
     public boolean puzzleSolved() {
-        TofeTile[] currentTiles = this.board.getAllTiles();
-        return Arrays.equals(board.merge("row", true), currentTiles) &&
-                Arrays.equals(board.merge("row", false), currentTiles) &&
-                Arrays.equals(board.merge("column", true), currentTiles) &&
-                Arrays.equals(board.merge("column", false), currentTiles);
+        boolean solved = true;
+        for(int i = 0; i < 4; i++){
+            for(int j = 0; j < 3; j ++){
+                if(board.getTile(i,j).getValue() == board.getTile(i,j+1).getValue())
+                    solved = false;
+                if(board.getTile(j,i).getValue() == board.getTile(j+1,i).getValue())
+                    solved = false; } }
+        for(int i = 0; i< 4 ; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (board.getTile(i, j).getValue() == 0) {
+                    solved = false; } } }
+                    return solved;
     }
 
     /**
