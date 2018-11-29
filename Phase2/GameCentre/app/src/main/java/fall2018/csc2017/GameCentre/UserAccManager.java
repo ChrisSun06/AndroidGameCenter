@@ -162,7 +162,7 @@ public class UserAccManager implements Serializable {
      *
      * @param game the game name that user wants to load.
      */
-    public AbstractBoardManager getCurrentGameStateMap(String game){
+    public AbstractBoardManager getCurrentGameState(String game){
         Map<String, AbstractBoardManager> tempGameSaves = accountMap.get(currentUser).getSaves();
         if (containPartOfKey(tempGameSaves, game)) {
             currentGame = game;
@@ -209,7 +209,7 @@ public class UserAccManager implements Serializable {
 
     /**
      * Make a toast message of whether game board is initialized successfully or not.
-     * Combined with getCurrentGameStateMap method above, to clarify for user.
+     * Combined with getCurrentGameState method above, to clarify for user.
      *
      * @return the string that tells which toast to show.
      */
