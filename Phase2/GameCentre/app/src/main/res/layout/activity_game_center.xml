@@ -65,13 +65,20 @@
 
     </FrameLayout>
 
-    <Button
-        android:id="@+id/Back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="3dp" />
 
+    <FrameLayout
+        android:layout_width="112dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
+        <pl.droidsonroids.gif.GifImageButton
+            android:id="@+id/batBack"
+            android:layout_width="match_parent"
+            android:layout_height="184dp"
+            android:background="@null"
+            android:src="@drawable/batman_gif_back_button" />
+    </FrameLayout>
 </android.support.constraint.ConstraintLayout>
