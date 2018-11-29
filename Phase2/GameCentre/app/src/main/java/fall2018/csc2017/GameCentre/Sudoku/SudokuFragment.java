@@ -71,8 +71,7 @@ public class SudokuFragment extends GameCenterButtonFragment {
      */
     @Override
     public void activateGame() {
-         boardManager = new SudokuBoardManager();
-        //boardManager.getBoard().setMaxUndoTime(accManager.getUserUndoTime());
+        boardManager = new SudokuBoardManager();
         switchToGame();
     }
 

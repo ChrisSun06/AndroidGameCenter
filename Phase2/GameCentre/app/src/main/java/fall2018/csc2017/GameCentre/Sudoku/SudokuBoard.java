@@ -62,14 +62,6 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
         }
     };}
 
-    @Override
-    public void setMaxUndoTime(int i) {}
-
-    @Override
-    public int getMaxUndoTime() {
-        return 0;
-    }
-
     private class SudokuIterator implements Iterator<SudokuTile> {
 
         /**
