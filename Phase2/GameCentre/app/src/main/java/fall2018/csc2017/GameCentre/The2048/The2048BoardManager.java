@@ -77,10 +77,10 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
      * Precondition: rOrC can only be row or column
      */
     public void move(String rOrC, boolean inverted){
+        scoreStack.push(this.board.getScore());
         historyStack.push(board.getAllTiles());
         TofeTile[] mergedList = this.board.merge(rOrC, inverted);
         addScore(mergedList);
-        scoreStack.push(this.board.getScore());
         this.board.setAllTiles(this.board.generateNewTile(mergedList));
     }
 
@@ -182,8 +182,8 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
      */
     public void undo() {
         if(!historyStack.empty()) {
-            this.board.setAllTiles(historyStack.pop());
             this.board.setScore(scoreStack.pop());
+            this.board.setAllTiles(historyStack.pop());
         }
     }
 }
