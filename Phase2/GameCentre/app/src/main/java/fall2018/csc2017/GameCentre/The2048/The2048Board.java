@@ -180,13 +180,6 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
             for(int j = 0; j < 4; j++)
                 resultingTiles[mergedTiles[j].getId()] = mergedTiles[j];
         }
-        if((!(Arrays.equals(this.getAllTiles(), resultingTiles))) && containsBlank(resultingTiles)) {
-            Random rnd = new Random();
-            int pos = rnd.nextInt(16);
-            while(resultingTiles[pos].getValue()!=0)
-                pos = rnd.nextInt(16);
-            resultingTiles[pos] = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, pos);
-        }
         return resultingTiles;
     }
 
@@ -203,6 +196,16 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         return false;
     }
 
+    public TofeTile[] generateNewTile(TofeTile[] inputs){
+        if((!(Arrays.equals(this.getAllTiles(), inputs))) && containsBlank(inputs)) {
+            Random rnd = new Random();
+            int pos = rnd.nextInt(16);
+            while(inputs[pos].getValue()!=0)
+                pos = rnd.nextInt(16);
+            inputs[pos] = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, pos);
+        }
+        return inputs;
+    }
 
     /**
      * Initiate a board iterator to keep track of the order of the tiles on the board.

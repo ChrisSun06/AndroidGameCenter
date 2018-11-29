@@ -79,9 +79,9 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     void move(String rOrC, boolean inverted){
         historyStack.push(board.getAllTiles());
         TofeTile[] mergedList = this.board.merge(rOrC, inverted);
-        this.board.setAllTiles(mergedList);
-        scoreStack.push(this.board.getScore());
         addScore(mergedList);
+        scoreStack.push(this.board.getScore());
+        this.board.setAllTiles(this.board.generateNewTile(mergedList));
     }
 
     /**
