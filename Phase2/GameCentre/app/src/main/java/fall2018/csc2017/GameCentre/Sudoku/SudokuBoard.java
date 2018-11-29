@@ -10,58 +10,77 @@ import java.util.Observable;
 import fall2018.csc2017.GameCentre.AbstractBoard;
 import fall2018.csc2017.GameCentre.tiles.SudokuTile;
 
-public class SudokuBoard extends AbstractBoard implements Serializable{
+/**
+ * The Sudoku board.
+ */
+public class SudokuBoard extends AbstractBoard<SudokuTile> implements Serializable {
 
-    private SudokuTile[][] tiles;
-
+    /**
+     * Initialize a new Sudoku Board
+     *
+     * @param tiles list of tiles
+     */
     public SudokuBoard(List<SudokuTile> tiles) {
         setNumCols(9);
         setNumRows(9);
-        this.tiles = new SudokuTile[getNumRows()][getNumCols()];
+        setEntireTile(new SudokuTile[getNumRows()][getNumCols()]);
         Iterator<SudokuTile> iter = tiles.iterator();
         for (int row = 0; row != getNumRows(); row++) {
             for (int col = 0; col != getNumCols(); col++) {
-                this.tiles[row][col] = iter.next();
+                setTile(row, col, iter.next());
             }
         }
     }
 
-    int numTiles(){
-        return getNumCols() * getNumRows();
+    /**
+     * Return a horizontal iterator that iterate Sodoku board horizontally.
+     *
+     * @return the iterable Sodoku tile, iterating horizontally.
+     */
+    public Iterable<SudokuTile> horizontal() {
+        return new Iterable<SudokuTile>() {
+            @NonNull
+            @Override
+            public Iterator<SudokuTile> iterator() {
+                return new SudokuIterator();
+            }
+        };
     }
 
-    public void setTile(int row, int col, int value){
-        tiles[row][col].setNumber(value);
+    /**
+     * Return a vertical iterator that iterate Sodoku board vertically.
+     *
+     * @return the iterable Sodoku tile, iterating vertically.
+     */
+    public Iterable<SudokuTile> vertical() {
+        return new Iterable<SudokuTile>() {
+            @NonNull
+            @Override
+            public Iterator<SudokuTile> iterator() {
+                return new SudokuVerticalIterator();
+            }
+        };
     }
 
-    public SudokuTile getTile(int row, int col){
-        return tiles[row][col];
+    /**
+     * Return a sectional iterator that iterate Sodoku board by each 3x3 section.
+     *
+     * @return the iterable Sodoku tile, iterating by each 3x3 section.
+     */
+    public Iterable<SudokuTile> sectional() {
+        return new Iterable<SudokuTile>() {
+            @NonNull
+            @Override
+            public Iterator<SudokuTile> iterator() {
+                return new SudokuSectionalIterator();
+            }
+        };
     }
 
-    public Iterable<SudokuTile> horizontal(){return new Iterable<SudokuTile>() {
-        @NonNull
-        @Override
-        public Iterator<SudokuTile> iterator() {
-            return new SudokuIterator();
-        }
-    };}
-
-    public Iterable<SudokuTile> vertical(){return new Iterable<SudokuTile>() {
-        @NonNull
-        @Override
-        public Iterator<SudokuTile> iterator() {
-            return new SudokuVerticalIterator();
-        }
-    };}
-
-    public Iterable<SudokuTile> sectional(){return new Iterable<SudokuTile>() {
-        @NonNull
-        @Override
-        public Iterator<SudokuTile> iterator() {
-            return new SudokuSectionalIterator();
-        }
-    };}
-
+    /**
+     * Initiate a board iterator to keep track of the order of the tiles on the board.
+     * (Horizontal iterator)
+     */
     private class SudokuIterator implements Iterator<SudokuTile> {
 
         /**
@@ -88,12 +107,16 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
         public SudokuTile next() {
             int curRow = nextIndex / getNumRows();
             int curColumn = nextIndex % getNumCols();
-            SudokuTile tile = tiles[curRow][curColumn];
+            SudokuTile tile = getTile(curRow, curColumn);
             nextIndex += 1;
             return tile;
         }
     }
 
+    /**
+     * Initiate a board iterator to keep track of the order of the tiles on the board.
+     * (Vertical iterator)
+     */
     private class SudokuVerticalIterator implements Iterator<SudokuTile> {
 
         /**
@@ -120,12 +143,16 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
         public SudokuTile next() {
             int curRow = nextIndex / getNumRows();
             int curColumn = nextIndex % getNumCols();
-            SudokuTile tile = tiles[curColumn][curRow];
+            SudokuTile tile = getTile(curColumn, curRow);
             nextIndex += 1;
             return tile;
         }
     }
 
+    /**
+     * Initiate a board iterator to keep track of the order of the tiles on the board.
+     * (Sectional iterator)
+     */
     private class SudokuSectionalIterator implements Iterator<SudokuTile> {
 
         /**
@@ -154,17 +181,35 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
             int curCol = ((nextIndex / 9) % 3) * 3 + (nextIndex % 9) % 3;
             //int curRow = (nextIndex % 18) / 3;
             //int curCol = (nextIndex % 3) + (nextIndex / 18) * 3;
-            SudokuTile tile = tiles[curCol][curRow];
+            SudokuTile tile = getTile(curCol, curRow);
             nextIndex += 1;
             return tile;
         }
     }
 
-    void incrementTile(int row, int col){
-        if (tiles[row][col].getNumber() == getNumRows()) {
-            tiles[row][col].setNumber(0);
+    /**
+     * Set the tile to value
+     *
+     * @param row the row
+     * @param col the column
+     * @param value the value
+     */
+    public void setTileValue(int row, int col, int value){
+        SudokuTile tile = new SudokuTile(value, false);
+        setTile(row, col, tile);
+    }
+
+    /**
+     * Increment tile by 1
+     *
+     * @param row the row
+     * @param col the column
+     */
+    void incrementTile(int row, int col) {
+        if (getTile(row, col).getNumber() == getNumRows()) {
+            getTile(row, col).setNumber(0);
         } else {
-            tiles[row][col].setNumber(tiles[row][col].getNumber() + 1);
+            getTile(row, col).setNumber(getTile(row, col).getNumber() + 1);
         }
         setChanged();
         notifyObservers();

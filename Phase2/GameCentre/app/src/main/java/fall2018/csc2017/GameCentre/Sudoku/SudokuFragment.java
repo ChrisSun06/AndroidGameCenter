@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import fall2018.csc2017.GameCentre.FileSaver;
+import fall2018.csc2017.GameCentre.Utility.FileSaver;
 import fall2018.csc2017.GameCentre.GameCenterActivity;
 import fall2018.csc2017.GameCentre.GameCenterButtonFragment;
 import fall2018.csc2017.GameCentre.LoginActivity;
@@ -22,8 +22,16 @@ import fall2018.csc2017.GameCentre.UserAccManager;
  */
 public class SudokuFragment extends GameCenterButtonFragment {
 
+    /**
+     * The Sudoku board manager.
+     */
     private SudokuBoardManager boardManager;
+
+    /**
+     * The user account manager.
+     */
     private UserAccManager accManager;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,7 +44,9 @@ public class SudokuFragment extends GameCenterButtonFragment {
 
     }
 
-
+    /**
+     * A required empty public constructor for fragment.
+     */
     public SudokuFragment() {
         // Required empty public constructor
     }
@@ -75,7 +85,9 @@ public class SudokuFragment extends GameCenterButtonFragment {
         switchToGame();
     }
 
-
+    /**
+     * The view.
+     */
     private View view;
 
 

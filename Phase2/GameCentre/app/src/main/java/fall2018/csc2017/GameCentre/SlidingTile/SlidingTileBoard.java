@@ -17,13 +17,7 @@ import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 /**
  * The sliding tiles board.
  */
-public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingTile> {
-
-
-    /**
-     * The tiles on the board in row-major order.
-     */
-    private SlidingTile[][] tiles;
+public class SlidingTileBoard extends AbstractBoard<SlidingTile> implements Iterable<SlidingTile> {
 
     /**
      * The stack which keeps track of the clickable undo positions.
@@ -50,11 +44,11 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
         Iterator<SlidingTile> iter = tiles.iterator();
         setNumRows(gridSize);
         setNumCols(gridSize);
-        this.tiles = new SlidingTile[getNumRows()][getNumCols()];
+        setEntireTile(new SlidingTile[getNumRows()][getNumCols()]);
 
         for (int row = 0; row != getNumRows(); row++) {
             for (int col = 0; col != getNumCols(); col++) {
-                this.tiles[row][col] = iter.next();
+                setTile(row, col, iter.next());
             }
         }
     }
@@ -80,28 +74,8 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
      *
      * @return the board size
      */
-    public int getBoardSize() {
+    int getBoardSize() {
         return getNumRows() * getNumCols();
-    }
-
-    /**
-     * Return the number of tiles on the board.
-     *
-     * @return the number of tiles on the board
-     */
-    public int numTiles() {
-        return getNumRows() * getNumCols();
-    }
-
-    /**
-     * Return the tile at (row, col)
-     *
-     * @param row the tile row
-     * @param col the tile column
-     * @return the tile at (row, col)
-     */
-    public SlidingTile getTile(int row, int col) {
-        return tiles[row][col];
     }
 
     /**
@@ -114,8 +88,8 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
      */
     public void swapTiles(int row1, int col1, int row2, int col2) {
         SlidingTile temp = getTile(row1, col1);
-        this.tiles[row1][col1] = this.tiles[row2][col2];
-        this.tiles[row2][col2] = temp;
+        setTile(row1, col1, getTile(row2, col2));
+        setTile(row2, col2, temp);
         setChanged();
         notifyObservers();
     }
@@ -166,18 +140,6 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
             nextIndex++;
             return nextTile;
         }
-    }
-
-    /**
-     * the string representation.
-     *
-     * @return the tile number to string.
-     */
-    @Override
-    public String toString() {
-        return "Board{" +
-                "tiles=" + Arrays.toString(tiles) +
-                '}';
     }
 
     /**

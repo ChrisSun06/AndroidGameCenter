@@ -8,8 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.File;
-import java.util.HashMap;
+import fall2018.csc2017.GameCentre.Utility.FileSaver;
 
 
 /**

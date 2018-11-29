@@ -26,7 +26,7 @@ public class SudokuTest {
 
     private void setFirstRow(){
         for (int i = 0; i < 9; i++){
-            this.boardManager.getBoard().setTile(0, i, i+1);
+            this.boardManager.getBoard().setTileValue(0, i, i+1);
         }
     }
 
@@ -108,8 +108,23 @@ public class SudokuTest {
         assertTrue(boardManager.isValid());
         setFirstRow();
         assertTrue(boardManager.isValid());
-        boardManager.getBoard().setTile(1, 0, 1);
+        boardManager.getBoard().setTileValue(1, 0, 1);
         assertFalse(boardManager.isValid());
+    }
+
+    @Test
+    public void testIsValidTap(){
+        setUp();
+        assertFalse(boardManager.isValidTap(0));
+        boardManager.getBoard().setTile(0, 0, new SudokuTile(1,
+                true));
+        assertTrue(boardManager.isValidTap(0));
+    }
+
+    @Test
+    public void testToString(){
+        setUp();
+        assertEquals(boardManager.toString(), "Sudoku Board Manager");
     }
 
 

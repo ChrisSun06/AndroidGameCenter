@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.Utility;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

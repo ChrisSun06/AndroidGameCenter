@@ -15,7 +15,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import fall2018.csc2017.GameCentre.CustomAdapter;
-import fall2018.csc2017.GameCentre.FileSaver;
+import fall2018.csc2017.GameCentre.Utility.FileSaver;
 import fall2018.csc2017.GameCentre.GameActivityOverController;
 import fall2018.csc2017.GameCentre.GameCenterActivity;
 import fall2018.csc2017.GameCentre.LoginActivity;
@@ -50,6 +50,9 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     private SudokuGestureDetectGridView gridView;
     private static int columnWidth, columnHeight;
 
+    /**
+     * The game activity controller.
+     */
     private GameActivityOverController gController;
 
     /**
@@ -70,12 +73,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        boardManager = (SudokuBoardManager) FileSaver.loadFromFile(getApplicationContext(),
-                GameCenterActivity.TEMP_SAVE_FILENAME);
-        gController = new GameActivityOverController();
-        setUpBoard();
-        createTileButtons(this);
-        setContentView(R.layout.activity_sudoku_main);
+        setUp();
         // Add View to activity
         gridView = findViewById(R.id.sudoku_grid);
         gridView.setNumColumns(boardManager.getBoard().getNumCols());
@@ -97,6 +95,18 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
                         display();
                     }
                 });
+    }
+
+    /**
+     * Set up the board and game with required information.
+     */
+    private void setUp() {
+        boardManager = (SudokuBoardManager) FileSaver.loadFromFile(getApplicationContext(),
+                GameCenterActivity.TEMP_SAVE_FILENAME);
+        gController = new GameActivityOverController();
+        setUpBoard();
+        createTileButtons(this);
+        setContentView(R.layout.activity_sudoku_main);
     }
 
     /**

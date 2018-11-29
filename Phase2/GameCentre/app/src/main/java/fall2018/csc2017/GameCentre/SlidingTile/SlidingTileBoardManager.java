@@ -1,6 +1,5 @@
 package fall2018.csc2017.GameCentre.SlidingTile;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,26 +9,14 @@ import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 /**
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  */
-public class SlidingTileBoardManager extends AbstractBoardManager implements Serializable{
-
-    /**
-     * The board being managed.
-     */
-    private SlidingTileBoard slidingTileBoard;
+public class SlidingTileBoardManager extends AbstractBoardManager<SlidingTileBoard>{
 
     /**
      * Manage a board that has been pre-populated.
      * @param slidingTileBoard the board
      */
     public SlidingTileBoardManager(SlidingTileBoard slidingTileBoard) {
-        this.slidingTileBoard = slidingTileBoard;
-    }
-
-    /**
-     * Return the current board.
-     */
-    public SlidingTileBoard getBoard() {
-        return slidingTileBoard;
+        setBoard(slidingTileBoard);
     }
 
     /**
@@ -46,7 +33,7 @@ public class SlidingTileBoardManager extends AbstractBoardManager implements Ser
         //while (!solvable(tiles, gridSize)){
             //Collections.shuffle(tiles);
        //}
-        this.slidingTileBoard = new SlidingTileBoard(tiles, gridSize);
+        setBoard(new SlidingTileBoard(tiles, gridSize));
     }
 
     /**
@@ -124,7 +111,7 @@ public class SlidingTileBoardManager extends AbstractBoardManager implements Ser
         boolean solved = true;
 
         int tileId = 1;
-        for (SlidingTile tile: this.slidingTileBoard) {
+        for (SlidingTile tile: getBoard()) {
             solved = (tile.getId() == tileId);
             tileId++;
             if (!solved) break;
@@ -139,14 +126,15 @@ public class SlidingTileBoardManager extends AbstractBoardManager implements Ser
      * @return whether the tile at position is surrounded by a blank tile
      */
     public boolean isValidTap(int position) {
-
-        int row = position / slidingTileBoard.getNumRows();
-        int col = position % slidingTileBoard.getNumCols();
-        int blankId = slidingTileBoard.numTiles();
-        SlidingTile above = row == 0 ? null : slidingTileBoard.getTile(row - 1, col);
-        SlidingTile below = row == slidingTileBoard.getNumRows() - 1 ? null : slidingTileBoard.getTile(row + 1, col);
-        SlidingTile left = col == 0 ? null : slidingTileBoard.getTile(row, col - 1);
-        SlidingTile right = col == slidingTileBoard.getNumCols() - 1 ? null : slidingTileBoard.getTile(row, col + 1);
+        int row = position / getBoard().getNumRows();
+        int col = position % getBoard().getNumCols();
+        int blankId = getBoard().numTiles();
+        SlidingTile above = row == 0 ? null : getBoard().getTile(row - 1, col);
+        SlidingTile below = row == getBoard().getNumRows() - 1 ? null :
+                getBoard().getTile(row + 1, col);
+        SlidingTile left = col == 0 ? null : getBoard().getTile(row, col - 1);
+        SlidingTile right = col == getBoard().getNumCols() - 1 ? null :
+                getBoard().getTile(row, col + 1);
         return (below != null && below.getId() == blankId)
                 || (above != null && above.getId() == blankId)
                 || (left != null && left.getId() == blankId)
@@ -159,12 +147,12 @@ public class SlidingTileBoardManager extends AbstractBoardManager implements Ser
      * @return An int array of the row and col of blankTile.
      */
     private int[] blankTilePos(){
-        int blankId = slidingTileBoard.numTiles();
+        int blankId = getBoard().numTiles();
         int row1 = 0;
         int col1 = 0;
-        for (int r = 0; r != slidingTileBoard.getNumRows(); r++) {
-            for (int c = 0; c != slidingTileBoard.getNumCols(); c++) {
-                if (slidingTileBoard.getTile(r, c).getId() == blankId) {
+        for (int r = 0; r != getBoard().getNumRows(); r++) {
+            for (int c = 0; c != getBoard().getNumCols(); c++) {
+                if (getBoard().getTile(r, c).getId() == blankId) {
                     row1 = r;
                     col1 = c;
                 }
@@ -180,15 +168,14 @@ public class SlidingTileBoardManager extends AbstractBoardManager implements Ser
      * @param position the position
      */
     public void touchMove(int position, boolean ifUndo) {
-            int row = position / slidingTileBoard.getNumRows();
-            int col = position % slidingTileBoard.getNumCols();
-
+            int row = position / getBoard().getNumRows();
+            int col = position % getBoard().getNumCols();
             int[] position2 = blankTilePos();
             if (!ifUndo) {
                 moveHistory();
-                slidingTileBoard.increaseNumOfMoves();
+                getBoard().increaseNumOfMoves();
             }
-            slidingTileBoard.swapTiles(row, col, position2[0], position2[1]);
+            getBoard().swapTiles(row, col, position2[0], position2[1]);
     }
 
     /**
@@ -197,7 +184,7 @@ public class SlidingTileBoardManager extends AbstractBoardManager implements Ser
      * @return An int blankTile position.
      */
     public int blankTilePosition(){
-        return blankTilePos()[0] * slidingTileBoard.getNumRows() + blankTilePos()[1];
+        return blankTilePos()[0] * getBoard().getNumRows() + blankTilePos()[1];
     }
 
     /**
@@ -205,8 +192,8 @@ public class SlidingTileBoardManager extends AbstractBoardManager implements Ser
      *
      */
     public void undo(){
-        touchMove(slidingTileBoard.historyStack.pop(), true);
-        slidingTileBoard.setMaxUndoTime(slidingTileBoard.getMaxUndoTime()-1);
+        touchMove(getBoard().historyStack.pop(), true);
+        getBoard().setMaxUndoTime(getBoard().getMaxUndoTime()-1);
     }
 
     /**
@@ -214,6 +201,6 @@ public class SlidingTileBoardManager extends AbstractBoardManager implements Ser
      *
      */
     private void moveHistory(){
-        slidingTileBoard.historyStack.push(blankTilePosition());
+        getBoard().historyStack.push(blankTilePosition());
     }
 }
