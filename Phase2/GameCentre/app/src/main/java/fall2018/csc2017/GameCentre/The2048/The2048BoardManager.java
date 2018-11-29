@@ -51,6 +51,9 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
         return boardNumber;
     }
 
+    /**
+     * Create a new The2048BoardManager
+     */
     public The2048BoardManager() {
         int[] boardNumber = beginBoardList();
         List<TofeTile> tiles = new ArrayList<>();
@@ -67,6 +70,12 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
         this.board = new The2048Board(tiles);
     }
 
+    /**
+     * Move the board based on rOrC and inverted
+     * @param rOrC moving horizontally or vertically
+     * @param inverted up vs down; left vs right
+     * Precondition: rOrC can only be row or column
+     */
     void move(String rOrC, boolean inverted){
         historyStack.push(board.getAllTiles());
         TofeTile[] previousTiles = board.getAllTiles();
@@ -162,7 +171,6 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     /**
      * the method will be used in Class MovementController.
      */
-
     void undo() {
         if(!historyStack.empty()) {
             this.board.setAllTiles(historyStack.pop());

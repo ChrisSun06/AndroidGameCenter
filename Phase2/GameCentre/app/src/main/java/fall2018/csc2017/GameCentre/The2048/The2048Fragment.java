@@ -69,7 +69,7 @@ public class The2048Fragment extends GameCenterButtonFragment {
     }
 
     /**
-     * Activate the Sudoku game.
+     * Activate the 2048 game.
      */
     @Override
     public void activateGame() {

@@ -68,6 +68,13 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         return tiles[row][col];
     }
 
+
+    /**
+     * Set the tile at the corresponding row and col
+     * @param tile the tile
+     * @param row the tile row
+     * @param col the tile column
+     */
     void setTile(int row, int col, TofeTile tile){
         tiles[row][col] = tile;
         setChanged();
@@ -176,6 +183,11 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         return resultingTiles;
     }
 
+    /**
+     * Return a list of int containing all positions of blank tiles on the board.
+     *
+     * @return a list of int representing positions of all blank tiles
+     */
     private int[] getBlankPosition(){
         TofeTile[] allTiles = this.getAllTiles();
         ArrayList<Integer> temResult = new ArrayList<>();
@@ -189,6 +201,10 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         return result;
     }
 
+
+    /**
+     * Generating a new tile on the board if there is any blank tile on the board.
+     */
     void generateNewTiles(){
         int[] blankPos = this.getBlankPosition();
         if (blankPos.length != 0){
@@ -196,20 +212,6 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
             TofeTile randomTile = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, randomPos);
             this.setTile(randomPos/getNumRows(),randomPos% getNumCols(), randomTile);
         }
-    }
-
-    @Override
-    public boolean equals(Object other){
-        if(!(other instanceof The2048Board))
-            return false;
-        for(int i = 0; i < getNumRows(); i++){
-            for(int j = 0; j < getNumCols(); j++){
-                if(this.getTile(i,j).getDrawableId() !=
-                        ((The2048Board) other).getTile(i,j).getDrawableId())
-                    return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -277,17 +279,6 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
     public int getScore(){
         return score;
     }
-
-
-    /*public int getScore(){
-        int result = 0;
-        Iterator<TofeTile> iter = this.iterator();
-        while(iter.hasNext()){
-            result += iter.next().getValue();
-        }
-        return result;
-    }
-    */
 
     /**
      * get the max undo times.
