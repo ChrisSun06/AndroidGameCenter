@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.SlidingTile;
 
 /*
 Adapted from:
@@ -15,6 +15,8 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import fall2018.csc2017.GameCentre.R;
 
 public class SlidingTileGestureDetectGridView extends GridView {
     public static final int SWIPE_MIN_DISTANCE = 100;

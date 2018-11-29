@@ -134,7 +134,7 @@ public class UserAccManager implements Serializable {
      * @param moves number of moves user made.
      * @param boardManager board manager user is playing on.
      */
-    void addScore(ScoringStrategy scoringStrategy, int moves, AbstractBoardManager boardManager) {
+    public void addScore(ScoringStrategy scoringStrategy, int moves, AbstractBoardManager boardManager) {
         if (boardManager.toString().equals("2048 Board Manager")){
             scoringStrategy.addScore(moves, boardManager.getBoard());
         }
@@ -150,7 +150,7 @@ public class UserAccManager implements Serializable {
      *
      * @param boardManager the board manager
      */
-    void setCurrentGameState(AbstractBoardManager boardManager){
+    public void setCurrentGameState(AbstractBoardManager boardManager){
         if (currentGame != null && accountMap.containsKey(currentUser)) {
             accountMap.get(currentUser).setSaves(currentGame, boardManager);
         }
@@ -194,7 +194,7 @@ public class UserAccManager implements Serializable {
      *
      * @return number of undo times user chose to have.
      */
-    int getUserUndoTime() {
+    public int getUserUndoTime() {
         return accountMap.get(currentUser).getMaxUndo();
     }
 

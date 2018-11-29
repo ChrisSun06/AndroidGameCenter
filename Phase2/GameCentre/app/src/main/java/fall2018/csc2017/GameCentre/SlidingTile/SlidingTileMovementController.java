@@ -1,13 +1,10 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.SlidingTile;
 
-import android.content.Context;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import static java.security.AccessController.getContext;
+import fall2018.csc2017.GameCentre.AbstractBoardManager;
+import fall2018.csc2017.GameCentre.MovementController;
 
 
-class SlidingTileMovementController implements MovementController{
+class SlidingTileMovementController implements MovementController {
 
     /**
      * The boardManager.

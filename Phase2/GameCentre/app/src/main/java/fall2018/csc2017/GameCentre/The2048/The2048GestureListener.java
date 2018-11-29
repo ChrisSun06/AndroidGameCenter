@@ -1,12 +1,8 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.The2048;
 
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.Toast;
-
-import java.util.List;
-import java.util.Set;
 
 class The2048GestureListener extends GestureDetector.SimpleOnGestureListener {
 

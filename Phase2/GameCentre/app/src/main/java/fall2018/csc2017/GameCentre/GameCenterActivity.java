@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileGameSettings;
+
 /**
  * The initial activity for the sliding puzzle tile game.
  */

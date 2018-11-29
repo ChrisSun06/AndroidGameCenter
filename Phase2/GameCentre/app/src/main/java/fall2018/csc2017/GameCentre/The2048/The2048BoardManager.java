@@ -1,12 +1,12 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.The2048;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
 
+import fall2018.csc2017.GameCentre.AbstractBoardManager;
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
 /**
@@ -32,7 +32,7 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     /**
      * Return the current board.
      */
-    The2048Board getBoard() {
+    public The2048Board getBoard() {
         return board;
     }
 
@@ -51,7 +51,7 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
         return boardNumber;
     }
 
-    The2048BoardManager() {
+    public The2048BoardManager() {
         int[] boardNumber = beginBoardList();
         List<TofeTile> tiles = new ArrayList<>();
         final int numTiles = The2048Board.numTiles;
@@ -84,7 +84,7 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      * @return whether the tiles are in row-major order
      */
     @Override
-    boolean puzzleSolved() {
+    public boolean puzzleSolved() {
         TofeTile[] currentTiles = this.board.getAllTiles();
         return Arrays.equals(board.merge("row", true), currentTiles) &&
                 Arrays.equals(board.merge("row", false), currentTiles) &&

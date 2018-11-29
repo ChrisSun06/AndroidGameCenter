@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.The2048;
 
 /*
 Adapted from:
@@ -13,9 +13,10 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
+
+import fall2018.csc2017.GameCentre.R;
 
 public class The2048GestureDetectGridView extends GridView {
     public static final int flingMin = 100;

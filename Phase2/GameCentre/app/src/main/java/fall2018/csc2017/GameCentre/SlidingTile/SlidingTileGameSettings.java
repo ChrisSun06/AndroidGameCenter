@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.SlidingTile;
 
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -23,6 +23,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
+
+import fall2018.csc2017.GameCentre.FileSaver;
+import fall2018.csc2017.GameCentre.ImageOperation;
+import fall2018.csc2017.GameCentre.LoginActivity;
+import fall2018.csc2017.GameCentre.R;
+import fall2018.csc2017.GameCentre.TileNamingInterface;
+import fall2018.csc2017.GameCentre.UserAccManager;
+import fall2018.csc2017.GameCentre.UserAccount;
 
 public class SlidingTileGameSettings extends AppCompatActivity implements TileNamingInterface {
 

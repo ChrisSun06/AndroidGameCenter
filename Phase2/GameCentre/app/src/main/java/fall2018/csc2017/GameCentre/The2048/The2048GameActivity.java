@@ -1,23 +1,26 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.The2048;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+import fall2018.csc2017.GameCentre.CustomAdapter;
+import fall2018.csc2017.GameCentre.FileSaver;
+import fall2018.csc2017.GameCentre.GameActivityOverController;
+import fall2018.csc2017.GameCentre.GameCenterActivity;
+import fall2018.csc2017.GameCentre.LoginActivity;
+import fall2018.csc2017.GameCentre.R;
 import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
-import fall2018.csc2017.GameCentre.Strategies.SudokuStrategy;
 import fall2018.csc2017.GameCentre.Strategies.The2048Strategy;
+import fall2018.csc2017.GameCentre.UserAccManager;
 
 public class The2048GameActivity extends AppCompatActivity implements Observer{
 
@@ -113,7 +116,7 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     private void createTileButtons(Context context) {
         The2048Board the2048Board = boardManager.getBoard();
         tileButtons = new ArrayList<>();
-        for (int row = 0; row != boardManager.getBoard().numRows; row++) {
+        for (int row = 0; row != boardManager.getBoard().getNumRows(); row++) {
             for (int col = 0; col != boardManager.getBoard().getNumCols(); col++) {
                 ImageView tmp = new ImageView(context);
                 tmp.setBackgroundResource(the2048Board.getTile(row, col).getDrawableId());

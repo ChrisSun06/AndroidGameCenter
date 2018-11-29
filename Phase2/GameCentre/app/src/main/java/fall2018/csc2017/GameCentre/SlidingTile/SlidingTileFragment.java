@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.SlidingTile;
 
 
 import android.content.Intent;
@@ -8,6 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import fall2018.csc2017.GameCentre.FileSaver;
+import fall2018.csc2017.GameCentre.GameCenterActivity;
+import fall2018.csc2017.GameCentre.GameCenterButtonFragment;
+import fall2018.csc2017.GameCentre.LoginActivity;
+import fall2018.csc2017.GameCentre.R;
+import fall2018.csc2017.GameCentre.UserAccManager;
 
 
 /**
@@ -96,7 +103,7 @@ public class SlidingTileFragment extends GameCenterButtonFragment {
      * Switch to the GameActivity view to play the game.
      */
     @Override
-    void switchToGame() {
+    public void switchToGame() {
         Intent tmp = new Intent(getActivity(), SlidingTileGameActivity.class);
         tmp.putExtra("accManager", accManager);
         FileSaver.saveToFile(getActivity(), slidingTileBoardManager,
@@ -109,7 +116,7 @@ public class SlidingTileFragment extends GameCenterButtonFragment {
      *
      */
     @Override
-    void activateGame() {
+    public void activateGame() {
         accManager = (UserAccManager) FileSaver.loadFromFile(getActivity(),
                 LoginActivity.ACC_INFO);
         slidingTileBoardManager = new SlidingTileBoardManager(gridSizeSelected);

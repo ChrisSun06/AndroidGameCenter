@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.The2048;
 
 import java.util.ArrayList;
 
@@ -71,7 +71,7 @@ class Merge2048 {
      *
      * @return the merged version of inputArray.
      */
-    TofeTile[] merge(){
+    public TofeTile[] merge(){
         while (currentPosition < inputArray.length - 1){
             if(inputArray[currentPosition].getValue() == inputArray[currentPosition+1].getValue()){
                 resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue()*2

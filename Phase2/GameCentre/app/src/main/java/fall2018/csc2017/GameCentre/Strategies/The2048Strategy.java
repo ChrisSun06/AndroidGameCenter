@@ -3,7 +3,7 @@ package fall2018.csc2017.GameCentre.Strategies;
 import java.util.Map;
 
 import fall2018.csc2017.GameCentre.AbstractBoard;
-import fall2018.csc2017.GameCentre.The2048Board;
+import fall2018.csc2017.GameCentre.The2048.The2048Board;
 import fall2018.csc2017.GameCentre.UserAccManager;
 import fall2018.csc2017.GameCentre.UserAccount;
 

@@ -10,7 +10,7 @@ import fall2018.csc2017.GameCentre.Strategies.SlidingTileStrategy;
 public class GameActivityOverController {
 
 
-    void startOverControl(AbstractBoardManager boardManager, Context context, ScoringStrategy
+    public void startOverControl(AbstractBoardManager boardManager, Context context, ScoringStrategy
             strategy, String game){
         if (boardManager.puzzleSolved()){
             Intent i = new Intent(context, GameOverActivity.class);

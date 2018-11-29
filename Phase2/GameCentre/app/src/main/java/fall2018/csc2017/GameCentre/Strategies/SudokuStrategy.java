@@ -3,7 +3,6 @@ package fall2018.csc2017.GameCentre.Strategies;
 import java.util.Map;
 
 import fall2018.csc2017.GameCentre.AbstractBoard;
-import fall2018.csc2017.GameCentre.SlidingTileBoard;
 import fall2018.csc2017.GameCentre.UserAccManager;
 import fall2018.csc2017.GameCentre.UserAccount;
 

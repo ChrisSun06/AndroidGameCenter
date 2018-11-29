@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.SlidingTile;
 
 import android.support.annotation.NonNull;
 
@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Stack;
 
+import fall2018.csc2017.GameCentre.AbstractBoard;
 import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 
 /**
@@ -45,15 +46,14 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
      *
      * @param tiles the tiles for the board
      */
-    SlidingTileBoard(List<SlidingTile> tiles, int gridSize) {
+    public SlidingTileBoard(List<SlidingTile> tiles, int gridSize) {
         Iterator<SlidingTile> iter = tiles.iterator();
+        setNumRows(gridSize);
+        setNumCols(gridSize);
+        this.tiles = new SlidingTile[getNumRows()][getNumCols()];
 
-        this.numRows = gridSize;
-        this.numCols = gridSize;
-        this.tiles = new SlidingTile[this.numRows][this.numCols];
-
-        for (int row = 0; row != this.numRows; row++) {
-            for (int col = 0; col != this.numCols; col++) {
+        for (int row = 0; row != getNumRows(); row++) {
+            for (int col = 0; col != getNumCols(); col++) {
                 this.tiles[row][col] = iter.next();
             }
         }
@@ -62,7 +62,7 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
     /**
      * Function let numOfMoves increase 1.
      */
-    void increaseNumOfMoves() {
+    public void increaseNumOfMoves() {
         numOfMoves++;
     }
 
@@ -71,7 +71,7 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
      *
      * @return the number of moves
      */
-    int getNumOfMoves() {
+    public int getNumOfMoves() {
         return numOfMoves;
     }
 
@@ -81,7 +81,7 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
      * @return the board size
      */
     public int getBoardSize() {
-        return numRows * numCols;
+        return getNumRows() * getNumCols();
     }
 
     /**
@@ -90,7 +90,7 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
      * @return the number of tiles on the board
      */
     public int numTiles() {
-        return this.numRows * this.numCols;
+        return getNumRows() * getNumCols();
     }
 
     /**
@@ -100,7 +100,7 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
      * @param col the tile column
      * @return the tile at (row, col)
      */
-    SlidingTile getTile(int row, int col) {
+    public SlidingTile getTile(int row, int col) {
         return tiles[row][col];
     }
 
@@ -112,7 +112,7 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
      * @param row2 the second tile row
      * @param col2 the second tile col
      */
-    void swapTiles(int row1, int col1, int row2, int col2) {
+    public void swapTiles(int row1, int col1, int row2, int col2) {
         SlidingTile temp = getTile(row1, col1);
         this.tiles[row1][col1] = this.tiles[row2][col2];
         this.tiles[row2][col2] = temp;
@@ -161,7 +161,8 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            SlidingTile nextTile = getTile(nextIndex / numRows, nextIndex % numCols);
+            SlidingTile nextTile = getTile(nextIndex / getNumRows(),
+                    nextIndex % getNumCols());
             nextIndex++;
             return nextTile;
         }
@@ -184,14 +185,14 @@ public class SlidingTileBoard extends AbstractBoard implements Iterable<SlidingT
      *
      * @return the number of max undo times
      */
-    int getMaxUndoTime() {
+    public int getMaxUndoTime() {
         return maxUndoTime;
     }
 
     /**
      * user could set their own undo time instead of 3.
      */
-    void setMaxUndoTime(int num) {
+    public void setMaxUndoTime(int num) {
         maxUndoTime = num;
     }
 

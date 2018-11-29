@@ -1,17 +1,15 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.The2048;
 
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Observable;
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Stack;
 
+import fall2018.csc2017.GameCentre.AbstractBoard;
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
 /**
@@ -46,14 +44,14 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      *
      * @param tiles the tiles for the board
      */
-    The2048Board(List<TofeTile> tiles) {
-        this.numCols = 4;
-        this.numRows = 4;
+    public The2048Board(List<TofeTile> tiles) {
+        setNumCols(4);
+        setNumRows(4);
         Iterator<TofeTile> iter = tiles.iterator();
-        this.tiles = new TofeTile[numRows][numCols];
+        this.tiles = new TofeTile[getNumRows()][getNumCols()];
 
-        for (int row = 0; row != numRows; row++) {
-            for (int col = 0; col != numCols; col++) {
+        for (int row = 0; row != getNumRows(); row++) {
+            for (int col = 0; col != getNumCols(); col++) {
                 this.tiles[row][col] = iter.next();
             }
         }
@@ -137,8 +135,8 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      */
     TofeTile[] getAllTiles(){
         TofeTile[] result = new TofeTile[16];
-        for (int row = 0; row != numRows; row++) {
-            for (int col = 0; col != numCols; col++) {
+        for (int row = 0; row != getNumRows(); row++) {
+            for (int col = 0; col != getNumCols(); col++) {
                 result[row * 4 + col] = getTile(row, col);
             }
         }
@@ -151,8 +149,8 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @param inputTiles tiles to be put in the board
      */
     void setAllTiles(TofeTile[] inputTiles){
-        for (int row = 0; row != numRows; row++) {
-            for (int col = 0; col != numCols; col++) {
+        for (int row = 0; row != getNumRows(); row++) {
+            for (int col = 0; col != getNumCols(); col++) {
                 this.setTile(row, col, inputTiles[(row * 4) + col]);
             }
         }
@@ -196,7 +194,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         if (blankPos.length != 0){
             int randomPos = blankPos[(int) (Math.random() * blankPos.length)];
             TofeTile randomTile = new TofeTile((((int) (Math.random() * 2)) + 1) * 2, randomPos);
-            this.setTile(randomPos/numRows,randomPos% numCols, randomTile);
+            this.setTile(randomPos/getNumRows(),randomPos% getNumCols(), randomTile);
         }
     }
 
@@ -204,8 +202,8 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
     public boolean equals(Object other){
         if(!(other instanceof The2048Board))
             return false;
-        for(int i = 0; i < numRows; i++){
-            for(int j = 0; j < numCols; j++){
+        for(int i = 0; i < getNumRows(); i++){
+            for(int j = 0; j < getNumCols(); j++){
                 if(this.getTile(i,j).getDrawableId() !=
                         ((The2048Board) other).getTile(i,j).getDrawableId())
                     return false;
@@ -256,7 +254,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            TofeTile nextTile = getTile(nextIndex / numRows, nextIndex % numCols);
+            TofeTile nextTile = getTile(nextIndex / getNumRows(), nextIndex % getNumCols());
             nextIndex++;
             return nextTile;
         }
@@ -296,14 +294,14 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      *
      * @return the number of max undo times
      */
-    int getMaxUndoTime() {
+    public int getMaxUndoTime() {
         return maxUndoTime;
     }
 
     /**
      * user could set their own undo time instead of 3.
      */
-    void setMaxUndoTime(int num) {
+    public void setMaxUndoTime(int num) {
         maxUndoTime = num;
     }
 

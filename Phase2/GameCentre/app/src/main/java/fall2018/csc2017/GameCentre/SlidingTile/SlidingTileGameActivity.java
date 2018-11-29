@@ -1,7 +1,6 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.SlidingTile;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -13,14 +12,23 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
+import fall2018.csc2017.GameCentre.CustomAdapter;
+import fall2018.csc2017.GameCentre.FileSaver;
+import fall2018.csc2017.GameCentre.GameActivityOverController;
+import fall2018.csc2017.GameCentre.GameCenterActivity;
+import fall2018.csc2017.GameCentre.LoginActivity;
+import fall2018.csc2017.GameCentre.R;
 import fall2018.csc2017.GameCentre.Strategies.SlidingTileStrategy;
+import fall2018.csc2017.GameCentre.TileNamingInterface;
+import fall2018.csc2017.GameCentre.UserAccManager;
+import fall2018.csc2017.GameCentre.UserAccount;
 import fall2018.csc2017.GameCentre.tiles.Tile;
 
 /**
  * The game activity.
  */
-public class SlidingTileGameActivity extends AppCompatActivity implements Observer, TileNamingInterface{
+public class SlidingTileGameActivity extends AppCompatActivity implements Observer,
+        TileNamingInterface {
 
     /**
      * The board manager.

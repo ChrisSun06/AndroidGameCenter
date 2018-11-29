@@ -10,8 +10,8 @@ public abstract class AbstractBoard  extends Observable implements Serializable 
     int numRows;
     int numCols;
 
-    abstract void setMaxUndoTime(int i);
-    abstract int getMaxUndoTime();
+    public abstract void setMaxUndoTime(int i);
+    public abstract int getMaxUndoTime();
 
     /**
      * get number of rows.
@@ -29,5 +29,23 @@ public abstract class AbstractBoard  extends Observable implements Serializable 
      */
     public int getNumCols() {
         return numCols;
+    }
+
+    /**
+     * set number of rows.
+     *
+     * @param numRows number of rows
+     */
+    public void setNumRows(int numRows) {
+        this.numRows = numRows;
+    }
+
+    /**
+     * set number of columns.
+     *
+     * @param numCols number of columns
+     */
+    public void setNumCols(int numCols) {
+        this.numCols = numCols;
     }
 }

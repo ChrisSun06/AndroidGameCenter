@@ -1,6 +1,6 @@
 package fall2018.csc2017.GameCentre;
 
-interface MovementController {
+public interface MovementController {
 
     /**
      * Set the boardManager.

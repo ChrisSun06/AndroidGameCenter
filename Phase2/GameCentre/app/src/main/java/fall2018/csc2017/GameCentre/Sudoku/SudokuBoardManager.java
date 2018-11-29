@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.Sudoku;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import fall2018.csc2017.GameCentre.AbstractBoardManager;
+import fall2018.csc2017.GameCentre.ImageOperation;
 import fall2018.csc2017.GameCentre.tiles.SudokuTile;
 import fall2018.csc2017.GameCentre.tiles.Tile;
 
@@ -20,7 +22,7 @@ public class SudokuBoardManager extends AbstractBoardManager {
 
     private ArrayList<Integer> NUMBERS = new ArrayList<>();
 
-    SudokuBoard getBoard(){
+    public SudokuBoard getBoard(){
         return board;
     }
 
@@ -213,7 +215,7 @@ public class SudokuBoardManager extends AbstractBoardManager {
         return true;
     }*/
 
-    boolean puzzleSolved(){
+    public boolean puzzleSolved(){
         boolean filled = true;
         for (SudokuTile i: board.horizontal()){
             if (i.getNumber() == 0){filled = false;}
