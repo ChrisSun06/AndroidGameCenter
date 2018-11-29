@@ -75,7 +75,7 @@ public class The2048BoardTest {
     public void testGenerateNewTileNoBlank(){
         setUpBoardWithAll2();
         board.generateNewTiles();
-        assertEquals(32, board.getScore());
+        assertEquals(0, board.getScore());
     }
 
     @Test
