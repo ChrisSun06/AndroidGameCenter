@@ -75,7 +75,7 @@ public class The2048BoardTest {
     public void testGenerateNewTileNoBlank(){
         setUpBoardWithAll2();
         board.generateNewTiles();
-        assertEquals(32, board.getScore());
+        assertEquals(0, board.getScore());
     }
 
     @Test
@@ -83,8 +83,18 @@ public class The2048BoardTest {
         setUpBoardWithAll2();
         TofeTile[] result = board.merge("column", false);
         board.setAllTiles(result);
+        int before = 0;
+        for(int i = 0; i < 16; i ++){
+            if(board.getAllTiles()[i].getValue() != 0)
+                before++;
+        }
         board.generateNewTiles();
-        assertTrue((board.getScore() == 34 || board.getScore() == 36));
+        int after = 0;
+        for(int i = 0; i < 16; i ++){
+            if(board.getAllTiles()[i].getValue() != 0)
+                after++;
+        }
+        assertTrue((after - before == 1 ));
     }
 
     @Test
