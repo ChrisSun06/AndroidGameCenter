@@ -5,14 +5,12 @@ import java.util.List;
 
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
 import org.junit.Test;
-
 import java.util.Arrays;
 import java.util.List;
-
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import fall2018.csc2017.GameCentre.The2048.*;
 
 public class The2048BoardTest {
     private The2048Board board;
@@ -74,7 +72,7 @@ public class The2048BoardTest {
     @Test
     public void testGenerateNewTileNoBlank(){
         setUpBoardWithAll2();
-        board.generateNewTiles();
+        board.setAllTiles(board.generateNewTile(board.getAllTiles()));
         assertEquals(0, board.getScore());
     }
 
@@ -88,7 +86,7 @@ public class The2048BoardTest {
             if(board.getAllTiles()[i].getValue() != 0)
                 before++;
         }
-        board.generateNewTiles();
+        board.setAllTiles(board.generateNewTile(board.getAllTiles()));
         int after = 0;
         for(int i = 0; i < 16; i ++){
             if(board.getAllTiles()[i].getValue() != 0)

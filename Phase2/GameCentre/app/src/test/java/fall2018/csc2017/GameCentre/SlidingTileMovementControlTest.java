@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import static org.mockito.Mockito.*;
-
+import fall2018.csc2017.GameCentre.SlidingTile.*;
 public class SlidingTileMovementControlTest {
 
     private int gridSize = 4;

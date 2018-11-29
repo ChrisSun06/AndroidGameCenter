@@ -1,21 +1,17 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
-
 import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileBoard;
 import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileBoardManager;
 import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 import fall2018.csc2017.GameCentre.Strategies.SlidingTileStrategy;
 import fall2018.csc2017.GameCentre.Strategies.The2048Strategy;
 import fall2018.csc2017.GameCentre.Sudoku.SudokuBoardManager;
-import fall2018.csc2017.GameCentre.The2048.The2048Board;
 import fall2018.csc2017.GameCentre.The2048.The2048BoardManager;
 import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
