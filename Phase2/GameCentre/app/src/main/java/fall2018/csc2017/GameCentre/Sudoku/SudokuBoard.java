@@ -30,11 +30,11 @@ public class SudokuBoard extends AbstractBoard implements Serializable{
         return getNumCols() * getNumRows();
     }
 
-    void setTile(int row, int col, int value){
+    public void setTile(int row, int col, int value){
         tiles[row][col].setNumber(value);
     }
 
-    SudokuTile getTile(int row, int col){
+    public SudokuTile getTile(int row, int col){
         return tiles[row][col];
     }
 

@@ -165,7 +165,8 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
         userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
                 LoginActivity.ACC_INFO);
         boardManager = userAccManager.getCurrentGameStateMap(currentGame);
-        userAccManager.makeToastGameState(getApplicationContext());
+        Toast.makeText(getApplicationContext(), userAccManager.makeToastTextGameState(),
+                Toast.LENGTH_LONG).show();
     }
 
     /**

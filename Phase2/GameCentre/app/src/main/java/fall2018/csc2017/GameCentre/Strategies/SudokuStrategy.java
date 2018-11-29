@@ -24,7 +24,7 @@ public class SudokuStrategy implements ScoringStrategy{
     public SudokuStrategy(UserAccManager accManager) {
         this.accountMap = accManager.getAccountMap();
         this.currentUser = accManager.getCurrentUser();
-        this.currentGame = accManager.getCurrentGame();
+        this.currentGame = "Sudoku";
     }
 
     @Override

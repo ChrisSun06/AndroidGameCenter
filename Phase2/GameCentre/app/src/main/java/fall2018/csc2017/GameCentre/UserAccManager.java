@@ -28,7 +28,7 @@ public class UserAccManager implements Serializable {
     /**
      * The boolean that keeps track of whether last game saves load is successful or not.
      */
-    private boolean gameLoaded;
+    public boolean gameLoaded;
 
     /**
      * The String that stores the current game.
@@ -134,7 +134,8 @@ public class UserAccManager implements Serializable {
      * @param moves number of moves user made.
      * @param boardManager board manager user is playing on.
      */
-    public void addScore(ScoringStrategy scoringStrategy, int moves, AbstractBoardManager boardManager) {
+    public void addScore(ScoringStrategy scoringStrategy, int moves,
+                         AbstractBoardManager boardManager) {
         if (boardManager.toString().equals("2048 Board Manager")){
             scoringStrategy.addScore(moves, boardManager.getBoard());
         }
@@ -161,16 +162,48 @@ public class UserAccManager implements Serializable {
      *
      * @param game the game name that user wants to load.
      */
-    AbstractBoardManager getCurrentGameStateMap(String game){
+    public AbstractBoardManager getCurrentGameStateMap(String game){
         Map<String, AbstractBoardManager> tempGameSaves = accountMap.get(currentUser).getSaves();
-        if (tempGameSaves.containsKey(game) && tempGameSaves.get(game) != null) {
+        if (containPartOfKey(tempGameSaves, game)) {
             currentGame = game;
             gameLoaded = true;
-            return tempGameSaves.get(game);
+            return getGame(tempGameSaves, game);
         } else {
-            currentGame = null;
             gameLoaded = false;
             return null;
+        }
+    }
+
+    /**
+     * Check whether the saves contain the game type.
+     *
+     * @param gameSaves the map of game types corresponding to the board manager for each game.
+     * @param game the game name that user wants to load.
+     *
+     * @return whether the saves contain the game type.
+     */
+    private boolean containPartOfKey(Map<String, AbstractBoardManager> gameSaves, String game){
+        for (String key : gameSaves.keySet()){
+            if (game != null && game.contains(key) && gameSaves.get(key) != null){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Return the game board manager.
+     *
+     * @param gameSaves the map of game types corresponding to the board manager for each game.
+     * @param game the game name that user wants to load.
+     *
+     * @return the game board manager
+     */
+    private AbstractBoardManager getGame(Map<String, AbstractBoardManager> gameSaves, String game){
+        if (game.contains("sliding")){
+            return gameSaves.get("sliding");
+        } else {
+            return gameSaves.get(game);
         }
     }
 
@@ -178,14 +211,13 @@ public class UserAccManager implements Serializable {
      * Make a toast message of whether game board is initialized successfully or not.
      * Combined with getCurrentGameStateMap method above, to clarify for user.
      *
-     * @param context current activity context.
+     * @return the string that tells which toast to show.
      */
-    void makeToastGameState(Context context){
+    String makeToastTextGameState(){
         if (gameLoaded) {
-            Toast.makeText(context, "Game save successfully loaded! Enjoy your game.",
-                    Toast.LENGTH_LONG).show();
+            return "Game save successfully loaded! Enjoy your game.";
         } else {
-            Toast.makeText(context, "Game save not found!", Toast.LENGTH_LONG).show();
+            return "Game save not found!";
         }
     }
 

@@ -12,7 +12,7 @@ import fall2018.csc2017.GameCentre.tiles.TofeTile;
 /**
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  */
-class The2048BoardManager extends AbstractBoardManager implements Serializable {
+public class The2048BoardManager extends AbstractBoardManager implements Serializable {
 
     /**
      * The board being managed.
@@ -76,7 +76,7 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
      * @param inverted up vs down; left vs right
      * Precondition: rOrC can only be row or column
      */
-    void move(String rOrC, boolean inverted){
+    public void move(String rOrC, boolean inverted){
         historyStack.push(board.getAllTiles());
         TofeTile[] mergedList = this.board.merge(rOrC, inverted);
         addScore(mergedList);
@@ -180,7 +180,7 @@ class The2048BoardManager extends AbstractBoardManager implements Serializable {
     /**
      * the method will be used in Class MovementController.
      */
-    void undo() {
+    public void undo() {
         if(!historyStack.empty()) {
             this.board.setAllTiles(historyStack.pop());
             this.board.setScore(scoreStack.pop());
