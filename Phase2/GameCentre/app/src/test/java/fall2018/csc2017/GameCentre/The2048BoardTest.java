@@ -83,8 +83,18 @@ public class The2048BoardTest {
         setUpBoardWithAll2();
         TofeTile[] result = board.merge("column", false);
         board.setAllTiles(result);
+        int before = 0;
+        for(int i = 0; i < 16; i ++){
+            if(board.getAllTiles()[i].getValue() != 0)
+                before++;
+        }
         board.generateNewTiles();
-        assertTrue((board.getScore() == 0));
+        int after = 0;
+        for(int i = 0; i < 16; i ++){
+            if(board.getAllTiles()[i].getValue() != 0)
+                after++;
+        }
+        assertTrue((after - before == 1 ));
     }
 
     @Test
