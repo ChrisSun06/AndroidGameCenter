@@ -1,14 +1,13 @@
 package fall2018.csc2017.GameCentre.The2048;
 
 import java.util.ArrayList;
-
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
 /**
  * Class responsible for algorithm of adding numbers together and changing positions of tiles on
  * the board, i.e., merging rows or columns.
  */
-public class Merge2048 {
+class Merge2048 {
 
     /**
      * The resulting list after merging the original row/column.
@@ -42,7 +41,7 @@ public class Merge2048 {
      *
      * @param originalArray the array to be merged.
      */
-    public Merge2048(TofeTile[] originalArray){
+    Merge2048(TofeTile[] originalArray){
         this.originalArray = originalArray;
         this.inputArray = removingBlank(originalArray);
     }
@@ -71,7 +70,7 @@ public class Merge2048 {
      *
      * @return the merged version of inputArray.
      */
-    public TofeTile[] merge(){
+    TofeTile[] merge(){
         while (currentPosition < inputArray.length - 1){
             if(inputArray[currentPosition].getValue() == inputArray[currentPosition+1].getValue()){
                 resultingList[posInResult] = new TofeTile(inputArray[currentPosition].getValue()*2

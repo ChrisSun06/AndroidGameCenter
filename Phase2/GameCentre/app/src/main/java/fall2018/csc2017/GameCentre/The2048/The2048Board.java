@@ -1,9 +1,6 @@
 package fall2018.csc2017.GameCentre.The2048;
 
 import android.support.annotation.NonNull;
-
-import java.util.ArrayList;
-
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
@@ -46,7 +43,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      *
      * @param tiles the tiles for the board
      */
-    public The2048Board(List<TofeTile> tiles) {
+    The2048Board(List<TofeTile> tiles) {
         setNumCols(4);
         setNumRows(4);
         Iterator<TofeTile> iter = tiles.iterator();
@@ -161,7 +158,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * Return a Array with length 16 that contains all tiles from the board.
      * @return the array with length 16 that contains all tiles from the board.
      */
-    public TofeTile[] getAllTiles(){
+    TofeTile[] getAllTiles(){
         TofeTile[] result = new TofeTile[16];
         for (int row = 0; row != getNumRows(); row++) {
             for (int col = 0; col != getNumCols(); col++) {
@@ -194,7 +191,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @return a list of TofeTile representing the result after merging. the position
      * is determined by row * 4 + col
      */
-     public TofeTile[] merge(String rOrC, boolean inverted) {
+     TofeTile[] merge(String rOrC, boolean inverted) {
         TofeTile[] resultingTiles = new TofeTile[16];
         for (int i = 0; i < 4; i++) {
             TofeTile[] mergedTiles = new Merge2048(this.getRowOrColumn(rOrC, i, inverted)).merge();
@@ -205,9 +202,9 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
     }
 
     /**
-     * Return a list of int containing all positions of blank tiles on the board.
+     * Return true if the input TofeTile Array contains blank tile
      *
-     * @return a list of int representing positions of all blank tiles
+     * @return whether the input TofeTile Array contains blank tile
      */
     private boolean containsBlank(TofeTile[] inputs) {
         for (int i = 0; i < 16; i++) {
@@ -217,7 +214,14 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
         return false;
     }
 
-    public TofeTile[] generateNewTile(TofeTile[] inputs){
+    /**
+     * Return the updated TofeTile list that contains a newly generated tile if there is blank
+     * position on the board.
+     * @param inputs input tiles
+     * @return the updated TofeTile list that contains a newly generated tile if there is blank
+     * position on the board.
+     */
+    TofeTile[] generateNewTile(TofeTile[] inputs){
         if((!(Arrays.equals(this.getAllTiles(), inputs))) && containsBlank(inputs)) {
             Random rnd = new Random();
             int pos = rnd.nextInt(16);
@@ -293,21 +297,4 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
     public int getScore(){
         return score;
     }
-
-    /**
-     * get the max undo times.
-     *
-     * @return the number of max undo times
-     */
-    public int getMaxUndoTime() {
-        return maxUndoTime;
-    }
-
-    /**
-     * user could set their own undo time instead of 3.
-     */
-    public void setMaxUndoTime(int num) {
-        maxUndoTime = num;
-    }
-
 }

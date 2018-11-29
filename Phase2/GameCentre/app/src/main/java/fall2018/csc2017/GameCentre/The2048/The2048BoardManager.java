@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Stack;
-
 import fall2018.csc2017.GameCentre.AbstractBoardManager;
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
@@ -91,18 +90,6 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
      */
     @Override
     public boolean puzzleSolved() {
-//        for(int i = 0; i < 4; i++){
-//            for(int j = 0; j < 3; j++){
-//                if(board.getTile(i,j).getValue() == board.getTile(i,j+1).getValue())
-//                    return false;
-//                if(board.getTile(j,i).getValue() == board.getTile(j+1,i).getValue())
-//                    return false; } }
-//
-//        for(int i = 0; i < 4 ; i++) {
-//            for (int j = 0; j < 4; j++) {
-//                if (board.getTile(i, j).getValue() == 0)
-//                    return false; } }
-//        return true;
         TofeTile[] currentTiles = board.getAllTiles();
         return(Arrays.equals(currentTiles, board.merge("row", true)) &&
                 Arrays.equals(currentTiles, board.merge("row", false)) &&
