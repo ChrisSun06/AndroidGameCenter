@@ -43,7 +43,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      *
      * @param tiles the tiles for the board
      */
-    The2048Board(List<TofeTile> tiles) {
+    public The2048Board(List<TofeTile> tiles) {
         setNumCols(4);
         setNumRows(4);
         Iterator<TofeTile> iter = tiles.iterator();
@@ -158,7 +158,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * Return a Array with length 16 that contains all tiles from the board.
      * @return the array with length 16 that contains all tiles from the board.
      */
-    TofeTile[] getAllTiles(){
+    public TofeTile[] getAllTiles(){
         TofeTile[] result = new TofeTile[16];
         for (int row = 0; row != getNumRows(); row++) {
             for (int col = 0; col != getNumCols(); col++) {
@@ -191,7 +191,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @return a list of TofeTile representing the result after merging. the position
      * is determined by row * 4 + col
      */
-     TofeTile[] merge(String rOrC, boolean inverted) {
+     public TofeTile[] merge(String rOrC, boolean inverted) {
         TofeTile[] resultingTiles = new TofeTile[16];
         for (int i = 0; i < 4; i++) {
             TofeTile[] mergedTiles = new Merge2048(this.getRowOrColumn(rOrC, i, inverted)).merge();
@@ -221,7 +221,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @return the updated TofeTile list that contains a newly generated tile if there is blank
      * position on the board.
      */
-    TofeTile[] generateNewTile(TofeTile[] inputs){
+    public TofeTile[] generateNewTile(TofeTile[] inputs){
         if((!(Arrays.equals(this.getAllTiles(), inputs))) && containsBlank(inputs)) {
             Random rnd = new Random();
             int pos = rnd.nextInt(16);
