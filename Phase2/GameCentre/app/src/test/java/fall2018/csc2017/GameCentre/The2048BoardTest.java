@@ -43,7 +43,7 @@ public class The2048BoardTest {
     @Test
     public void testGetScore() {
         setUpBoardWithAll2();
-        assertEquals(32, board.getScore());
+        assertEquals(0, board.getScore());
     }
 
 
