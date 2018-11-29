@@ -67,8 +67,10 @@ public class The2048BoardManagerTest {
     @Test
     public void testConstructor() {
         setUp();
-        int onBoardValue = boardManager.getBoard().getScore();
-        assertTrue((onBoardValue == 4 || onBoardValue == 6 || onBoardValue == 8));
+        //int onBoardValue = boardManager.getBoard().getScore();
+        //assertTrue((onBoardValue == 4 || onBoardValue == 6 || onBoardValue == 8));
+        int score = boardManager.getBoard().getScore();
+        assertTrue((score == 0));
     }
 
     @Test
@@ -76,8 +78,10 @@ public class The2048BoardManagerTest {
         setUp();
         SetUnfinihsedBoard();
         boardManager.move("column", false);
-        int onBoardValue = boardManager.getBoard().getScore();
-        assertTrue((onBoardValue == 66 || onBoardValue == 68));
+        //int onBoardValue = boardManager.getBoard().getScore();
+        //assertTrue((onBoardValue == 66 || onBoardValue == 68));
+        int score = boardManager.getBoard().getScore();
+        assertTrue((score == 64));
     }
 
     @Test
