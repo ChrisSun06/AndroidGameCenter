@@ -80,16 +80,15 @@ public class The2048BoardTest {
     public void testGenerateNewTileWithBlank(){
         setUpBoardWithAll2();
         TofeTile[] result = board.merge("column", false);
-        board.setAllTiles(result);
         int before = 0;
         for(int i = 0; i < 16; i ++){
-            if(board.getAllTiles()[i].getValue() != 0)
+            if(result[i].getValue() != 0)
                 before++;
         }
-        board.setAllTiles(board.generateNewTile(board.getAllTiles()));
+        TofeTile[] generated = board.generateNewTile(result);
         int after = 0;
         for(int i = 0; i < 16; i ++){
-            if(board.getAllTiles()[i].getValue() != 0)
+            if(generated[i].getValue() != 0)
                 after++;
         }
         assertTrue((after - before == 1 ));
