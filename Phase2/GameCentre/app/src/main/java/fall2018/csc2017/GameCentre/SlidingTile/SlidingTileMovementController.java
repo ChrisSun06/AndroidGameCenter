@@ -4,7 +4,7 @@ import fall2018.csc2017.GameCentre.AbstractBoardManager;
 import fall2018.csc2017.GameCentre.MovementController;
 
 
-class SlidingTileMovementController implements MovementController {
+public class SlidingTileMovementController implements MovementController {
 
     /**
      * The boardManager.
@@ -25,7 +25,7 @@ class SlidingTileMovementController implements MovementController {
      *
      * @param position the tapped position
      */
-    void processTapMovement(int position) {
+    public void processTapMovement(int position) {
         if (boardManager.isValidTap(position)) {
             processValidTap(position);
 

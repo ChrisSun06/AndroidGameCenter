@@ -66,10 +66,31 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @param col the tile column
      * @return the tile at (row, col)
      */
-    TofeTile getTile(int row, int col) {
+    public TofeTile getTile(int row, int col) {
         return tiles[row][col];
     }
 
+    /**
+     * Return whether two 2048 boards, or 1 2048 board and an object is equal.
+     *
+     * @return whether this and Object o is equal.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof The2048Board)) {
+            return false;
+        }
+        int i = 0;
+        for (TofeTile tile : (The2048Board)o) {
+            int row = i / getNumRows();
+            int col = i % getNumCols();
+            if (tile.getValue() != getTile(row, col).getValue()){
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
 
     /**
      * Set the tile at the corresponding row and col
@@ -77,7 +98,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @param row the tile row
      * @param col the tile column
      */
-    void setTile(int row, int col, TofeTile tile){
+    private void setTile(int row, int col, TofeTile tile){
         tiles[row][col] = tile;
     }
     /**
@@ -140,7 +161,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * Return a Array with length 16 that contains all tiles from the board.
      * @return the array with length 16 that contains all tiles from the board.
      */
-    TofeTile[] getAllTiles(){
+    public TofeTile[] getAllTiles(){
         TofeTile[] result = new TofeTile[16];
         for (int row = 0; row != getNumRows(); row++) {
             for (int col = 0; col != getNumCols(); col++) {
@@ -155,7 +176,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * Precondition: inputTiles has size of 16.
      * @param inputTiles tiles to be put in the board
      */
-    void setAllTiles(TofeTile[] inputTiles){
+    public void setAllTiles(TofeTile[] inputTiles){
         for (int row = 0; row != getNumRows(); row++) {
             for (int col = 0; col != getNumCols(); col++) {
                 this.setTile(row, col, inputTiles[(row * 4) + col]);
@@ -173,7 +194,7 @@ public class The2048Board extends AbstractBoard implements Serializable, Iterabl
      * @return a list of TofeTile representing the result after merging. the position
      * is determined by row * 4 + col
      */
-     TofeTile[] merge(String rOrC, boolean inverted) {
+     public TofeTile[] merge(String rOrC, boolean inverted) {
         TofeTile[] resultingTiles = new TofeTile[16];
         for (int i = 0; i < 4; i++) {
             TofeTile[] mergedTiles = new Merge2048(this.getRowOrColumn(rOrC, i, inverted)).merge();

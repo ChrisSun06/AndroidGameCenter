@@ -9,9 +9,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileBoard;
+import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileBoardManager;
 import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 import fall2018.csc2017.GameCentre.Strategies.SlidingTileStrategy;
+import fall2018.csc2017.GameCentre.Strategies.The2048Strategy;
+import fall2018.csc2017.GameCentre.Sudoku.SudokuBoardManager;
+import fall2018.csc2017.GameCentre.The2048.The2048Board;
+import fall2018.csc2017.GameCentre.The2048.The2048BoardManager;
 import fall2018.csc2017.GameCentre.tiles.SlidingTile;
+import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
@@ -68,10 +75,15 @@ public class AccountAndAccountManagerTest {
         setUpAccountAndGame();
         accManager.setAccountMap(accountMap);
         AbstractBoardManager boardManager = new SlidingTileBoardManager(5);
+        AbstractBoardManager sudokuManager = new SudokuBoardManager();
+        accManager.setCurrentGame("sliding");
         accManager.setCurrentGameState(boardManager);
-        assertSame(accManager.getCurrentGameStateMap("sliding"), boardManager);
-        assertSame(accManager.getCurrentGameStateMap("Sudoku"), null);
+        assertSame(boardManager, accManager.getCurrentGameStateMap("sliding"));
+        accManager.setCurrentGame("Sudoku");
+        accManager.setCurrentGameState(sudokuManager);
+        assertSame(sudokuManager, accManager.getCurrentGameStateMap("Sudoku"));
         assertSame(accManager.getCurrentGameStateMap("abc"), null);
+        assertSame(accManager.getCurrentGameStateMap(null), null);
     }
 
     @Test
@@ -79,6 +91,7 @@ public class AccountAndAccountManagerTest {
         setUp();
         accManager.setCurrentGame("5X5sliding");
         assertSame(accManager.getCurrentGame(),"5X5sliding");
+
     }
 
     @Test
@@ -109,6 +122,49 @@ public class AccountAndAccountManagerTest {
         assertEquals(true,
                 6250 == accManager.getAccountMap().get("207").
                         getScores("5X5sliding"));
+    }
+
+    @Test
+    public void testAddScore2048(){
+        setUpAccountAndGame();
+        ScoringStrategy the2048Strategy = new The2048Strategy(accManager);
+        TofeTile[] tiles = new TofeTile[16];
+        for (int i = 0; i < 16; i++){
+            tiles[i] = new TofeTile(4, i);
+        }
+        The2048BoardManager boardManager = new The2048BoardManager();
+        boardManager.getBoard().setAllTiles(tiles);
+        boardManager.move("column", false);
+        accManager.addScore(the2048Strategy, 0, boardManager);
+        assertEquals(true,64 == accManager.getAccountMap().get("207").
+                        getScores("2048"));
+    }
+
+    @Test
+    public void testWriteAccountOutput(){
+        setUp();
+        accManager.writeAcc("CSC207", "hello", context);
+        assertEquals("Username already taken!",
+                accManager.writeAcc("CSC207", "hello", context));
+        assertEquals("Field cannot be empty!",
+                accManager.writeAcc("", "hello", context));
+        assertEquals("Field cannot be empty!",
+                accManager.writeAcc("a", "", context));
+    }
+
+    @Test
+    public void testMakeToastTextGameState(){
+        setUpAccountAndGame();
+        accManager.setAccountMap(accountMap);
+        AbstractBoardManager boardManager = new SlidingTileBoardManager(5);
+        accManager.setCurrentGameState(boardManager);
+        accManager.getCurrentGameStateMap("sliding");
+        assertEquals("Game save successfully loaded! Enjoy your game.",
+                accManager.makeToastTextGameState());
+        accManager.getCurrentGameStateMap("2048");
+        assertEquals("Game save not found!", accManager.makeToastTextGameState());
+        accManager.getCurrentGameStateMap("Sudoku");
+        assertEquals("Game save not found!", accManager.makeToastTextGameState());
     }
 
 
