@@ -8,8 +8,14 @@ import fall2018.csc2017.GameCentre.tiles.SudokuTile;
 import static org.junit.Assert.*;
 import fall2018.csc2017.GameCentre.Sudoku.*;
 
+/**
+ * The test for Sudoku game.
+ */
 public class SudokuTest {
 
+    /**
+     * The board manager.
+     */
     private SudokuBoardManager boardManager;
 
     /**
@@ -43,6 +49,9 @@ public class SudokuTest {
         boardManager = new SudokuBoardManager(board);
     }
 
+    /**
+     * Test isSolved() works or not.
+     */
     @Test
     public void testIsSolved(){
         setUpCorrect();
@@ -53,6 +62,9 @@ public class SudokuTest {
         assertFalse(boardManager.puzzleSolved());
     }
 
+    /**
+     * Test touchMove() on an empty board at the first position.
+     */
     @Test
     public void testTouchMoveEmptyFirst(){
         setUp();
@@ -63,6 +75,9 @@ public class SudokuTest {
         assertEquals(2, boardManager.getBoard().getTile(0, 0).getNumber());
     }
 
+    /**
+     * Test touchMove() on a empty board at the last position.
+     */
     @Test
     public void testTouchMoveEmptyLast(){
         setUp();
@@ -73,6 +88,9 @@ public class SudokuTest {
         assertEquals(2, boardManager.getBoard().getTile(8, 8).getNumber());
     }
 
+    /**
+     * Test touchMove() on a solved board.
+     */
     @Test
     public void testTouchMoveSolved(){
         setUp();
@@ -87,6 +105,9 @@ public class SudokuTest {
         }
     }
 
+    /**
+     * Test touchMove() on a board on a tile that's 9, to reset it back to 0.
+     */
     @Test
     public void testTouchMoveReset(){
         setUp();
@@ -96,12 +117,18 @@ public class SudokuTest {
         assertEquals(0, boardManager.getBoard().getTile(0, 1).getNumber());
     }
 
+    /**
+     * Test isValid() works or not.
+     */
     @Test
     public void testIsValid(){
         setUpCorrect();
         assertTrue(boardManager.isValid());
     }
 
+    /**
+     * Test whether isValid() works on an empty board.
+     */
     @Test
     public void testIsValidEmpty(){
         setUp();
@@ -112,6 +139,9 @@ public class SudokuTest {
         assertFalse(boardManager.isValid());
     }
 
+    /**
+     * Test whether isValidTap() works.
+     */
     @Test
     public void testIsValidTap(){
         setUp();
@@ -121,6 +151,9 @@ public class SudokuTest {
         assertTrue(boardManager.isValidTap(0));
     }
 
+    /**
+     * Test whether toString() works.
+     */
     @Test
     public void testToString(){
         setUp();
