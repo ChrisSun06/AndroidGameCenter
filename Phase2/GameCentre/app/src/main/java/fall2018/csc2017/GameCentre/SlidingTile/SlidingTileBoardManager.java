@@ -1,6 +1,7 @@
 package fall2018.csc2017.GameCentre.SlidingTile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import fall2018.csc2017.GameCentre.AbstractBoardManager;
@@ -21,10 +22,10 @@ public class SlidingTileBoardManager extends AbstractBoardManager<SlidingTileBoa
             tiles.add(new SlidingTile(tileNum + 1, gridSize));
         }
 
-        //Collections.shuffle(tiles);
-        //while (!solvable(tiles, gridSize)){
-        //Collections.shuffle(tiles);
-        //}
+        Collections.shuffle(tiles);
+        while (!solvable(tiles, gridSize)){
+        Collections.shuffle(tiles);
+        }
         setBoard(new SlidingTileBoard(tiles, gridSize));
     }
 
@@ -40,6 +41,7 @@ public class SlidingTileBoardManager extends AbstractBoardManager<SlidingTileBoa
 
     /**
      * Return an boolean to check if the game could be solved.
+     * Cite from https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
      *
      * @param tile the list to check
      * @return true if it could; otherwise, false
