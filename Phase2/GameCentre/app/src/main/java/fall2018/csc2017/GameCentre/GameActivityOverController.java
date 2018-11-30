@@ -1,12 +1,9 @@
 package fall2018.csc2017.GameCentre;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
 import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
-import fall2018.csc2017.GameCentre.Strategies.SlidingTileStrategy;
-
 /**
  * Controller that controls the logic of what to do after game is over.
  */

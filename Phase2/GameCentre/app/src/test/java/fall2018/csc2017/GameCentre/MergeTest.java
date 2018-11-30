@@ -23,7 +23,7 @@ public class MergeTest {
 
     /**
      * setting up a merge object in which the list to be merged is the second row of the board
-     * and the direction of moving is left
+     * and the direction of moving is right
      */
     private void setUpRight() {
         TofeTile[] tiles = {new TofeTile(0, 7), new TofeTile(2, 6),
@@ -31,12 +31,20 @@ public class MergeTest {
         merge2048 = new Merge2048(tiles);
     }
 
+    /**
+     * setting up a merge object in which the list to be merged is the first column of the board
+     * and the direction of moving is up
+     */
     private void setUpUp() {
         TofeTile[] tiles = {new TofeTile(4, 0), new TofeTile(4, 4),
                 new TofeTile(4, 8), new TofeTile(4, 12)};
         merge2048 = new Merge2048(tiles);
     }
 
+    /**
+     * setting up a merge object in which the list to be merged is the first column of the board
+     * and the direction of moving is down.
+     */
     private void setUpDown() {
         TofeTile[] tiles = {new TofeTile(2, 12), new TofeTile(4, 8),
                 new TofeTile(2, 4), new TofeTile(4, 0)};

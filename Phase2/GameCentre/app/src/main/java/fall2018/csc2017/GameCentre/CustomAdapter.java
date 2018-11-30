@@ -9,13 +9,9 @@ It is designed to aid setting the button sizes and positions in the GridView
  */
 
 //test
-
-import android.media.Image;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
 
