@@ -11,23 +11,25 @@ After the application BatGameCenter is installed on the phone, you can register 
 Just simply type in your username and password to register. Then, click on to Login to get into the
 game center. You can select three games which are Sliding Tiles(1), Sudoku(2) and 2048(3) by swiping screen.
 
-Notice the top left button is the back button, the top right gif button is the scoreboard button.
+Notice the top joker image is the back button, you can log out from the game selection activity or
+you can use it to go back to the previous activity. After you have selected a game and enter the game center, the top right gif button will
+lead you to the score board.
 (1). In Sliding Tile, you can select three sizes of the Sliding Tile game to play. If you want to change the in-game tile
-picture or change the undo numbers, you can go to settings to change them. In game, you can tab the tiles near
+picture or change the undo numbers, you can go to settings to change them. In game, you can tab the tiles that are beside
 the empty space to swap the tile. Your goal is to sort out the picture or the number given to you.
 If you want to redo a step, just click on the empty tile to undo, but you will lose one undo chance in the mean time.
-(2). In Sudoku, you will see a 9*9 board begin with several numbers given to you. You can press any blank position to make 
-it be number one, press one more time to make it be number two and so on. Your goal is to make each horizontal line 
+(2). In Sudoku, you will see a 9 by 9 board begin with several numbers given to you. You can press any blank position to make
+it be number one, press one more time to make it be number two and so on. Once you have reached nine,
+you can tab that position again to go back to one. Your goal is to make each horizontal line
 and vertical line(total 81 lines, each line has 9 positions)'s position has all of number from 1 to 9.
-(3). In 2048, you will see a 4*4 board begin with two randomly tiles which have value 2 and 4. Then, you can swipe the board with 
-four directions (up, down, right, left) and the tiles will swipe to this direction. When two tiles have the same value, these will be 
-merged to one tile that has doubled value and after each move, one of the blank position will randomly appear valued of 2 or 4 tiles. 
+(3). In 2048, you will see a 4 by 4 board begin with two randomly distributed tiles with the value 2 or 4. Then, you can swipe the board in
+four directions (up, down, right, left) and the tiles will swipe to this direction. When two tiles have the same value, they will be
+merged to one tile that has doubled value. After each move, one of the blank position will randomly appear a 2 or 4 tiles.
 Your goal is to merge enough tiles as you can, the score at the top will show how many tiles of value you merged (when two tiles 
 merged to a new tile, this new tile's value will be added to your score). Moreover, if you want to undo your move, just press 
 the undo button below. You can undo as many as you want; however, your score will not only minus the score added by this move, 
 but also minus 100 as the penalty in case some users will always undo the same move in oder to get a "great" randomly position 
-tile as they want (the score will not below 0). It follows exact the same thing as real 2048 we knew, except the real 2048 
-cannot undo.
+tile as they want (the score will not below 0). It follows relatively the same as the commonly known 2048.
 
 All the players that are register on the same device will share the same scoreboard. If you haven't play nor won a game,
 you will not have your score shown on the scoreboard. The Scoreboard is located in GameCenter,
