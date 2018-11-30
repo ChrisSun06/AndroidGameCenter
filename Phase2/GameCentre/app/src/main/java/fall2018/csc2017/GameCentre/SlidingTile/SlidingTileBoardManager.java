@@ -68,6 +68,7 @@ public class SlidingTileBoardManager extends AbstractBoardManager<SlidingTileBoa
         for (int r = 0; r != totalTile; r++) {
             if (tile.get(r).getId() == blankId){
                 answer = gridSize - r/gridSize;
+                break;
             }
         }
         return answer;
