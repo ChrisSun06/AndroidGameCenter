@@ -28,7 +28,8 @@
         <activity android:name=".SlidingTile.SlidingTileGameActivity" />
         <activity android:name=".Sudoku.SudokuGameActivity" />
         <activity android:name=".The2048.The2048GameActivity" />
-        <activity android:name=".GameOverActivity"></activity>
+        <activity android:name=".GameOverActivity" />
+        <activity android:name=".ScoreBoardPublicActivity"></activity>
     </application>
 
 </manifest>

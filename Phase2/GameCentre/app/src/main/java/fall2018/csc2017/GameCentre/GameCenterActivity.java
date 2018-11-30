@@ -192,7 +192,8 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
             @Override
             public void onClick(View v) {
                 Intent scoreBoard = new Intent(GameCenterActivity.this,
-                        ScoreBoardActivity.class);
+                        ScoreBoardPublicActivity.class);
+                scoreBoard.putExtra("GAME", currentGame);
                 startActivity(scoreBoard);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
             }
