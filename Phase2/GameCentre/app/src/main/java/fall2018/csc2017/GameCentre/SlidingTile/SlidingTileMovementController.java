@@ -1,10 +1,10 @@
 package fall2018.csc2017.GameCentre.SlidingTile;
 
 import fall2018.csc2017.GameCentre.AbstractBoardManager;
-import fall2018.csc2017.GameCentre.MovementController;
+import fall2018.csc2017.GameCentre.GameMovementController;
 
 
-public class SlidingTileMovementController implements MovementController {
+public class SlidingTileMovementController implements GameMovementController {
 
     /**
      * The boardManager.
@@ -28,11 +28,9 @@ public class SlidingTileMovementController implements MovementController {
     public void processTapMovement(int position) {
         if (boardManager.isValidTap(position)) {
             processValidTap(position);
-
         } else if (!boardManager.getBoard().historyStack.isEmpty() && position ==
                 boardManager.blankTilePosition()) {
             processUndo();
-
         }
     }
 

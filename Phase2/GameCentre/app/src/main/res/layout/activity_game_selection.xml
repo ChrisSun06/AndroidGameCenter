@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/score_board_bat"
+    android:background="@drawable/bat_on_ceiling"
     tools:context=".GameSelectionActivity">
 
 

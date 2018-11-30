@@ -23,6 +23,10 @@ public class GameOverActivity extends AppCompatActivity {
     /**The message to display**/
     private String displayMessage;
 
+    /**
+     * Initiate the display message and back to game center button
+     * @param savedInstanceState saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -50,7 +50,7 @@ class ScoreAdapter extends PagerAdapter{
     public int getCount(){return UserAccount.GAMES.length;}
 
     /**
-     * set number of rows.
+     * Check if the object is current view
      *
      * @param view the view of ScoreBoardPublicActivity
      * @param o a constrain layout
@@ -70,6 +70,7 @@ class ScoreAdapter extends PagerAdapter{
     @Override
     public Object instantiateItem(ViewGroup container, int position){
         layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        //
         View view = layoutInflater.inflate(R.layout.score_selection_pager, container, false);
         UserAccManager userAccManager = (UserAccManager) FileSaver.
                 loadFromFile(context, LoginActivity.ACC_INFO);
@@ -97,11 +98,11 @@ class ScoreAdapter extends PagerAdapter{
     }
 
     /**
-     * It will cast the ArrayList listName to the  name listView or the score listView
+     * It will cast the ArrayList listName to the name listView.
      * @param listName list of user names.
      * @param view this view
      */
-    public void castNameToView(ArrayList<String> listName, View view){
+    private void castNameToView(ArrayList<String> listName, View view){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_list_item_1, listName);
         ListView list = view.findViewById(R.id.gameViewName);
@@ -110,11 +111,11 @@ class ScoreAdapter extends PagerAdapter{
 
     /**
      *
-     *
+     * It will cast the ArrayList listScore to the score listView.
      * @param listScores the list of scores
      * @param view this view
      */
-    public void castScoresToView (ArrayList<String> listScores, View view) {
+    private void castScoresToView (ArrayList<String> listScores, View view) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_list_item_1, listScores);
         ListView list = view.findViewById(R.id.gameViewScores);

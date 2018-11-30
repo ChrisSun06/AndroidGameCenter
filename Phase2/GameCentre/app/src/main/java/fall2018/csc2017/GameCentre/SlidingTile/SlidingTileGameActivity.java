@@ -5,8 +5,10 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Observable;
@@ -50,10 +52,19 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
      */
     private UserAccManager userAccManager;
 
-    // Grid View and calculated column height and width based on device size
+    /**
+     * Grid View and calculated column height and width based on device size
+     */
     private SlidingTileGestureDetectGridView gridView;
+
+    /**
+     * column width and height device size
+     */
     private static int columnWidth, columnHeight;
 
+    /**
+     * Activity controller when the game is solved
+     */
     private GameActivityOverController gController;
 
     /**
@@ -73,9 +84,11 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
         boardManager = (SlidingTileBoardManager) FileSaver.loadFromFile(getApplicationContext(),
                 GameCenterActivity.TEMP_SAVE_FILENAME);
         gController = new GameActivityOverController();
+        this.findViewById(R.id.invalidTapTextView).setVisibility(View.GONE);
         setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_slidingtile_game);
+
         // Add View to activity
         gridView = findViewById(R.id.grid);
         gridView.setNumColumns(boardManager.getBoard().getNumCols());

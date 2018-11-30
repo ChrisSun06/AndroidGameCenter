@@ -16,6 +16,11 @@ public class GameSelectionActivity extends AppCompatActivity {
     private ViewPager mSlideViewPager;
     private GameSelectionAdapter selectionAdapter;
 
+    /**
+     * Initiate the logOut button and set the pager for all games.
+     *
+     * @param savedInstanceState saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,7 +35,9 @@ public class GameSelectionActivity extends AppCompatActivity {
     }
 
 
-
+    /**
+     * Activate the log out button.
+     */
     private void logOut(){
         ImageButton logOutButton =findViewById(R.id.logOutButton);
         logOutButton.setOnClickListener(new View.OnClickListener() {

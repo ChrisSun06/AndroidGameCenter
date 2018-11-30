@@ -9,9 +9,20 @@ import android.widget.ImageButton;
 
 public class ScoreBoardPublicActivity extends AppCompatActivity {
 
+    /*The view pager used for displaying scores*/
     private ViewPager mSlideViewPager;
+
+    /*The score adapter that loads the score board information to the page.*/
     private ScoreAdapter selectionAdapter;
+
+    /*The the name of game center that enters the score board*/
     private String currentGame;
+
+    /**
+     *
+     * Activate backGameCenter button and set the Pager for score board.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +37,9 @@ public class ScoreBoardPublicActivity extends AppCompatActivity {
         backGameCenter();
     }
 
+    /**
+     *Activate the back button, goes bac to game center of the currentGame
+     */
     private void backGameCenter(){
         ImageButton logOutButton =findViewById(R.id.backGameCenter);
         logOutButton.setOnClickListener(new View.OnClickListener() {

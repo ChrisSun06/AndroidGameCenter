@@ -17,43 +17,66 @@ import pl.droidsonroids.gif.GifImageButton;
 import pl.droidsonroids.gif.GifImageView;
 
 class GameSelectionAdapter extends PagerAdapter{
-    Context context;
-    LayoutInflater layoutInflater;
 
-    public GameSelectionAdapter(Context context){
+    /**Context of GameSelectionActivity.*/
+    private Context context;
+
+    /**
+     * The adapter that will display all the games in game center for players to choose
+     * from
+     *
+     * @param context Context for GameSelectionActivity
+     */
+    GameSelectionAdapter(Context context){
         this.context = context;
     }
 
-    //Arrays
-    public int[] slide_game = {
+    /**An int array of all the game icon drawable id*/
+    private int[] slide_game = {
             R.drawable.game_sliding_tile,
             R.drawable.game2048,
             R.drawable.batman_icon_gif
     };
 
-    public String[] slide_headings = {
+    /**An String array of the description of all games in game center*/
+     private String[] slide_headings = {
             "Classic Sliding Tile Game",
             "Can't stop that 2048! ",
             "Oh, is math time!"
     };
-
+    /**An String array of the description of all games in game center*/
     private String[] slideGameName = {
             GameSelectionActivity.GameSlidingTile,
             GameSelectionActivity.Game2048,
             GameSelectionActivity.GameSudoku
     };
 
+    /**
+     * Count the number of positions of the Adapter
+     */
     @Override
     public int getCount(){return slide_game.length;}
 
+    /**
+     * Check if the object is current view
+     *
+     * @param view the view of ScoreBoardPublicActivity
+     * @param o a constrain layout
+     */
     @Override
     public boolean isViewFromObject(View view, Object o){
         return view == (ConstraintLayout) o;
     }
 
+    /**
+     * Instantiate all the games in  position
+     *
+     * @param container the container that holds the adapter
+     * @param position current position in the container
+     */
     @Override
     public Object instantiateItem(ViewGroup container, int position){
-        layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.game_selection_pager, container, false);
         ConstraintLayout layoutSlide = (ConstraintLayout) view.findViewById(R.id.slidelinearLayout);
         GifImageButton slideGameButton = (GifImageButton) view.findViewById(R.id.selectGame);
@@ -66,7 +89,13 @@ class GameSelectionAdapter extends PagerAdapter{
         return view;
     }
 
-    public void setGameCenterButton(GifImageButton button, final String curr_game){
+    /**
+     * Setup game center button
+     *
+     * @param button the gif button
+     * @param curr_game current_game in the page
+     */
+    private void setGameCenterButton(GifImageButton button, final String curr_game){
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,6 +106,14 @@ class GameSelectionAdapter extends PagerAdapter{
             }
         });
     }
+
+    /**
+     * destroy the item in the container at the position given.
+     *
+     * @param container the container that holds the adapter
+     * @param position current position in the container
+     * @param object a constrain layout
+     */
     @Override
     public void destroyItem(ViewGroup container, int position, Object object){
         container.removeView((ConstraintLayout)object);
