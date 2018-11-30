@@ -159,7 +159,7 @@ public class The2048BoardManager extends AbstractBoardManager<The2048Board> {
      */
     public void undo() {
         if(!historyStack.empty() && !puzzleSolved()) {
-            getBoard().setScore(scoreStack.pop());
+            getBoard().setScore(Math.max(scoreStack.pop() - 100, 0));
             getBoard().setAllTiles(historyStack.pop());
         }
     }
