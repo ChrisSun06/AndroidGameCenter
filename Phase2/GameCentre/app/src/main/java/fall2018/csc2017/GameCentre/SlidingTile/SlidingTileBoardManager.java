@@ -13,14 +13,6 @@ import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 public class SlidingTileBoardManager extends AbstractBoardManager<SlidingTileBoard>{
 
     /**
-     * Manage a board that has been pre-populated.
-     * @param slidingTileBoard the board
-     */
-    public SlidingTileBoardManager(SlidingTileBoard slidingTileBoard) {
-        setBoard(slidingTileBoard);
-    }
-
-    /**
      * Manage a new shuffled board.
      */
     public SlidingTileBoardManager(int gridSize) {
@@ -38,7 +30,18 @@ public class SlidingTileBoardManager extends AbstractBoardManager<SlidingTileBoa
     }
 
     /**
+     * Manage a board that has been pre-populated.
+     * @param slidingTileBoard the board
+     */
+    public SlidingTileBoardManager(SlidingTileBoard slidingTileBoard) {
+        setBoard(slidingTileBoard);
+    }
+
+
+
+    /**
      * Return an boolean to check if the game could be solved.
+     * Cite from https://www.geeksforgeeks.org/check-instance-15-puzzle-solvable/
      *
      * @param tile the list to check
      * @return true if it could; otherwise, false

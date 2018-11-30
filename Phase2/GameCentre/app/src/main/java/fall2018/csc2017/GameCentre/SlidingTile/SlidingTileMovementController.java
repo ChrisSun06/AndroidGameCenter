@@ -39,7 +39,7 @@ public class SlidingTileMovementController implements MovementController {
     /**
      * Process the undo movement for each tap.
      */
-    public void processUndo() {
+    private void processUndo() {
         if (boardManager.getBoard().getMaxUndoTime() > 0) {
             boardManager.undo();
         }

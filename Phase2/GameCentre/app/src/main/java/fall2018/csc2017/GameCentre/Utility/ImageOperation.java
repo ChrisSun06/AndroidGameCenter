@@ -1,11 +1,16 @@
 package fall2018.csc2017.GameCentre.Utility;
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import fall2018.csc2017.GameCentre.tiles.SudokuTile;
+import fall2018.csc2017.GameCentre.tiles.Tile;
 
 /**
  * Some image operation functions.
@@ -72,5 +77,29 @@ public class ImageOperation {
             }
         }
         return bitmaps;
+    }
+
+    /**
+     * Get the updated bitmap.
+     * @param context the context
+     * @param tile the tile
+     * @return the updated bitmap.
+     */
+    public static Bitmap getUpdatedSudokuTileBackground(Context context, SudokuTile tile) {
+        Bitmap blankTile = BitmapFactory.decodeResource(context.getResources(),
+                Tile.FirstSudokuTileId + tile.getId() - 1);
+        if (!tile.getIsMutable()) {
+            Bitmap number = BitmapFactory.decodeResource(context.getResources(),
+                    Tile.FirstSudokuNumberId + tile.getValue() - 1);
+            return ImageOperation.superpose(blankTile, number);
+        }
+        else {
+            if (tile.getValue() != 0) {
+                Bitmap number = BitmapFactory.decodeResource(context.getResources(),
+                        Tile.FirstSudokuEditNumberId + tile.getValue() - 1);
+                return ImageOperation.superpose(blankTile, number);
+            }
+        }
+        return blankTile;
     }
 }

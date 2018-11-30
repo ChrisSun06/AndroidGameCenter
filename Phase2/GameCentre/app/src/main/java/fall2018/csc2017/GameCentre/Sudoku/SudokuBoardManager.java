@@ -70,35 +70,9 @@ public class SudokuBoardManager extends AbstractBoardManager<SudokuBoard> {
             int randomInt = random.nextInt(getBoard().numTiles());
             int col = randomInt % getBoard().getNumCols();
             int row = randomInt / getBoard().getNumRows();
-            getBoard().setTileValue(row, col, 0);
+            getBoard().getTile(row, col).setValue(0);
             getBoard().getTile(row, col).setIsMutable(true);
         }
-    }
-
-    /**
-     * Get the updated bitmap.
-     * @param context the context
-     * @param board the board
-     * @param row the row
-     * @param col the column
-     * @param tile the tile
-     * @return the updated bitmap.
-     */
-    Bitmap getUpdatedBitmap(Context context, SudokuBoard board, int row, int col, Bitmap tile) {
-        Bitmap temp = tile;
-        if (!board.getTile(row, col).getIsMutable()) {
-            Bitmap number = BitmapFactory.decodeResource(context.getResources(),
-                    Tile.FirstSudokuNumberId + board.getTile(row, col).getNumber() - 1);
-            temp = ImageOperation.superpose(tile, number);
-        }
-        else {
-            if (board.getTile(row, col).getNumber() != 0) {
-                Bitmap number = BitmapFactory.decodeResource(context.getResources(),
-                        Tile.FirstSudokuEditNumberId + board.getTile(row, col).getNumber() - 1);
-                temp = ImageOperation.superpose(tile, number);
-            }
-        }
-        return temp;
     }
 
     /**
@@ -107,10 +81,10 @@ public class SudokuBoardManager extends AbstractBoardManager<SudokuBoard> {
      */
     private void randomAdd(List<SudokuTile> tiles){
         for (int i = 0; i < 72; i++) {
-            tiles.add(new SudokuTile(0, false));
+            tiles.add(new SudokuTile(0, 0, false));
         }
         for (int i = 0; i < NUMBERS.size(); i++) {
-            tiles.add(new SudokuTile(NUMBERS.get(i), false));
+            tiles.add(new SudokuTile(0, NUMBERS.get(i), false));
         }
         Collections.shuffle(tiles);
     }
@@ -140,13 +114,13 @@ public class SudokuBoardManager extends AbstractBoardManager<SudokuBoard> {
      */
     @Nullable
     private Boolean checkSolveAndValid(int row, int col) {
-        if (getBoard().getTile(row, col).getNumber() == 0) {
+        if (getBoard().getTile(row, col).getValue() == 0) {
             for (Integer k : NUMBERS) {
-                getBoard().setTileValue(row, col, k);
+                getBoard().getTile(row, col).setValue(k);
                 if (isValid() && solve()) {
                     return true;
                 }
-                getBoard().setTileValue(row, col, 0);
+                getBoard().getTile(row, col).setValue(0);
             }
             return false;
         }
@@ -206,9 +180,9 @@ public class SudokuBoardManager extends AbstractBoardManager<SudokuBoard> {
                                int totalCount, Set<Integer> tempSet) {
         for (SudokuTile i: part){
             totalCount ++;
-            if (i.getNumber() != 0) {
+            if (i.getValue() != 0) {
                 count++;
-                tempSet.add(i.getNumber());
+                tempSet.add(i.getValue());
                 if (tempSet.size() != count){
                     return true;
                 }
@@ -230,7 +204,7 @@ public class SudokuBoardManager extends AbstractBoardManager<SudokuBoard> {
     public boolean puzzleSolved(){
         boolean filled = true;
         for (SudokuTile i: getBoard().horizontal()){
-            if (i.getNumber() == 0){filled = false;}
+            if (i.getValue() == 0){filled = false;}
         }
         return isValid() && filled;
     }
