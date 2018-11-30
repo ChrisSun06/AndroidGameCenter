@@ -1,8 +1,5 @@
 package fall2018.csc2017.GameCentre;
 
-import android.content.Context;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

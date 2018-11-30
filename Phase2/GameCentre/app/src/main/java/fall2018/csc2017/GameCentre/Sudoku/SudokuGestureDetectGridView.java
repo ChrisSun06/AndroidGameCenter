@@ -10,8 +10,6 @@ import android.widget.GridView;
 
 public class SudokuGestureDetectGridView extends GridView {
     public static final int SWIPE_MIN_DISTANCE = 100;
-    public static final int SWIPE_MAX_OFF_PATH = 100;
-    public static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private GestureDetector gDetector;
     private SudokuMovementController mController;
     private boolean mFlingConfirmed = false;
