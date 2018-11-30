@@ -36,6 +36,7 @@ If I do not understand a concept or code, I will immediately ask my team for hel
 we decided two games which are Sudoku and 2048.
 release everyone workload for the first week. 
 Note tacker: Jason\
+
 Peter: sudoku\
 MingJin: entire game activity setting and design\
 Chris: sudoku\
@@ -63,13 +64,24 @@ Ming: \
 Peter: \
 Chris: \
 Leo: 2048 integrate and optimize\
-Jason: sliding tile be solvable
+Jason: sliding tile always solvable
 
-
-####Nov 23 
+####Nov 23,24,25, BA3200
+we thought phase2 is due these days and do a lot overnight works
 Note tacker: Peter\
 
+Ming: \
+Peter: \
+Chris: \
+Leo: \
+Jason: 2048 score
 
-
-####Nov 24,25 
+####Nov 28,29,30, BA2240
+The last three days we fix code smells and test coverage
 Note tacker: Leo\
+
+Ming: \
+Peter: \
+Chris: \
+Leo: \
+Jason: fix code smells and test coverage, update new score 
