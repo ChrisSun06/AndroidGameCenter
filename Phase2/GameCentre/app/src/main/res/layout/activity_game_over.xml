@@ -5,6 +5,7 @@
     android:id="@+id/displayMSG"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/batman_fadeaway"
 
     tools:context=".GameOverActivity">
 
@@ -29,6 +30,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="Display Message"
+        android:textColor="@color/colorLight"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/goBackGameCenter"
         app:layout_constraintEnd_toEndOf="parent"

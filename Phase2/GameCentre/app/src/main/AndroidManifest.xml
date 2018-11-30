@@ -25,7 +25,7 @@
         <activity android:name=".Sudoku.SudokuGameActivity" />
         <activity android:name=".The2048.The2048GameActivity" />
         <activity android:name=".GameOverActivity" />
-        <activity android:name=".ScoreBoardPublicActivity"></activity>
+        <activity android:name=".ScoreBoardPublicActivity" />
     </application>
 
 </manifest>

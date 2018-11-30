@@ -161,8 +161,7 @@ public class SudokuBoardManager extends AbstractBoardManager<SudokuBoard> {
         int totalCount = 0;
         Set<Integer> tempSet = new HashSet<>();
 
-        if (checkValid(part, count, totalCount, tempSet)) return false;
-        return true;
+        return  !(checkValid(part, count, totalCount, tempSet));
     }
 
     /**

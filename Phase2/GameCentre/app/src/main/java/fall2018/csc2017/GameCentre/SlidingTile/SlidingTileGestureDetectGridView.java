@@ -13,6 +13,7 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -20,8 +21,6 @@ import fall2018.csc2017.GameCentre.R;
 
 public class SlidingTileGestureDetectGridView extends GridView {
     public static final int SWIPE_MIN_DISTANCE = 100;
-    public static final int SWIPE_MAX_OFF_PATH = 100;
-    public static final int SWIPE_THRESHOLD_VELOCITY = 100;
     private GestureDetector gDetector;
     private SlidingTileMovementController mController;
     private boolean mFlingConfirmed = false;

@@ -4,10 +4,10 @@ import android.content.Context;
 import android.widget.Toast;
 
 import fall2018.csc2017.GameCentre.AbstractBoardManager;
-import fall2018.csc2017.GameCentre.MovementController;
+import fall2018.csc2017.GameCentre.GameMovementController;
 
 
-public class SudokuMovementController implements MovementController {
+public class SudokuMovementController implements GameMovementController {
 
     /**
      * The boardManager.
@@ -32,33 +32,11 @@ public class SudokuMovementController implements MovementController {
     void processTapMovement(Context context, int position) {
         if (boardManager.isValidTap(position)) {
             processValidTap(context, position);
-            int row = position / boardManager.getBoard().getNumRows();
-            int col = position % boardManager.getBoard().getNumCols();
-            String a = boardManager.getBoard().getTile(row, col).getIsMutable() ? "true" : "false";
-            Toast.makeText(context, a, Toast.LENGTH_SHORT).show();
-        } /*else if (!boardManager.getBoard().historyStack.isEmpty() && position ==
-                boardManager.blankTilePosition()) {
-            processUndo(context);
-        }*/
+        }
         else {
             Toast.makeText(context, "Invalid Tap", Toast.LENGTH_SHORT).show();
         }
     }
-
-    /**
-     * Process the undo movement for each tap.
-     *
-     * @param context the current context
-     */
-    /*private void processUndo(Context context) {
-        if (boardManager.getBoard().getMaxUndoTime() <= 0) {
-            Toast.makeText(context, "Cannot Undo anymore", Toast.LENGTH_SHORT).show();
-        } else {
-            boardManager.undo();
-            Toast.makeText(context, boardManager.getBoard().getMaxUndoTime() +
-                    " Undo chance(s) left", Toast.LENGTH_SHORT).show();
-        }
-    }*/
 
     /**
      * process the valid tap.
@@ -68,7 +46,6 @@ public class SudokuMovementController implements MovementController {
      */
     private void processValidTap(Context context, int position) {
         boardManager.touchMove(position);
-        // boardManager.getBoard().increaseNumOfMoves();
         if (boardManager.puzzleSolved()) {
             Toast.makeText(context, "YOU WIN!", Toast.LENGTH_SHORT).show();
         }

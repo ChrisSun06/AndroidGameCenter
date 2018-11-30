@@ -16,7 +16,7 @@ import pl.droidsonroids.gif.GifImageButton;
 /**
  * The initial activity for the sliding puzzle tile game.
  */
-public class GameCenterActivity extends AppCompatActivity implements FragmentBasedInterface{
+public class GameCenterActivity extends AppCompatActivity{
 
     /**
      * A temporary save file.
@@ -38,6 +38,9 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
      */
     private UserAccManager userAccManager;
 
+    /**
+     * The controller for game center that deals with changing button fragments.
+     */
     private GameCenterActivityController gController;
 
 
@@ -48,7 +51,6 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
      *
      * @param savedInstanceState current state
      */
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,12 +68,19 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
         addBackButtonListener();
     }
 
+    /**
+     * Get current string of current game
+     */
     private void currentGameInfoSetup(){
         currentGame = getIntent().getStringExtra("GAME");
         userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
                 LoginActivity.ACC_INFO);
     }
 
+    /**
+     * Change the button fragments based on game.
+     * @param game the string of current game type.
+     */
     public void changeFragment(String game){
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
