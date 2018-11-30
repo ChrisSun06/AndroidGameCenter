@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Observable;
 
 import fall2018.csc2017.GameCentre.AbstractBoard;
 import fall2018.csc2017.GameCentre.tiles.SudokuTile;

@@ -1,9 +1,5 @@
 package fall2018.csc2017.GameCentre.tiles;
 
-import android.graphics.Bitmap;
-
-import fall2018.csc2017.GameCentre.R;
-
 /**
  * A Tile in a sliding tiles game.
  */

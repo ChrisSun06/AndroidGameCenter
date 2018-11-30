@@ -14,9 +14,9 @@ import fall2018.csc2017.GameCentre.The2048.*;
 
 public class The2048BoardTest {
     private The2048Board board;
+
     /**
-     * setting up a merge object in which the list to be merged is the second row of the board
-     * and the direction of moving is left
+     * Setup the board with all 2's.
      */
     private void setUpBoardWithAll2() {
         List<TofeTile> tiles = new ArrayList<>();
@@ -26,6 +26,9 @@ public class The2048BoardTest {
         board = new The2048Board(tiles);
     }
 
+    /**
+     * setup the board with 3 columns of 2's, the other one is 0
+     */
     private void setUpBoardWith3columnsAll2() {
         List<TofeTile> tiles = new ArrayList<>();
         for(int i = 0; i < 16; i++){
@@ -38,6 +41,9 @@ public class The2048BoardTest {
         board = new The2048Board(tiles);
     }
 
+    /**
+     * Test get score
+     */
     @Test
     public void testGetScore() {
         setUpBoardWithAll2();
@@ -45,6 +51,9 @@ public class The2048BoardTest {
     }
 
 
+    /**
+     * Test moving up
+     */
     @Test
     public void testMergeAll2Up() {
         setUpBoardWithAll2();
@@ -59,6 +68,9 @@ public class The2048BoardTest {
         assertTrue(Arrays.equals(result, expectedResult));
     }
 
+    /**
+     *Test generating new tile if there is no blank position.
+     */
     @Test
     public void testGenerateNewTileNoBlank(){
         setUpBoardWithAll2();
@@ -66,6 +78,9 @@ public class The2048BoardTest {
         assertEquals(0, board.getScore());
     }
 
+    /**
+     *Test generating new tile if there is blank position.
+     */
     @Test
     public void testGenerateNewTileWithBlank(){
         setUpBoardWithAll2();
@@ -84,6 +99,9 @@ public class The2048BoardTest {
         assertTrue((after - before == 1 ));
     }
 
+    /**
+     * Testing moving left for the board with 3 columns of 2's.
+     */
     @Test
     public void testMerge3columns2Left() {
         setUpBoardWith3columnsAll2();
@@ -99,6 +117,9 @@ public class The2048BoardTest {
         }
     }
 
+    /**
+     * Testing moving right for the board with 3 columns of 2's.
+     */
     @Test
     public void testMerge3columns2Right() {
         setUpBoardWith3columnsAll2();
@@ -115,6 +136,9 @@ public class The2048BoardTest {
         assertTrue(Arrays.equals(result, expectedResult));
     }
 
+    /**
+     * Testing get all tiles of the board.
+     */
     @Test
     public void testGetTiles() {
         setUpBoardWith3columnsAll2();
@@ -123,6 +147,9 @@ public class The2048BoardTest {
         assertTrue(Arrays.equals(result, board.getAllTiles()));
     }
 
+    /**
+     * Test whether 2 boards are equal.
+     */
     @Test
     public void testEquals() {
         setUpBoardWithAll2();
