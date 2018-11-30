@@ -17,7 +17,6 @@ public class The2048BoardManagerTest {
     private void setUp() {
         boardManager = new The2048BoardManager();
     }
-
     private void SetUnfinihsedBoard(){
         TofeTile[] tiles = new TofeTile[16];
         tiles[0] = new TofeTile(4, 0);

@@ -69,18 +69,18 @@ class The2048GestureListener extends GestureDetector.SimpleOnGestureListener {
         if (absHDiff > absVDiff && absHDiff > flingMin && absVelocityX > absVelocityY) {
             if (horizontalDiff > 0) {
                 //swipe right
-                mController.processMovement(context, "row", true);
+                mController.processMovement("row", true);
             } else {
                 //swipe left
-                mController.processMovement(context, "row", false);
+                mController.processMovement("row", false);
             }
         } else if (absVDiff > flingMin && absVelocityY > velocityMin) {
             if (verticalDiff > 0) {
                 //swipe down
-                mController.processMovement(context, "column", true);
+                mController.processMovement("column", true);
             } else {
                 //swipe up
-                mController.processMovement(context, "column", false);
+                mController.processMovement("column", false);
             }
         }
         return true;
