@@ -6,7 +6,7 @@ public class SudokuTile extends Tile {
     /**
      * Number at the current position.
      */
-    private int number;
+    private int value;
 
     /**
      * Number is mutable if check available is 1, 0 otherwise.
@@ -14,25 +14,17 @@ public class SudokuTile extends Tile {
     private boolean isMutable;
 
     /**
-     * Set number of the current position
+     * Set value of the current position
      *
-     * @param number bitmap of the background image
+     * @param value value of the current position
      */
-    public void setNumber(int number) {
-        this.number = number;
+    public void setValue(int value) {
+        this.value = value;
     }
 
-    public int getNumber() {
-        return number;
+    public int getValue() {
+        return value;
     }
-
-    /*public void incrementNumber() {
-        this.number ++;
-    }*/
-
-    /*public void setChangeAvailable(int changeAvailable) {
-        this.changeAvailable = changeAvailable;
-    }*/
 
     public boolean getIsMutable() {
         return isMutable;
@@ -42,9 +34,9 @@ public class SudokuTile extends Tile {
         this.isMutable = isMutable;
     }
 
-    public SudokuTile(int number, boolean isMutable) {
-        this.number = number;
-        // changeAvailable is access only
+    public SudokuTile(int id, int value, boolean isMutable) {
+        setId(id);
+        this.value = value;
         this.isMutable = isMutable;
     }
 }

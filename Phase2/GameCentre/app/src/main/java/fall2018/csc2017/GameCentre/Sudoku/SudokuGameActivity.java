@@ -23,6 +23,7 @@ import fall2018.csc2017.GameCentre.R;
 import fall2018.csc2017.GameCentre.Strategies.ScoringStrategy;
 import fall2018.csc2017.GameCentre.Strategies.SudokuStrategy;
 import fall2018.csc2017.GameCentre.UserAccManager;
+import fall2018.csc2017.GameCentre.Utility.ImageOperation;
 import fall2018.csc2017.GameCentre.tiles.Tile;
 
 /**
@@ -137,12 +138,9 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         for (int row = 0; row != boardManager.getBoard().getNumRows(); row++) {
             for (int col = 0; col != boardManager.getBoard().getNumCols(); col++) {
                 Button tmp = new Button(context);
-                int position = board.getNumCols() * row + col + 1;
-                // set up default background image
-                Bitmap tile = BitmapFactory.decodeResource(getResources(),
-                        Tile.FirstSudokuTileId + position - 1);
-                tile = boardManager.getUpdatedBitmap(context, board, row, col, tile);
-                tmp.setBackground(new BitmapDrawable(getResources(), tile));
+                Bitmap updated = ImageOperation.getUpdatedSudokuTileBackground(context,
+                        board.getTile(row, col));
+                tmp.setBackground(new BitmapDrawable(getResources(), updated));
                 this.tileButtons.add(tmp);
             }
         }
@@ -157,9 +155,9 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         for (Button b : tileButtons) {
             int row = nextPos / boardManager.getBoard().getNumRows();
             int col = nextPos % boardManager.getBoard().getNumCols();
-            Bitmap tile = ((BitmapDrawable) b.getBackground()).getBitmap();
-            tile = boardManager.getUpdatedBitmap(this, board, row, col, tile);
-            b.setBackground(new BitmapDrawable(getResources(), tile));
+            Bitmap updated = ImageOperation.getUpdatedSudokuTileBackground(this,
+                    board.getTile(row, col));
+            b.setBackground(new BitmapDrawable(getResources(), updated));
             nextPos++;
         }
     }

@@ -27,6 +27,7 @@ public class SudokuBoard extends AbstractBoard<SudokuTile> implements Serializab
         for (int row = 0; row != getNumRows(); row++) {
             for (int col = 0; col != getNumCols(); col++) {
                 setTile(row, col, iter.next());
+                getTile(row, col).setId(getNumCols() * row + col + 1);
             }
         }
     }
@@ -178,24 +179,10 @@ public class SudokuBoard extends AbstractBoard<SudokuTile> implements Serializab
         public SudokuTile next() {
             int curRow = ((nextIndex / 9) / 3) * 3 + (nextIndex % 9) / 3;
             int curCol = ((nextIndex / 9) % 3) * 3 + (nextIndex % 9) % 3;
-            //int curRow = (nextIndex % 18) / 3;
-            //int curCol = (nextIndex % 3) + (nextIndex / 18) * 3;
             SudokuTile tile = getTile(curCol, curRow);
             nextIndex += 1;
             return tile;
         }
-    }
-
-    /**
-     * Set the tile to value
-     *
-     * @param row the row
-     * @param col the column
-     * @param value the value
-     */
-    public void setTileValue(int row, int col, int value){
-        SudokuTile tile = new SudokuTile(value, false);
-        setTile(row, col, tile);
     }
 
     /**
@@ -205,14 +192,12 @@ public class SudokuBoard extends AbstractBoard<SudokuTile> implements Serializab
      * @param col the column
      */
     void incrementTile(int row, int col) {
-        if (getTile(row, col).getNumber() == getNumRows()) {
-            getTile(row, col).setNumber(0);
+        if (getTile(row, col).getValue() == getNumRows()) {
+            getTile(row, col).setValue(0);
         } else {
-            getTile(row, col).setNumber(getTile(row, col).getNumber() + 1);
+            getTile(row, col).setValue(getTile(row, col).getValue() + 1);
         }
         setChanged();
         notifyObservers();
     }
-
-
 }

@@ -32,7 +32,7 @@ public class SudokuTest {
 
     private void setFirstRow(){
         for (int i = 0; i < 9; i++){
-            this.boardManager.getBoard().setTileValue(0, i, i+1);
+            this.boardManager.getBoard().getTile(0, i).setValue(i+1);
         }
     }
 
@@ -40,10 +40,10 @@ public class SudokuTest {
      * Make a empty Board, filled with all 0s.
      */
     private void setUp(){
-        ArrayList<Integer> numbers = new ArrayList<>(Collections.nCopies(81, 0));
+        ArrayList<Integer> values = new ArrayList<>(Collections.nCopies(81, 0));
         ArrayList<SudokuTile> tiles = new ArrayList<>();
-        for (int i = 0; i < numbers.size(); i++) {
-            tiles.add(new SudokuTile(numbers.get(i), false));
+        for (int i = 0; i < values.size(); i++) {
+            tiles.add(new SudokuTile(i + 1, values.get(i), false));
         }
         SudokuBoard board = new SudokuBoard(tiles);
         boardManager = new SudokuBoardManager(board);
@@ -68,11 +68,11 @@ public class SudokuTest {
     @Test
     public void testTouchMoveEmptyFirst(){
         setUp();
-        assertEquals(0, boardManager.getBoard().getTile(0, 0).getNumber());
+        assertEquals(0, boardManager.getBoard().getTile(0, 0).getValue());
         boardManager.touchMove(0);
-        assertEquals(1, boardManager.getBoard().getTile(0, 0).getNumber());
+        assertEquals(1, boardManager.getBoard().getTile(0, 0).getValue());
         boardManager.touchMove(0);
-        assertEquals(2, boardManager.getBoard().getTile(0, 0).getNumber());
+        assertEquals(2, boardManager.getBoard().getTile(0, 0).getValue());
     }
 
     /**
@@ -81,11 +81,11 @@ public class SudokuTest {
     @Test
     public void testTouchMoveEmptyLast(){
         setUp();
-        assertEquals(0, boardManager.getBoard().getTile(8, 8).getNumber());
+        assertEquals(0, boardManager.getBoard().getTile(8, 8).getValue());
         boardManager.touchMove(80);
-        assertEquals(1, boardManager.getBoard().getTile(8, 8).getNumber());
+        assertEquals(1, boardManager.getBoard().getTile(8, 8).getValue());
         boardManager.touchMove(80);
-        assertEquals(2, boardManager.getBoard().getTile(8, 8).getNumber());
+        assertEquals(2, boardManager.getBoard().getTile(8, 8).getValue());
     }
 
     /**
@@ -95,13 +95,13 @@ public class SudokuTest {
     public void testTouchMoveSolved(){
         setUp();
         SudokuTile temp = boardManager.getBoard().getTile(3,2);
-        SudokuTile tile = new SudokuTile(temp.getNumber(), temp.getIsMutable());
+        SudokuTile tile = new SudokuTile(temp.getId(), temp.getValue(), temp.getIsMutable());
         boardManager.touchMove(29);
         SudokuTile newTile = boardManager.getBoard().getTile(3, 2);
-        if (tile.getNumber() == 9){
-            assertEquals(0, newTile.getNumber());
+        if (tile.getValue() == 9){
+            assertEquals(0, newTile.getValue());
         } else {
-            assertEquals(tile.getNumber() + 1, newTile.getNumber());
+            assertEquals(tile.getValue() + 1, newTile.getValue());
         }
     }
 
@@ -114,7 +114,7 @@ public class SudokuTest {
         for (int i = 0; i <= 9; i++){
             boardManager.touchMove(1);
         }
-        assertEquals(0, boardManager.getBoard().getTile(0, 1).getNumber());
+        assertEquals(0, boardManager.getBoard().getTile(0, 1).getValue());
     }
 
     /**
@@ -135,7 +135,7 @@ public class SudokuTest {
         assertTrue(boardManager.isValid());
         setFirstRow();
         assertTrue(boardManager.isValid());
-        boardManager.getBoard().setTileValue(1, 0, 1);
+        boardManager.getBoard().getTile(1, 0).setValue(1);
         assertFalse(boardManager.isValid());
     }
 
@@ -146,8 +146,7 @@ public class SudokuTest {
     public void testIsValidTap(){
         setUp();
         assertFalse(boardManager.isValidTap(0));
-        boardManager.getBoard().setTile(0, 0, new SudokuTile(1,
-                true));
+        boardManager.getBoard().getTile(0, 0).setIsMutable(true);
         assertTrue(boardManager.isValidTap(0));
     }
 
