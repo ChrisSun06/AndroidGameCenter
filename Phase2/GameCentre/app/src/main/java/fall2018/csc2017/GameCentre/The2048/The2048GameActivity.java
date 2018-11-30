@@ -204,7 +204,8 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         saveToFile();
         display();
         TofeTile[] currentTiles = boardManager.getBoard().getAllTiles();
-        System.out.println(Arrays.equals(currentTiles, boardManager.getBoard().merge("row", true)));
+        System.out.println(Arrays.equals(currentTiles, boardManager.getBoard().merge("row",
+                true)));
         onSolved();
     }
 

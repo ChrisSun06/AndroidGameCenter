@@ -71,7 +71,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         boardManager = (SlidingTileBoardManager) FileSaver.loadFromFile(getApplicationContext(),
-                        GameCenterActivity.TEMP_SAVE_FILENAME);
+                GameCenterActivity.TEMP_SAVE_FILENAME);
         gController = new GameActivityOverController();
         setUpBoard();
         createTileButtons(this);
@@ -113,7 +113,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     /**
      * A method that set the game name based on gridSize.
      */
-    private void setCurrentGameName(){
+    private void setCurrentGameName() {
         String gridSize = Integer.valueOf(boardManager.getBoard().getNumCols()).toString();
         currentGame = gridSize + "X" + gridSize + "sliding";
     }
@@ -129,24 +129,12 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
         for (int row = 0; row != board.getNumRows(); row++) {
             for (int col = 0; col != board.getNumCols(); col++) {
                 Button tmp = new Button(context);
-                UserAccount userAccount = userAccManager.getAccountMap().get(userAccManager.getCurrentUser());
+                UserAccount userAccount = userAccManager.getAccountMap().
+                        get(userAccManager.getCurrentUser());
                 if (userAccount.getImageType() == UserAccount.ImageType.Default) {
-                    if (board.getTile(row, col).getId() == board.getBoardSize()) {
-                        tmp.setBackgroundResource(R.drawable.white);
-                    }
-                    else tmp.setBackgroundResource(Tile.FirstSlidingTileDefaultId +
-                            board.getTile(row, col).getId() - 1);
+                    setImage(board, row, col, tmp);
                 } else {
-                    if (board.getTile(row, col).getId() == board.getBoardSize()) {
-                        tmp.setBackgroundResource(R.drawable.white);
-                    } else {
-                        int tileId = board.getTile(row, col).getId();
-                        String tileName = createTileName(boardManager.getBoard().getNumRows(),
-                                board.getNumCols(), tileId);
-                        String path = getDataDir().getPath() + "/app_" +
-                                userAccManager.getCurrentUser() + "/" + tileName;
-                        tmp.setBackground(Drawable.createFromPath(path));
-                    }
+                    setTile(board, tmp, row, col);
                 }
                 this.tileButtons.add(tmp);
             }
@@ -154,11 +142,26 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     }
 
     /**
+     * Set the single image based on row, column and board.
+     *
+     * @param board the sliding tile game board
+     * @param row   the row
+     * @param col   the column
+     * @param tmp   the button
+     */
+    private void setImage(SlidingTileBoard board, int row, int col, Button tmp) {
+        if (board.getTile(row, col).getId() == board.getBoardSize()) {
+            tmp.setBackgroundResource(R.drawable.white);
+        } else tmp.setBackgroundResource(Tile.FirstSlidingTileDefaultId +
+                board.getTile(row, col).getId() - 1);
+    }
+
+    /**
      * create the name of a specific tile.
      *
      * @param numRows board's num rows
      * @param numCols board's num cols
-     * @param tileId tile's id
+     * @param tileId  tile's id
      * @return generated tile's file name
      */
     @Override
@@ -177,26 +180,35 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
         for (Button b : tileButtons) {
             int row = nextPos / boardManager.getBoard().getNumRows();
             int col = nextPos % boardManager.getBoard().getNumCols();
-            UserAccount userAccount = userAccManager.getAccountMap().get(userAccManager.getCurrentUser());
+            UserAccount userAccount = userAccManager.getAccountMap().get(userAccManager.
+                    getCurrentUser());
             if (userAccount.getImageType() == UserAccount.ImageType.Default) {
-                if (board.getTile(row, col).getId() == board.getBoardSize()) {
-                    b.setBackgroundResource(R.drawable.white);
-                }
-                else b.setBackgroundResource(Tile.FirstSlidingTileDefaultId +
-                        board.getTile(row, col).getId() - 1);
+                setImage(board, row, col, b);
             } else {
-                if (board.getTile(row, col).getId() == board.getBoardSize()) {
-                    b.setBackgroundResource(R.drawable.white);
-                } else {
-                    int tileId = board.getTile(row, col).getId();
-                    String tileName = createTileName(boardManager.getBoard().getNumRows(),
-                            board.getNumCols(), tileId);
-                    String path = getDataDir().getPath() + "/app_" +
-                            userAccManager.getCurrentUser() + "/" + tileName;
-                    b.setBackground(Drawable.createFromPath(path));
-                }
+                setTile(board, b, row, col);
             }
             nextPos++;
+        }
+    }
+
+    /**
+     * Set all other tiles to their background image.
+     *
+     * @param board the game board.
+     * @param b     the button
+     * @param row   the row
+     * @param col   the column
+     */
+    private void setTile(SlidingTileBoard board, Button b, int row, int col) {
+        if (board.getTile(row, col).getId() == board.getBoardSize()) {
+            b.setBackgroundResource(R.drawable.white);
+        } else {
+            int tileId = board.getTile(row, col).getId();
+            String tileName = createTileName(boardManager.getBoard().getNumRows(),
+                    board.getNumCols(), tileId);
+            String path = getDataDir().getPath() + "/app_" +
+                    userAccManager.getCurrentUser() + "/" + tileName;
+            b.setBackground(Drawable.createFromPath(path));
         }
     }
 
@@ -215,7 +227,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     /**
      * Save the user's game state according to the current game, to local storage.
      */
-    private void saveToFile(){
+    private void saveToFile() {
         userAccManager.setCurrentGameState(boardManager);
         FileSaver.saveToFile(getApplicationContext(), boardManager,
                 GameCenterActivity.TEMP_SAVE_FILENAME);
@@ -225,7 +237,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     /**
      * Update the score of the current user if puzzle is solved.
      */
-    public void onSolved(){
+    public void onSolved() {
         SlidingTileStrategy strategy = new SlidingTileStrategy(userAccManager);
         userAccManager.addScore(strategy, boardManager.getBoard().getNumOfMoves(), boardManager);
         FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
@@ -236,7 +248,7 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
      * Save the game state and account state when game activity is about to close.
      */
     @Override
-    protected void onStop(){
+    protected void onStop() {
         super.onStop();
         saveToFile();
     }

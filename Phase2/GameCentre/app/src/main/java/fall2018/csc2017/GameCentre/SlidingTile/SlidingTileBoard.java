@@ -69,7 +69,7 @@ public class SlidingTileBoard extends AbstractBoard<SlidingTile> implements Iter
      *
      * @return the board size
      */
-    int getBoardSize() {
+    public int getBoardSize() {
         return getNumRows() * getNumCols();
     }
 

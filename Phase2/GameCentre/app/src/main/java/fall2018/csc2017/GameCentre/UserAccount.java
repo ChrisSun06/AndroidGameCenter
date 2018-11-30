@@ -8,7 +8,8 @@ import java.util.HashMap;
  */
 public class UserAccount implements Serializable {
 
-    public static final String[] GAMES = {"3X3sliding", "4X4sliding", "5X5sliding", "Sudoku", "2048"};
+    public static final String[] GAMES = {"3X3sliding", "4X4sliding", "5X5sliding", "Sudoku",
+            "2048"};
 
     public static final String[] GAME_TYPES = {"sliding", "Sudoku", "2048"};
 
@@ -66,9 +67,9 @@ public class UserAccount implements Serializable {
      * @param game the game name
      * @param boardManager board manager for this game
      */
-    void setSaves(String game, AbstractBoardManager boardManager){
+    public void setSaves(String game, AbstractBoardManager boardManager){
         for (String key : gameSaves.keySet()){
-            if (game.contains(key) && boardManager != null){gameSaves.put(key, boardManager);}
+            if (game.contains(key)){gameSaves.put(key, boardManager);}
         }
     }
 

@@ -3,12 +3,16 @@ package fall2018.csc2017.GameCentre;
 import org.junit.Test;
 
 import java.util.Arrays;
+
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
 import fall2018.csc2017.GameCentre.The2048.Merge2048;
+
 import static org.junit.Assert.assertTrue;
 
 public class MergeTest {
-    /** The board manager for testing. */
+    /**
+     * The board manager for testing.
+     */
     private Merge2048 merge2048;
 
     /**

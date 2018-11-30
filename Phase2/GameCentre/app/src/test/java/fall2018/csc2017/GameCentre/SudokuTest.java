@@ -4,8 +4,11 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import fall2018.csc2017.GameCentre.tiles.SudokuTile;
+
 import static org.junit.Assert.*;
+
 import fall2018.csc2017.GameCentre.Sudoku.*;
 
 /**
@@ -22,7 +25,7 @@ public class SudokuTest {
      * Make a partially solved Board.
      */
     @Test
-    public void setUpCorrect(){
+    public void setUpCorrect() {
         this.boardManager = new SudokuBoardManager();
     }
 
@@ -30,16 +33,16 @@ public class SudokuTest {
      * Make a first row of the Sudoku board be numbers from 1-6.
      */
 
-    private void setFirstRow(){
-        for (int i = 0; i < 9; i++){
-            this.boardManager.getBoard().getTile(0, i).setValue(i+1);
+    private void setFirstRow() {
+        for (int i = 0; i < 9; i++) {
+            this.boardManager.getBoard().getTile(0, i).setValue(i + 1);
         }
     }
 
     /**
      * Make a empty Board, filled with all 0s.
      */
-    private void setUp(){
+    private void setUp() {
         ArrayList<Integer> values = new ArrayList<>(Collections.nCopies(81, 0));
         ArrayList<SudokuTile> tiles = new ArrayList<>();
         for (int i = 0; i < values.size(); i++) {
@@ -53,7 +56,7 @@ public class SudokuTest {
      * Test isSolved() works or not.
      */
     @Test
-    public void testIsSolved(){
+    public void testIsSolved() {
         setUpCorrect();
         assertFalse(boardManager.puzzleSolved());
         boardManager.solve();
@@ -66,7 +69,7 @@ public class SudokuTest {
      * Test touchMove() on an empty board at the first position.
      */
     @Test
-    public void testTouchMoveEmptyFirst(){
+    public void testTouchMoveEmptyFirst() {
         setUp();
         assertEquals(0, boardManager.getBoard().getTile(0, 0).getValue());
         boardManager.touchMove(0);
@@ -79,7 +82,7 @@ public class SudokuTest {
      * Test touchMove() on a empty board at the last position.
      */
     @Test
-    public void testTouchMoveEmptyLast(){
+    public void testTouchMoveEmptyLast() {
         setUp();
         assertEquals(0, boardManager.getBoard().getTile(8, 8).getValue());
         boardManager.touchMove(80);
@@ -92,13 +95,13 @@ public class SudokuTest {
      * Test touchMove() on a solved board.
      */
     @Test
-    public void testTouchMoveSolved(){
+    public void testTouchMoveSolved() {
         setUp();
-        SudokuTile temp = boardManager.getBoard().getTile(3,2);
+        SudokuTile temp = boardManager.getBoard().getTile(3, 2);
         SudokuTile tile = new SudokuTile(temp.getId(), temp.getValue(), temp.getIsMutable());
         boardManager.touchMove(29);
         SudokuTile newTile = boardManager.getBoard().getTile(3, 2);
-        if (tile.getValue() == 9){
+        if (tile.getValue() == 9) {
             assertEquals(0, newTile.getValue());
         } else {
             assertEquals(tile.getValue() + 1, newTile.getValue());
@@ -109,9 +112,9 @@ public class SudokuTest {
      * Test touchMove() on a board on a tile that's 9, to reset it back to 0.
      */
     @Test
-    public void testTouchMoveReset(){
+    public void testTouchMoveReset() {
         setUp();
-        for (int i = 0; i <= 9; i++){
+        for (int i = 0; i <= 9; i++) {
             boardManager.touchMove(1);
         }
         assertEquals(0, boardManager.getBoard().getTile(0, 1).getValue());
@@ -121,7 +124,7 @@ public class SudokuTest {
      * Test isValid() works or not.
      */
     @Test
-    public void testIsValid(){
+    public void testIsValid() {
         setUpCorrect();
         assertTrue(boardManager.isValid());
     }
@@ -130,7 +133,7 @@ public class SudokuTest {
      * Test whether isValid() works on an empty board.
      */
     @Test
-    public void testIsValidEmpty(){
+    public void testIsValidEmpty() {
         setUp();
         assertTrue(boardManager.isValid());
         setFirstRow();
@@ -143,7 +146,7 @@ public class SudokuTest {
      * Test whether isValidTap() works.
      */
     @Test
-    public void testIsValidTap(){
+    public void testIsValidTap() {
         setUp();
         assertFalse(boardManager.isValidTap(0));
         boardManager.getBoard().getTile(0, 0).setIsMutable(true);
@@ -154,7 +157,7 @@ public class SudokuTest {
      * Test whether toString() works.
      */
     @Test
-    public void testToString(){
+    public void testToString() {
         setUp();
         assertEquals(boardManager.toString(), "Sudoku Board Manager");
     }

@@ -9,8 +9,6 @@ import android.widget.ImageButton;
 
 public class GameSelectionActivity extends AppCompatActivity {
 
-    //private String slidingtilegame;
-
     public static final String GameSudoku = "Sudoku";
     public static final String GameSlidingTile = "sliding";
     public static final String Game2048 = "2048";

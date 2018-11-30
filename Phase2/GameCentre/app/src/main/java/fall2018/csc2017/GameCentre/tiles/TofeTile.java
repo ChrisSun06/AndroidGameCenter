@@ -24,14 +24,6 @@ public class TofeTile extends Tile{
      */
     public int getValue(){return value;}
 
-    /**
-     * Set the drawable id of the background image.
-     *
-     * @param drawableId drawable id
-     */
-    public void setDrawableId(int drawableId) {
-        this.drawableId = drawableId;
-    }
 
     /**
      * Set the value of the tile.
@@ -81,6 +73,7 @@ public class TofeTile extends Tile{
      * @return power of two of the given value
      */
     private int powerOfTwo(int value) {
-        return value / 2 == 1 ? 1 : 1 + powerOfTwo(value / 2);
+        return value / 2 == 1 ? 1 : 1 +
+                powerOfTwo(value / 2);
     }
 }

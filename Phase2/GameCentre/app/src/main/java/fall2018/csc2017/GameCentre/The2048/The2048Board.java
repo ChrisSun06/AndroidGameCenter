@@ -16,8 +16,7 @@ import java.util.Random;
 /**
  * The board for game 2048.
  */
-public class The2048Board extends AbstractBoard<TofeTile> implements Serializable,
-        Iterable<TofeTile> {
+public class The2048Board extends AbstractBoard<TofeTile> implements Iterable<TofeTile> {
 
     /**
      * The score of game.

@@ -4,15 +4,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
+
 import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.List;
+
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 import fall2018.csc2017.GameCentre.The2048.*;
 
+/**
+ * Unit test for The2048Board
+ **/
 public class The2048BoardTest {
+
+    /**
+     * The board for 2048 game.
+     */
     private The2048Board board;
 
     /**
@@ -20,7 +32,7 @@ public class The2048BoardTest {
      */
     private void setUpBoardWithAll2() {
         List<TofeTile> tiles = new ArrayList<>();
-        for(int i = 0; i < 16; i++){
+        for (int i = 0; i < 16; i++) {
             tiles.add(new TofeTile(2, i));
         }
         board = new The2048Board(tiles);
@@ -31,10 +43,10 @@ public class The2048BoardTest {
      */
     private void setUpBoardWith3columnsAll2() {
         List<TofeTile> tiles = new ArrayList<>();
-        for(int i = 0; i < 16; i++){
-            if(i % 4 != 3) {
+        for (int i = 0; i < 16; i++) {
+            if (i % 4 != 3) {
                 tiles.add(new TofeTile(2, i));
-            }else{
+            } else {
                 tiles.add(new TofeTile(0, i));
             }
         }
@@ -59,8 +71,8 @@ public class The2048BoardTest {
         setUpBoardWithAll2();
         TofeTile[] result = board.merge("column", false);
         TofeTile[] expectedResult = new TofeTile[16];
-        for(int i = 0; i < 16; i++){
-            if(i<8)
+        for (int i = 0; i < 16; i++) {
+            if (i < 8)
                 expectedResult[i] = new TofeTile(4, i);
             else
                 expectedResult[i] = new TofeTile(0, i);
@@ -69,34 +81,34 @@ public class The2048BoardTest {
     }
 
     /**
-     *Test generating new tile if there is no blank position.
+     * Test generating new tile if there is no blank position.
      */
     @Test
-    public void testGenerateNewTileNoBlank(){
+    public void testGenerateNewTileNoBlank() {
         setUpBoardWithAll2();
         board.setAllTiles(board.generateNewTile(board.getAllTiles()));
         assertEquals(0, board.getScore());
     }
 
     /**
-     *Test generating new tile if there is blank position.
+     * Test generating new tile if there is blank position.
      */
     @Test
-    public void testGenerateNewTileWithBlank(){
+    public void testGenerateNewTileWithBlank() {
         setUpBoardWithAll2();
         TofeTile[] result = board.merge("column", false);
         int before = 0;
-        for(int i = 0; i < 16; i ++){
-            if(result[i].getValue() != 0)
+        for (int i = 0; i < 16; i++) {
+            if (result[i].getValue() != 0)
                 before++;
         }
         TofeTile[] generated = board.generateNewTile(result);
         int after = 0;
-        for(int i = 0; i < 16; i ++){
-            if(generated[i].getValue() != 0)
+        for (int i = 0; i < 16; i++) {
+            if (generated[i].getValue() != 0)
                 after++;
         }
-        assertTrue((after - before == 1 ));
+        assertTrue((after - before == 1));
     }
 
     /**
@@ -107,10 +119,10 @@ public class The2048BoardTest {
         setUpBoardWith3columnsAll2();
         TofeTile[] result = board.merge("row", false);
         TofeTile[] expectedResult = new TofeTile[16];
-        for(int i = 0; i < 16; i++){
-            if(i % 4 == 0)
+        for (int i = 0; i < 16; i++) {
+            if (i % 4 == 0)
                 expectedResult[i] = new TofeTile(4, i);
-            else if(i % 4 == 1)
+            else if (i % 4 == 1)
                 expectedResult[i] = new TofeTile(2, i);
             else
                 expectedResult[i] = new TofeTile(0, i);
@@ -125,10 +137,10 @@ public class The2048BoardTest {
         setUpBoardWith3columnsAll2();
         TofeTile[] result = board.merge("row", true);
         TofeTile[] expectedResult = new TofeTile[16];
-        for(int i = 0; i < 16; i++){
-            if(i % 4 == 3)
+        for (int i = 0; i < 16; i++) {
+            if (i % 4 == 3)
                 expectedResult[i] = new TofeTile(4, i);
-            else if(i % 4 == 2)
+            else if (i % 4 == 2)
                 expectedResult[i] = new TofeTile(2, i);
             else
                 expectedResult[i] = new TofeTile(0, i);

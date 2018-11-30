@@ -12,7 +12,7 @@ import fall2018.csc2017.GameCentre.tiles.SudokuTile;
 /**
  * The Sudoku board.
  */
-public class SudokuBoard extends AbstractBoard<SudokuTile> implements Serializable {
+public class SudokuBoard extends AbstractBoard<SudokuTile> {
 
     /**
      * Initialize a new Sudoku Board
