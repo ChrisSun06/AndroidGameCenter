@@ -24,8 +24,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import fall2018.csc2017.GameCentre.FileSaver;
-import fall2018.csc2017.GameCentre.ImageOperation;
+import fall2018.csc2017.GameCentre.Utility.FileSaver;
+import fall2018.csc2017.GameCentre.Utility.ImageOperation;
 import fall2018.csc2017.GameCentre.LoginActivity;
 import fall2018.csc2017.GameCentre.R;
 import fall2018.csc2017.GameCentre.TileNamingInterface;

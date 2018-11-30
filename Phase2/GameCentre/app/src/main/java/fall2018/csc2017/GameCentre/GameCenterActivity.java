@@ -11,6 +11,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileGameSettings;
+import fall2018.csc2017.GameCentre.Utility.FileSaver;
+import pl.droidsonroids.gif.GifImageButton;
 
 /**
  * The initial activity for the sliding puzzle tile game.
@@ -92,6 +94,8 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
                 startActivity(settings);
             }
         });
+        gController.setSettingButton(currentGame, startButton);
+
     }
 
     /**
@@ -131,13 +135,14 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
      * Activate the back button
      */
     private void addBackButtonListener(){
-        Button backButton = findViewById(R.id.Back);
+        ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(GameCenterActivity.this,
                         GameSelectionActivity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.slide_inleft, R.anim.slide_outright);
             }
         });
     }
@@ -164,7 +169,7 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
     private void loadFromFile() {
         userAccManager = (UserAccManager)FileSaver.loadFromFile(getApplicationContext(),
                 LoginActivity.ACC_INFO);
-        boardManager = userAccManager.getCurrentGameStateMap(currentGame);
+        boardManager = userAccManager.getCurrentGameState(currentGame);
         Toast.makeText(getApplicationContext(), userAccManager.makeToastTextGameState(),
                 Toast.LENGTH_LONG).show();
     }
@@ -183,7 +188,7 @@ public class GameCenterActivity extends AppCompatActivity implements FragmentBas
      * Activate button to go to score board activity.
      */
     private void goToScoreBoard(){
-        final ImageButton scoreboard = findViewById(R.id.scoreboard);
+        GifImageButton scoreboard = findViewById(R.id.scoreBoard);
         scoreboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

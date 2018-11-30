@@ -19,16 +19,26 @@ import fall2018.csc2017.GameCentre.tiles.TofeTile;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
+/**
+ * The account manager and account test
+ */
 public class AccountAndAccountManagerTest {
 
+    /**The account manager for testing**/
     private UserAccManager accManager;
 
+    /**The user account for testing**/
     private UserAccount testAccount;
 
+    /**The account map for testing**/
     private Map<String, UserAccount> accountMap = new HashMap<>();
 
+    /**The mocked context for testing**/
     private Context context = mock(Context.class);
 
+    /**
+     * Set up the account "207", and the game "5X5sliding".
+     */
     private void setUpAccountAndGame(){
         accManager = new UserAccManager();
         testAccount = new UserAccount("207", "207");
@@ -38,10 +48,16 @@ public class AccountAndAccountManagerTest {
         accManager.setCurrentGame("5X5sliding");
     }
 
+    /**
+     * Set up an empty account manager.
+     */
     private void setUp(){
         accManager = new UserAccManager();
     }
 
+    /**
+     * Test whether accountExist() works.
+     */
     @Test
     public void testAccountExist(){
         setUp();
@@ -51,6 +67,9 @@ public class AccountAndAccountManagerTest {
         assertFalse(accManager.accountExist("???", "hello"));
     }
 
+    /**
+     * Test whether set and getCurrentUser() works.
+     */
     @Test
     public void testSetGetCurrentUser(){
         setUp();
@@ -58,6 +77,9 @@ public class AccountAndAccountManagerTest {
         assertEquals("CSC207", accManager.getCurrentUser());
     }
 
+    /**
+     * Test whether setAccountMap() and getAccountMap() works.
+     */
     @Test
     public void testSetGetAccountMap(){
         setUp();
@@ -66,6 +88,9 @@ public class AccountAndAccountManagerTest {
         assertEquals(accountMap, accManager.getAccountMap());
     }
 
+    /**
+     * Test whether set and getCurrentGameState() works.
+     */
     @Test
     public void testSetGetCurrentGameState(){
         setUpAccountAndGame();
@@ -74,14 +99,17 @@ public class AccountAndAccountManagerTest {
         AbstractBoardManager sudokuManager = new SudokuBoardManager();
         accManager.setCurrentGame("sliding");
         accManager.setCurrentGameState(boardManager);
-        assertSame(boardManager, accManager.getCurrentGameStateMap("sliding"));
+        assertSame(boardManager, accManager.getCurrentGameState("sliding"));
         accManager.setCurrentGame("Sudoku");
         accManager.setCurrentGameState(sudokuManager);
-        assertSame(sudokuManager, accManager.getCurrentGameStateMap("Sudoku"));
-        assertSame(accManager.getCurrentGameStateMap("abc"), null);
-        assertSame(accManager.getCurrentGameStateMap(null), null);
+        assertSame(sudokuManager, accManager.getCurrentGameState("Sudoku"));
+        assertSame(accManager.getCurrentGameState("abc"), null);
+        assertSame(accManager.getCurrentGameState(null), null);
     }
 
+    /**
+     * Test whether set and getCurrentGame() works.
+     */
     @Test
     public void testGetCurrentGame(){
         setUp();
@@ -90,6 +118,9 @@ public class AccountAndAccountManagerTest {
 
     }
 
+    /**
+     * Test whether get and updateUndoTime()(set user's undo time) works.
+     */
     @Test
     public void testGetUserUndoTime(){
         setUpAccountAndGame();
@@ -98,12 +129,18 @@ public class AccountAndAccountManagerTest {
         assertEquals(accManager.getUserUndoTime(), 5);
     }
 
+    /**
+     * Test whether getName() works.
+     */
     @Test
     public void testUserGetName(){
         setUpAccountAndGame();
         assertEquals(testAccount.getName(),"207");
     }
 
+    /**
+     * Test whether addScore() works on sliding tile.
+     */
     @Test
     public void testAddScoreSlidingTile(){
         setUpAccountAndGame();
@@ -120,6 +157,9 @@ public class AccountAndAccountManagerTest {
                         getScores("5X5sliding"));
     }
 
+    /**
+     * Test whether addScore() works on 2048.
+     */
     @Test
     public void testAddScore2048(){
         setUpAccountAndGame();
@@ -136,6 +176,9 @@ public class AccountAndAccountManagerTest {
                         getScores("2048"));
     }
 
+    /**
+     * Test whether writeAcc() works
+     */
     @Test
     public void testWriteAccountOutput(){
         setUp();
@@ -148,18 +191,21 @@ public class AccountAndAccountManagerTest {
                 accManager.writeAcc("a", "", context));
     }
 
+    /**
+     * Test whether makeToastGameState() works.
+     */
     @Test
     public void testMakeToastTextGameState(){
         setUpAccountAndGame();
         accManager.setAccountMap(accountMap);
         AbstractBoardManager boardManager = new SlidingTileBoardManager(5);
         accManager.setCurrentGameState(boardManager);
-        accManager.getCurrentGameStateMap("sliding");
+        accManager.getCurrentGameState("sliding");
         assertEquals("Game save successfully loaded! Enjoy your game.",
                 accManager.makeToastTextGameState());
-        accManager.getCurrentGameStateMap("2048");
+        accManager.getCurrentGameState("2048");
         assertEquals("Game save not found!", accManager.makeToastTextGameState());
-        accManager.getCurrentGameStateMap("Sudoku");
+        accManager.getCurrentGameState("Sudoku");
         assertEquals("Game save not found!", accManager.makeToastTextGameState());
     }
 

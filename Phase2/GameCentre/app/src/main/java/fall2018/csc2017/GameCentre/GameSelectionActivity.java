@@ -3,8 +3,10 @@ package fall2018.csc2017.GameCentre;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 public class GameSelectionActivity extends AppCompatActivity {
 
@@ -22,6 +24,7 @@ public class GameSelectionActivity extends AppCompatActivity {
         goToSlidingTile();
         goToSudoku();
         goTo2048();
+        logOut();
     }
 
     private void goToSlidingTile(){
@@ -65,6 +68,20 @@ public class GameSelectionActivity extends AppCompatActivity {
                 i.putExtra("GAME", Game2048);
                 startActivity(i);
                 overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
+            }
+        });
+    }
+
+    private void logOut(){
+        ImageButton logOutButton =findViewById(R.id.logOutButton);
+        logOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(GameSelectionActivity.this,
+                       LoginActivity.class);
+                startActivity(i);
+                overridePendingTransition(R.anim.slide_inleft, R.anim.slide_outright);
             }
         });
     }

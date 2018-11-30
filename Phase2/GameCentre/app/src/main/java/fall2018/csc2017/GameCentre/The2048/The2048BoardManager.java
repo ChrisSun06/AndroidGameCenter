@@ -1,6 +1,5 @@
 package fall2018.csc2017.GameCentre.The2048;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,12 +10,12 @@ import fall2018.csc2017.GameCentre.tiles.TofeTile;
 /**
  * Manage a board, including swapping tiles, checking for a win, and managing taps.
  */
-public class The2048BoardManager extends AbstractBoardManager implements Serializable {
+public class The2048BoardManager extends AbstractBoardManager<The2048Board> {
 
     /**
-     * The board being managed.
+     * Number of tiles for this board specifically.
      */
-    private The2048Board board;
+    private int numOfTiles = 16;
 
     /**
      * The stack which keeps track of the previous board.
@@ -28,12 +27,6 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
      */
     private Stack<Integer> scoreStack = new Stack<>();
 
-    /**
-     * Return the current board.
-     */
-    public The2048Board getBoard() {
-        return board;
-    }
 
     /**
      * Manage a new shuffled board.
@@ -56,8 +49,7 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
     public The2048BoardManager() {
         int[] boardNumber = beginBoardList();
         List<TofeTile> tiles = new ArrayList<>();
-        final int numTiles = The2048Board.numTiles;
-        for (int tileNum = 0; tileNum != numTiles; tileNum++) {
+        for (int tileNum = 0; tileNum != numOfTiles; tileNum++) {
             if (boardNumber[tileNum] == 2) {
                 tiles.add(new TofeTile(2, tileNum));
             } else if (boardNumber[tileNum] == 4) {
@@ -66,7 +58,7 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
                 tiles.add(new TofeTile(0, tileNum));
             }
         }
-        this.board = new The2048Board(tiles);
+        setBoard(new The2048Board(tiles));
     }
 
     /**
@@ -76,11 +68,11 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
      * Precondition: rOrC can only be row or column
      */
     public void move(String rOrC, boolean inverted){
-        scoreStack.push(this.board.getScore());
-        historyStack.push(board.getAllTiles());
-        TofeTile[] mergedList = this.board.merge(rOrC, inverted);
+        scoreStack.push(getBoard().getScore());
+        historyStack.push(getBoard().getAllTiles());
+        TofeTile[] mergedList = getBoard().merge(rOrC, inverted);
         addScore(mergedList);
-        this.board.setAllTiles(this.board.generateNewTile(mergedList));
+        getBoard().setAllTiles(getBoard().generateNewTile(mergedList));
     }
 
     /**
@@ -90,11 +82,11 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
      */
     @Override
     public boolean puzzleSolved() {
-        TofeTile[] currentTiles = board.getAllTiles();
-        return(Arrays.equals(currentTiles, board.merge("row", true)) &&
-                Arrays.equals(currentTiles, board.merge("row", false)) &&
-                Arrays.equals(currentTiles, board.merge("column", true)) &&
-                Arrays.equals(currentTiles, board.merge("column", false)));
+        TofeTile[] currentTiles = getBoard().getAllTiles();
+        return(Arrays.equals(currentTiles, getBoard().merge("row", true)) &&
+                Arrays.equals(currentTiles, getBoard().merge("row", false)) &&
+                Arrays.equals(currentTiles, getBoard().merge("column", true)) &&
+                Arrays.equals(currentTiles, getBoard().merge("column", false)));
     }
 
     /**
@@ -113,9 +105,9 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
      */
     private void addScore(TofeTile[] mergeTiles){
         TofeTile[] previous = historyStack.peek();
-        int score = this.board.getScore();
+        int score = getBoard().getScore();
         if (previous == null){
-            this.board.setScore(0);
+            getBoard().setScore(0);
         }else if (count(mergeTiles, 0) > count(previous, 0)){
             int i = max(mergeTiles);
             int difference = 0;
@@ -123,7 +115,7 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
                 difference = count(mergeTiles, i) - count(previous, i) + 2 * difference;
                 if (difference > 0){
                     score = score + difference * i;
-                    this.board.setScore(score);
+                    getBoard().setScore(score);
                 }
                 i = i/2;
             }
@@ -169,8 +161,8 @@ public class The2048BoardManager extends AbstractBoardManager implements Seriali
      */
     public void undo() {
         if(!historyStack.empty() && !puzzleSolved()) {
-            this.board.setScore(scoreStack.pop());
-            this.board.setAllTiles(historyStack.pop());
+            getBoard().setScore(scoreStack.pop());
+            getBoard().setAllTiles(historyStack.pop());
         }
     }
 }

@@ -1,4 +1,4 @@
-package fall2018.csc2017.GameCentre;
+package fall2018.csc2017.GameCentre.Utility;
 
 
 import android.content.Context;
@@ -13,8 +13,17 @@ import java.io.ObjectOutputStream;
 
 import static android.content.Context.MODE_PRIVATE;
 
+/**
+ * The file save utility class.
+ */
 public class FileSaver {
 
+    /**
+     * Save an object to file in fileLocation.
+     * @param context the context.
+     * @param obj the object to be saved,
+     * @param fileLocation the file location to be saved to.
+     */
     public static void saveToFile(Context context, Object obj, String fileLocation){
         try {
             ObjectOutputStream os =
@@ -28,6 +37,12 @@ public class FileSaver {
         }
     }
 
+    /**
+     * Load an object from fileLocation
+     * @param context the context
+     * @param fileLocation the file location
+     * @return that object that's loaded from fileLocation.
+     */
     public static Object loadFromFile(Context context, String fileLocation){
         try {
             return loadFile(context, fileLocation);
@@ -44,6 +59,14 @@ public class FileSaver {
         }
     }
 
+    /**
+     * The helper method for loadFromFile(), that loads an object.
+     * @param c context
+     * @param fileLocation the file location.
+     * @return the object that's being loaded.
+     * @throws IOException In/Out exception.
+     * @throws ClassNotFoundException class not found exception.
+     */
     public static Object loadFile(Context c, String fileLocation) throws IOException,
             ClassNotFoundException {
         Object temp = new Object();

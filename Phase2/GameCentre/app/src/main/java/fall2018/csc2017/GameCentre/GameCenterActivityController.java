@@ -2,6 +2,8 @@ package fall2018.csc2017.GameCentre;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
 
 import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileFragment;
 import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileGameActivity;
@@ -52,6 +54,12 @@ public class GameCenterActivityController {
                 break;
             default:
                 break;
+        }
+    }
+
+    public void setSettingButton(String game, Button button){
+        if(! game.equals(GameSelectionActivity.GameSlidingTile)){
+            button.setVisibility(View.GONE);
         }
     }
 }
