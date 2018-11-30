@@ -1,12 +1,9 @@
 package fall2018.csc2017.GameCentre.tiles;
-
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
 import fall2018.csc2017.GameCentre.R;
-import fall2018.csc2017.GameCentre.SerializableBitmap;
 
 /**
  * An abstract tile for polymorphism implementation.

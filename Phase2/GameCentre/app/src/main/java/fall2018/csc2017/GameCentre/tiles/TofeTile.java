@@ -1,7 +1,5 @@
 package fall2018.csc2017.GameCentre.tiles;
 
-import java.nio.file.Files;
-
 import fall2018.csc2017.GameCentre.R;
 
 /**
