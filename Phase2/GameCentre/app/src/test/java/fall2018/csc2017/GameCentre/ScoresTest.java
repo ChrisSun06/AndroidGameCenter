@@ -48,6 +48,9 @@ public class ScoresTest {
         }
     }
 
+    /**
+     * test get score based user's name.
+     */
     @Test
     public void testGetAccountNamesScores(){
         populateAccManagerPlayedPlayer();

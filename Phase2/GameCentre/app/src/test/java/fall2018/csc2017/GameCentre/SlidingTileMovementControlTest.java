@@ -21,6 +21,9 @@ public class SlidingTileMovementControlTest {
 
    // private SlidingTileBoardManager boardManager = new SlidingTileBoardManager(4);
 
+    /**
+     * set up board manager for movement controller;
+     */
     public void setup(){
         movementController.setBoardManager(boardManager);
 
