@@ -63,7 +63,7 @@ everyone should work on their own class.
 Ming: \
 Peter: \
 Chris: \
-Leo: 2048 integrate and optimize\
+Leo: 2048 integrate and optimize
 Jason: sliding tile always solvable
 
 ####Nov 23,24,25, BA3200
@@ -73,7 +73,7 @@ Note tacker: Peter\
 Ming: \
 Peter: \
 Chris: \
-Leo: \
+Leo: Display of 2048. Makes the game playable.
 Jason: 2048 score
 
 ####Nov 28,29,30, BA2240
