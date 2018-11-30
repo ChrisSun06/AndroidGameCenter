@@ -17,7 +17,7 @@ public class The2048BoardManagerTest {
     private void setUp() {
         boardManager = new The2048BoardManager();
     }
-    private void SetUnfinihsedBoard(){
+    private void SetUnfinishedBoard(){
         TofeTile[] tiles = new TofeTile[16];
         tiles[0] = new TofeTile(4, 0);
         tiles[1] = new TofeTile(4, 1);
@@ -38,7 +38,7 @@ public class The2048BoardManagerTest {
         boardManager.getBoard().setAllTiles(tiles);
     }
 
-    private void SetFinihsedBoard(){
+    private void SetFinishedBoard(){
         TofeTile[] tiles = new TofeTile[16];
         tiles[0] = new TofeTile(2, 0);
         tiles[1] = new TofeTile(4, 1);
@@ -71,7 +71,7 @@ public class The2048BoardManagerTest {
     @Test
     public void testMove(){
         setUp();
-        SetUnfinihsedBoard();
+        SetUnfinishedBoard();
         boardManager.move("column", false);
         //int onBoardValue = boardManager.getBoard().getScore();
         //assertTrue((onBoardValue == 66 || onBoardValue == 68));
@@ -82,21 +82,21 @@ public class The2048BoardManagerTest {
     @Test
     public void testPuzzleSolvedFalse(){
         setUp();
-        SetUnfinihsedBoard();
+        SetUnfinishedBoard();
         assertTrue(!boardManager.puzzleSolved());
     }
 
     @Test
     public void testPuzzleSolvedTrue(){
         setUp();
-        SetFinihsedBoard();
+        SetFinishedBoard();
         assertTrue(boardManager.puzzleSolved());
     }
 
     @Test
     public void testUndoIfUndoable(){
         setUp();
-        SetUnfinihsedBoard();
+        SetUnfinishedBoard();
         TofeTile[] previousTiles = boardManager.getBoard().getAllTiles();
         boardManager.move("row", true);
         TofeTile[] tilesAfterMove = boardManager.getBoard().getAllTiles();
@@ -109,7 +109,7 @@ public class The2048BoardManagerTest {
     @Test
     public void testUndoIfNotUndoable(){
         setUp();
-        SetUnfinihsedBoard();
+        SetUnfinishedBoard();
         TofeTile[] previousTiles = boardManager.getBoard().getAllTiles();
         boardManager.undo();
         TofeTile[] tilesAfterUndo = boardManager.getBoard().getAllTiles();
