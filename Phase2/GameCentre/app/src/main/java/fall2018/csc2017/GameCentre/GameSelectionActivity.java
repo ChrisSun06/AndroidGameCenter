@@ -1,6 +1,7 @@
 package fall2018.csc2017.GameCentre;
 
 import android.content.Intent;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,62 +13,23 @@ public class GameSelectionActivity extends AppCompatActivity {
     public static final String GameSudoku = "Sudoku";
     public static final String GameSlidingTile = "sliding";
     public static final String Game2048 = "2048";
+    private ViewPager mSlideViewPager;
+    private GameSelectionAdapter selectionAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_selection);
+        mSlideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
 
-        goToSlidingTile();
-        goToSudoku();
-        goTo2048();
+        selectionAdapter = new GameSelectionAdapter(this);
+
+        mSlideViewPager.setAdapter(selectionAdapter);
+
         logOut();
     }
 
-    private void goToSlidingTile(){
-        Button slidingTileButton = findViewById(R.id.SlidingGameCenter);
-        slidingTileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Intent i = new Intent(GameSelectionActivity.this,
-                        GameCenterActivity.class);
-                i.putExtra("GAME", GameSlidingTile);
-                startActivity(i);
-                overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
-            }
-        });
-    }
-
-    private void goToSudoku(){
-        Button SudokuButton = findViewById(R.id.SudokuGameCenter);
-        SudokuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(GameSelectionActivity.this,
-                        GameCenterActivity.class);
-                i.putExtra("GAME", GameSudoku);
-                startActivity(i);
-                overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
-            }
-        });
-    }
-
-    private void goTo2048(){
-        final Button Game2048Button = findViewById(R.id.The2048GameCenter);
-        Game2048Button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(GameSelectionActivity.this,
-                        GameCenterActivity.class);
-                i.putExtra("GAME", Game2048);
-                startActivity(i);
-                overridePendingTransition(R.anim.slide_inright, R.anim.slide_outleft);
-            }
-        });
-    }
 
     private void logOut(){
         ImageButton logOutButton =findViewById(R.id.logOutButton);

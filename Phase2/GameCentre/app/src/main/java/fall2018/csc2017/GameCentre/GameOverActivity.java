@@ -34,6 +34,14 @@ public class GameOverActivity extends AppCompatActivity {
     }
 
     /**
+     * Delete the previous activity when back button is pressed.
+     */
+    @Override
+    public void onBackPressed(){
+        getIntent().setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+    }
+
+    /**
      * Go back to game center Button.
      */
     private void addGameCenterButtonListener() {
