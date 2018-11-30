@@ -7,20 +7,23 @@ import static org.junit.Assert.assertNotEquals;
 import fall2018.csc2017.GameCentre.SlidingTile.*;
 import fall2018.csc2017.GameCentre.The2048.*;
 import fall2018.csc2017.GameCentre.Sudoku.*;
-
+/***Test the GameActivityController class*/
 public class GameActivityControllerTest {
 
+    /**Game activity controller for testing**/
     private GameCenterActivityController gController;
 
+    /**A sliding tile fragment for testing**/
     private SlidingTileFragment slidingTileFragment;
-    private The2048Fragment the2048Fragment;
-    private SudokuFragment sudokuFragment;
-    private SlidingTileFragment nullFragment;
 
-    private GameCenterActivity gameCenterActivity;
-    private SlidingTileGameActivity slidingTileGameActivity;
-    private SudokuGameActivity sudokuGameActivity;
-    private The2048GameActivity the2048GameActivity;
+    /**A 2048 fragment for testing**/
+    private The2048Fragment the2048Fragment;
+
+    /**A Sudoku fragment for testing**/
+    private SudokuFragment sudokuFragment;
+
+    /**A fragment that's never been assigned, which is null**/
+    private SlidingTileFragment nullFragment;
 
     /**
      * Create 3 fragment instances except nullFragment.
@@ -31,17 +34,16 @@ public class GameActivityControllerTest {
         sudokuFragment = new SudokuFragment();
     }
 
-    private void setUpClass(){
-        gameCenterActivity = new GameCenterActivity();
-        slidingTileGameActivity = new SlidingTileGameActivity();
-        sudokuGameActivity = new SudokuGameActivity();
-        the2048GameActivity = new The2048GameActivity();
-    }
-
+    /**
+     * Set up the game activity controller
+     */
     private void setUp(){
         gController = new GameCenterActivityController();
     }
 
+    /**
+     * Test whether switchFragment() works.
+     */
     @Test
     public void testSwitchFragment(){
         setUp();

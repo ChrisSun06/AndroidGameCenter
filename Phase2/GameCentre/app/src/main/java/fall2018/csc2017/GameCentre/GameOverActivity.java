@@ -7,10 +7,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import fall2018.csc2017.GameCentre.Utility.FileSaver;
+
+/**
+ * The GameOverActivity, that activate after game is over.
+ */
 public class GameOverActivity extends AppCompatActivity {
 
+    /**The message for game over**/
     static final String GameOverMessageName = "GameOverMessage";
+
+    /**The current game**/
     private String currentGame;
+
+    /**The message to display**/
     private String displayMessage;
 
     @Override
@@ -20,7 +30,6 @@ public class GameOverActivity extends AppCompatActivity {
         currentGame = getIntent().getStringExtra("GAME");
         displayMessage = getIntent().getStringExtra(GameOverMessageName);
         displayMessage();
-        //gController = new GameOverController();
         addGameCenterButtonListener();
     }
 
@@ -41,8 +50,11 @@ public class GameOverActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Display the message of what game it is and what the score is.
+     */
     private void displayMessage(){
-        TextView msg= (TextView) findViewById(R.id.displayMsg);
+        TextView msg= findViewById(R.id.displayMsg);
         msg.setText(displayMessage);
     }
 

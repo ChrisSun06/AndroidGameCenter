@@ -8,7 +8,8 @@ import java.util.HashMap;
  */
 public class UserAccount implements Serializable {
 
-    public static final String[] GAMES = {"3X3sliding", "4X4sliding", "5X5sliding", "Sudoku", "2048"};
+    public static final String[] GAMES = {"3X3sliding", "4X4sliding", "5X5sliding", "Sudoku",
+            "2048"};
 
     public static final String[] GAME_TYPES = {"sliding", "Sudoku", "2048"};
 
