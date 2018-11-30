@@ -12,14 +12,6 @@ import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 public class SlidingTileBoardManager extends AbstractBoardManager<SlidingTileBoard>{
 
     /**
-     * Manage a board that has been pre-populated.
-     * @param slidingTileBoard the board
-     */
-    public SlidingTileBoardManager(SlidingTileBoard slidingTileBoard) {
-        setBoard(slidingTileBoard);
-    }
-
-    /**
      * Manage a new shuffled board.
      */
     public SlidingTileBoardManager(int gridSize) {
@@ -31,10 +23,20 @@ public class SlidingTileBoardManager extends AbstractBoardManager<SlidingTileBoa
 
         //Collections.shuffle(tiles);
         //while (!solvable(tiles, gridSize)){
-            //Collections.shuffle(tiles);
-       //}
+        //Collections.shuffle(tiles);
+        //}
         setBoard(new SlidingTileBoard(tiles, gridSize));
     }
+
+    /**
+     * Manage a board that has been pre-populated.
+     * @param slidingTileBoard the board
+     */
+    public SlidingTileBoardManager(SlidingTileBoard slidingTileBoard) {
+        setBoard(slidingTileBoard);
+    }
+
+
 
     /**
      * Return an boolean to check if the game could be solved.

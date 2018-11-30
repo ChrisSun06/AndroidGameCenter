@@ -115,7 +115,7 @@ public class The2048GestureDetectGridView extends GridView {
      * process undo
      */
     public void processUndo(){
-        mController.processUndo(getContext());
+        mController.processUndo();
     }
 
     /**

@@ -32,8 +32,11 @@ dependencies {
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.16'
     testImplementation 'junit:junit:4.12'
-    testCompile "org.mockito:mockito-core:2.+"
+
     testImplementation 'org.robolectric:robolectric:4.0.2'
+    testImplementation 'org.powermock:powermock-core:1.7.0RC2'
+    testImplementation 'org.powermock:powermock-module-junit4:1.7.0RC2'
+    testImplementation 'org.powermock:powermock-api-mockito2:1.7.0RC2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 

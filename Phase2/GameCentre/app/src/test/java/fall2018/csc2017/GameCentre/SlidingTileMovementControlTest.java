@@ -1,32 +1,45 @@
 package fall2018.csc2017.GameCentre;
 
 
+
+import org.junit.Before;
 import org.junit.Test;
-
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import static org.junit.Assert.*;
-
 import static org.mockito.Mockito.*;
 import fall2018.csc2017.GameCentre.SlidingTile.*;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(SlidingTileBoardManager.class)
+
 public class SlidingTileMovementControlTest {
 
     private int gridSize = 4;
-    SlidingTileMovementController movementController = new SlidingTileMovementController();
+    private SlidingTileMovementController movementController = new SlidingTileMovementController();
 
-    SlidingTileBoardManager boardManager = new SlidingTileBoardManager(gridSize);
+    @Mock
+    private SlidingTileBoardManager boardManager;
 
-    static final int validTap = 2;
-    static final int invalidTap = 4;
-    static final int blankPosition = 1;
+    private int validTap = 2;
+    private int invalidTap = 4;
+    private int blankPosition = 1;
 
-
-   // private SlidingTileBoardManager boardManager = new SlidingTileBoardManager(4);
 
     /**
-     * set up board manager for movement controller;
+     * Setp up the board manager for test
      */
+    @Before
     public void setup(){
-        movementController.setBoardManager(boardManager);
+       boardManager = PowerMockito.spy(new SlidingTileBoardManager(gridSize));
 
+        movementController.setBoardManager(boardManager);
+        when(boardManager.isValidTap(validTap)).thenReturn(true);
+        when(boardManager.isValidTap(invalidTap)).thenReturn(false);
+        when(boardManager.blankTilePosition()).thenReturn(1);
     }
 
     /**
@@ -36,7 +49,7 @@ public class SlidingTileMovementControlTest {
      public void testValidTapMovement() {
         setup();
         movementController.processTapMovement(validTap);
-        //when(boardManager.touchMove(2, true)).thenAnswer("Successful tap!");
+
         when(boardManager.blankTilePosition()).thenCallRealMethod();
         assertEquals(validTap, boardManager.blankTilePosition());
 
@@ -51,41 +64,36 @@ public class SlidingTileMovementControlTest {
         SlidingTileBoard origin = boardManager.getBoard();
         movementController.processTapMovement(invalidTap);
         assertEquals(origin, boardManager.getBoard());
-
     }
 
     /**
-     * Test a tap movement that is a undo tap
+     * Test a undo tap movement, the undo number should change
      */
     @Test
     public void testUndoTapMovement() {
         setup();
-        SlidingTileBoard origin = boardManager.getBoard();
         movementController.processTapMovement(validTap);
-        SlidingTileBoard newBoard = boardManager.getBoard();
+        int originUndoNum = boardManager.getBoard().getMaxUndoTime();
         movementController.processTapMovement(blankPosition);
-        SlidingTileBoard UndoBoard = boardManager.getBoard();
-        assertNotEquals(origin, newBoard);
-        assertEquals(origin, UndoBoard);
+        int updatedUndoNum = boardManager.getBoard().getMaxUndoTime();
+        assertEquals(originUndoNum, updatedUndoNum);
 
     }
 
 
     /**
-     * Test a tap movement that is a undo tap
+     * Test a undo tap movement, when there is no more undo number
      */
     @Test
     public void testUndoTapWithNoMoreUndoNumberMovement() {
         setup();
-        SlidingTileBoard origin = boardManager.getBoard();
-        boardManager.getBoard().setMaxUndoTime(0);
+        boardManager.getBoard().setMaxUndoTime(1);
         movementController.processTapMovement(validTap);
-        SlidingTileBoard newBoard = boardManager.getBoard();
         movementController.processTapMovement(blankPosition);
-        SlidingTileBoard UndoBoard = boardManager.getBoard();
-        assertNotEquals(origin, newBoard);
-        assertEquals(newBoard, UndoBoard);
-
+        movementController.processTapMovement(blankPosition);
+        movementController.processTapMovement(blankPosition);
+        int noMoreUndo2 = boardManager.getBoard().getMaxUndoTime();
+        assertEquals(0, noMoreUndo2);
     }
 
 }
