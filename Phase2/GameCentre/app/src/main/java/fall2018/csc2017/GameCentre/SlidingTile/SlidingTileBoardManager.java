@@ -62,15 +62,15 @@ public class SlidingTileBoardManager extends AbstractBoardManager<SlidingTileBoa
      * @return the int blank Tile position from bottom which need by solvable
      */
     private int blankFromBottom(List<SlidingTile> tile, int gridSize) {
+        int answer = 0;
         int blankId = tile.size();
-        for (int r = 0; r != gridSize; r++) {
-            for (int c = 0; c != gridSize; c++) {
-                if (tile.get(r * gridSize + c).getId() == blankId){
-                    return gridSize - r;
-                }
+        int totalTile = tile.size();
+        for (int r = 0; r != totalTile; r++) {
+            if (tile.get(r).getId() == blankId){
+                answer = gridSize - r/gridSize;
             }
         }
-        return -1;
+        return answer;
     }
 
     /**
