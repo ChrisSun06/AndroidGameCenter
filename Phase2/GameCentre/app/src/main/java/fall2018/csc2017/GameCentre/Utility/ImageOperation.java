@@ -65,8 +65,6 @@ public class ImageOperation {
                         j * segWidth, i * segHeight,
                         segWidth, segHeight);
                 bitmaps.add(imgTile);
-                // String tileName = createTileName(numRows, numCols, numCols * i + j + 1);
-                // savePNGToInternalStorage(imgTile, "tileDir", tileName);
                 if (i == numRows - 1 && j == numCols - 2) break;
             }
         }
