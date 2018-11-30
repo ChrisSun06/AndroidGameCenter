@@ -84,7 +84,6 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
         boardManager = (SlidingTileBoardManager) FileSaver.loadFromFile(getApplicationContext(),
                 GameCenterActivity.TEMP_SAVE_FILENAME);
         gController = new GameActivityOverController();
-        this.findViewById(R.id.invalidTapTextView).setVisibility(View.GONE);
         setUpBoard();
         createTileButtons(this);
         setContentView(R.layout.activity_slidingtile_game);
