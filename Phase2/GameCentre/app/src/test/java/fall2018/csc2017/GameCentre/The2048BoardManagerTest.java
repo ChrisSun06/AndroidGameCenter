@@ -21,6 +21,11 @@ public class The2048BoardManagerTest {
     private The2048BoardManager boardManager;
 
     /**
+     * The 2048 movement controller.
+     */
+    private The2048MovementController movementController = new The2048MovementController();
+
+    /**
      * setting up a merge object in which the list to be merged is the second row of the board
      * and the direction of moving is left
      */
@@ -69,8 +74,6 @@ public class The2048BoardManagerTest {
     @Test
     public void testConstructor() {
         setUp();
-        //int onBoardValue = boardManager.getBoard().getScore();
-        //assertTrue((onBoardValue == 4 || onBoardValue == 6 || onBoardValue == 8));
         int score = boardManager.getBoard().getScore();
         assertTrue((score == 0));
     }
@@ -83,8 +86,19 @@ public class The2048BoardManagerTest {
         setUp();
         SetUnfinishedBoard();
         boardManager.move("column", false);
-        //int onBoardValue = boardManager.getBoard().getScore();
-        //assertTrue((onBoardValue == 66 || onBoardValue == 68));
+        int score = boardManager.getBoard().getScore();
+        assertTrue((score == 64));
+    }
+
+    /**
+     * Check if The2048MovementController class works.
+     */
+    @Test
+    public void testMovement() {
+        setUp();
+        movementController.setBoardManager(boardManager);
+        SetUnfinishedBoard();
+        movementController.processMovement("column", false);
         int score = boardManager.getBoard().getScore();
         assertTrue((score == 64));
     }
