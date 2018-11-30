@@ -17,28 +17,56 @@ import fall2018.csc2017.GameCentre.Utility.FileSaver;
 import pl.droidsonroids.gif.GifImageButton;
 
 class ScoreAdapter extends PagerAdapter{
+
+    /**
+     * Context of ScoreBoardPublicActivity.
+     */
     Context context;
+
+    /**
+     * LayoutInflater
+     */
     LayoutInflater layoutInflater;
-    String gameName;
 
-    public void setGameName(String gameName) {
-        this.gameName = gameName;
-    }
-
+    /**
+     * The adapter that will display players in score board with their names and
+     * scores.
+     *
+     * @param context Context for ScoreBoardPublicActivity
+     */
     public ScoreAdapter(Context context){
         this.context = context;
     }
 
+    /**
+     * The name array of all the games in GameCenter
+     */
     String[] games = UserAccount.GAMES;
 
+    /**
+     * Count the number of positions of the Adapter
+     */
     @Override
     public int getCount(){return UserAccount.GAMES.length;}
 
+    /**
+     * set number of rows.
+     *
+     * @param view the view of ScoreBoardPublicActivity
+     * @param o a constrain layout
+     */
     @Override
     public boolean isViewFromObject(View view, Object o){
         return view == (ConstraintLayout) o;
     }
 
+
+    /**
+     * instantiate all the items in  position
+     *
+     * @param container the container that holds the adapter
+     * @param position current position in the container
+     */
     @Override
     public Object instantiateItem(ViewGroup container, int position){
         layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
@@ -56,6 +84,13 @@ class ScoreAdapter extends PagerAdapter{
         return view;
     }
 
+    /**
+     * destroy the item in the container at the position given.
+     *
+     * @param container the container that holds the adapter
+     * @param position current position in the container
+     * @param object a constrain layout
+     */
     @Override
     public void destroyItem(ViewGroup container, int position, Object object){
         container.removeView((ConstraintLayout)object);
@@ -64,6 +99,7 @@ class ScoreAdapter extends PagerAdapter{
     /**
      * It will cast the ArrayList listName to the  name listView or the score listView
      * @param listName list of user names.
+     * @param view this view
      */
     public void castNameToView(ArrayList<String> listName, View view){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
@@ -74,7 +110,9 @@ class ScoreAdapter extends PagerAdapter{
 
     /**
      *
-     * @param listScores
+     *
+     * @param listScores the list of scores
+     * @param view this view
      */
     public void castScoresToView (ArrayList<String> listScores, View view) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context,
