@@ -178,8 +178,6 @@ public class SudokuBoard extends AbstractBoard<SudokuTile> implements Serializab
         public SudokuTile next() {
             int curRow = ((nextIndex / 9) / 3) * 3 + (nextIndex % 9) / 3;
             int curCol = ((nextIndex / 9) % 3) * 3 + (nextIndex % 9) % 3;
-            //int curRow = (nextIndex % 18) / 3;
-            //int curCol = (nextIndex % 3) + (nextIndex / 18) * 3;
             SudokuTile tile = getTile(curCol, curRow);
             nextIndex += 1;
             return tile;
