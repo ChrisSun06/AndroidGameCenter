@@ -76,32 +76,6 @@ public class SudokuBoardManager extends AbstractBoardManager<SudokuBoard> {
     }
 
     /**
-     * Get the updated bitmap.
-     * @param context the context
-     * @param board the board
-     * @param row the row
-     * @param col the column
-     * @param tile the tile
-     * @return the updated bitmap.
-     */
-    Bitmap getUpdatedBitmap(Context context, SudokuBoard board, int row, int col, Bitmap tile) {
-        Bitmap temp = tile;
-        if (!board.getTile(row, col).getIsMutable()) {
-            Bitmap number = BitmapFactory.decodeResource(context.getResources(),
-                    Tile.FirstSudokuNumberId + board.getTile(row, col).getNumber() - 1);
-            temp = ImageOperation.superpose(tile, number);
-        }
-        else {
-            if (board.getTile(row, col).getNumber() != 0) {
-                Bitmap number = BitmapFactory.decodeResource(context.getResources(),
-                        Tile.FirstSudokuEditNumberId + board.getTile(row, col).getNumber() - 1);
-                temp = ImageOperation.superpose(tile, number);
-            }
-        }
-        return temp;
-    }
-
-    /**
      * Randomly add sudoku tile value from 1-9, into list of sudoku tiles.
      * @param tiles the list of tiles.
      */
