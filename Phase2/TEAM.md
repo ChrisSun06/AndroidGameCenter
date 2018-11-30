@@ -11,6 +11,7 @@ mingjin.lu@mail.utoronto.ca
 
 Chris Sun:
 6478931235
+Hongyi.sun@mail.utoronto.ca
 
 Peter Zhao:
 6474473890
