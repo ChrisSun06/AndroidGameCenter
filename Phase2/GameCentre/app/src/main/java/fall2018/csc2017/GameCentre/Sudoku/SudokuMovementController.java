@@ -67,7 +67,7 @@ public class SudokuMovementController implements MovementController {
      * @param position the position tapped
      */
     private void processValidTap(Context context, int position) {
-        boardManager.touchMove(position); // Todo: add boolean parameter
+        boardManager.touchMove(position);
         // boardManager.getBoard().increaseNumOfMoves();
         if (boardManager.puzzleSolved()) {
             Toast.makeText(context, "YOU WIN!", Toast.LENGTH_SHORT).show();
