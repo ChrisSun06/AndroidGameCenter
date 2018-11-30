@@ -106,9 +106,7 @@ public class The2048BoardManager extends AbstractBoardManager<The2048Board> {
     private void addScore(TofeTile[] mergeTiles){
         TofeTile[] previous = historyStack.peek();
         int score = getBoard().getScore();
-        if (previous == null){
-            getBoard().setScore(0);
-        }else if (count(mergeTiles, 0) > count(previous, 0)){
+        if (count(mergeTiles, 0) > count(previous, 0)){
             int i = max(mergeTiles);
             int difference = 0;
             while (i >= 4){
