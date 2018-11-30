@@ -27,6 +27,7 @@ public class SudokuBoard extends AbstractBoard<SudokuTile> implements Serializab
         for (int row = 0; row != getNumRows(); row++) {
             for (int col = 0; col != getNumCols(); col++) {
                 setTile(row, col, iter.next());
+                getTile(row, col).setId(getNumCols() * row + col + 1);
             }
         }
     }
@@ -199,6 +200,4 @@ public class SudokuBoard extends AbstractBoard<SudokuTile> implements Serializab
         setChanged();
         notifyObservers();
     }
-
-
 }
