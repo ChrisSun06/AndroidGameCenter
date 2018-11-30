@@ -13,7 +13,6 @@ import android.widget.Toast;
 import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileGameSettings;
 import fall2018.csc2017.GameCentre.Utility.FileSaver;
 import pl.droidsonroids.gif.GifImageButton;
-
 /**
  * The initial activity for the sliding puzzle tile game.
  */
