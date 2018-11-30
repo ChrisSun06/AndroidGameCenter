@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+/**
+ * Button fragment for game center activity
+ */
 public abstract class GameCenterButtonFragment extends Fragment {
 
     //AbstractBoardManager boardManager;

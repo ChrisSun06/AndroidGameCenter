@@ -14,11 +14,27 @@ import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
 
-
+/**
+ * Custom adapter
+ */
 public class CustomAdapter extends BaseAdapter {
+    /**
+     * Buttons.
+     */
     private ArrayList<? extends View> mButtons = null;
+
+    /**
+     * Column's width and height.
+     */
     private int mColumnWidth, mColumnHeight;
 
+    /**
+     * Initialize the custom adapter.
+     *
+     * @param buttons      the buttons
+     * @param columnWidth  column's width
+     * @param columnHeight column's height
+     */
     public CustomAdapter(ArrayList<? extends View> buttons, int columnWidth, int columnHeight) {
         mButtons = buttons;
         mColumnWidth = columnWidth;

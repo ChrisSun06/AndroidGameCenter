@@ -15,8 +15,12 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.GridView;
 import android.widget.TextView;
+
 import fall2018.csc2017.GameCentre.R;
 
+/**
+ * Gesture detect grid view for 2048
+ */
 public class The2048GestureDetectGridView extends GridView {
 
     /**
@@ -36,6 +40,7 @@ public class The2048GestureDetectGridView extends GridView {
 
     /**
      * initialize grid view
+     *
      * @param context the context
      */
     public The2048GestureDetectGridView(Context context) {
@@ -45,8 +50,9 @@ public class The2048GestureDetectGridView extends GridView {
 
     /**
      * initialize grid view
+     *
      * @param context the context
-     * @param attrs the attributes
+     * @param attrs   the attributes
      */
     public The2048GestureDetectGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -55,8 +61,9 @@ public class The2048GestureDetectGridView extends GridView {
 
     /**
      * initialize grid view
-     * @param context the context
-     * @param attrs the attributes
+     *
+     * @param context      the context
+     * @param attrs        the attributes
      * @param defStyleAttr int representing the style attribute.
      */
     public The2048GestureDetectGridView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -66,10 +73,11 @@ public class The2048GestureDetectGridView extends GridView {
 
     /**
      * initialize grid view(based on API 21)
-     * @param context the context
-     * @param attrs the attributes
+     *
+     * @param context      the context
+     * @param attrs        the attributes
      * @param defStyleAttr int representing the style attribute.
-     * @param defStyleRes int representing the style Res.
+     * @param defStyleRes  int representing the style Res.
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP) // API 21
     public The2048GestureDetectGridView(Context context, AttributeSet attrs, int defStyleAttr,
@@ -80,6 +88,7 @@ public class The2048GestureDetectGridView extends GridView {
 
     /**
      * helper method that help initializing the grid view
+     *
      * @param context the context
      */
     private void init(Context context) {
@@ -93,17 +102,19 @@ public class The2048GestureDetectGridView extends GridView {
 
     /**
      * processing touch event.
+     *
      * @param event touch event on the grid view
      * @return true
      */
     @Override
-    public boolean onTouchEvent(MotionEvent event){
+    public boolean onTouchEvent(MotionEvent event) {
         gDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
 
     /**
      * setup board manager for the controller
+     *
      * @param boardManager the board manager
      */
     public void setBoardManager(The2048BoardManager boardManager) {
@@ -114,15 +125,15 @@ public class The2048GestureDetectGridView extends GridView {
     /**
      * process undo
      */
-    public void processUndo(){
+    public void processUndo() {
         mController.processUndo();
     }
 
     /**
      * update the score if needed.
      */
-    public void UpdateScore(){
-        TextView score = ((The2048GameActivity)getContext()).findViewById(R.id.scoreTextView);
+    public void UpdateScore() {
+        TextView score = ((The2048GameActivity) getContext()).findViewById(R.id.scoreTextView);
         score.setText(getResources().getString(R.string.Score,
                 String.valueOf(boardManager.getBoard().getScore())));
     }

@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import fall2018.csc2017.GameCentre.Utility.FileSaver;
 import pl.droidsonroids.gif.GifImageButton;
 
+/**
+ * Score adapter class
+ */
 class ScoreAdapter extends PagerAdapter{
 
     /**

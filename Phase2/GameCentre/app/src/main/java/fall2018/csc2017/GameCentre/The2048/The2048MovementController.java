@@ -1,6 +1,10 @@
 package fall2018.csc2017.GameCentre.The2048;
+
 import android.content.Context;
 
+/**
+ * 2048 game's movement controller
+ */
 public class The2048MovementController {
 
     /**
@@ -20,7 +24,7 @@ public class The2048MovementController {
     /**
      * Process the movement for each slides.
      *
-     * @param direction either "row" or "col", "row" means horizontal movenment, "col" means vertical movement
+     * @param direction      either "row" or "col", "row" means horizontal movenment, "col" means vertical movement
      * @param directionValue deciding vector, if "row" is left or right, and if "col" is up or down.
      */
     public void processMovement(String direction, boolean directionValue) {
@@ -30,8 +34,8 @@ public class The2048MovementController {
     /**
      * Process the undo movement for each tap.
      */
-     void processUndo() {
-            boardManager.undo();
+    void processUndo() {
+        boardManager.undo();
     }
 
 }

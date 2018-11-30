@@ -5,7 +5,7 @@ import fall2018.csc2017.GameCentre.R;
 /**
  * A Tile in a 2048 game.
  */
-public class TofeTile extends Tile{
+public class TofeTile extends Tile {
 
     /**
      * The background image id to find the tile image.
@@ -22,7 +22,9 @@ public class TofeTile extends Tile{
      *
      * @return the value of the tile
      */
-    public int getValue(){return value;}
+    public int getValue() {
+        return value;
+    }
 
 
     /**
@@ -47,20 +49,25 @@ public class TofeTile extends Tile{
      * A tile with a background id and image id; look up and set the id.
      *
      * @param value current tile's displayed value such as 1024, 2048...
-     * @param id representing the position of the tile.
+     * @param id    representing the position of the tile.
      */
     public TofeTile(int value, int id) {
         setId(id);
-        if(value != 0)
+        if (value != 0)
             this.drawableId = First2048TileDrawableId + powerOfTwo(value) - 1;
         else
             this.drawableId = R.drawable.white;
         this.value = value;
     }
 
+    /**
+     * Return whether 2 2048 tiles or 1 tile and an object are equal
+     * @param other other object
+     * @return whether 2 2048 tiles or 1 tile and an object are equal
+     */
     @Override
-    public boolean equals(Object other){
-        if(!(other instanceof TofeTile))
+    public boolean equals(Object other) {
+        if (!(other instanceof TofeTile))
             return false;
         return this.getId() == ((TofeTile) other).getId() &&
                 this.getValue() == ((TofeTile) other).getValue();

@@ -9,7 +9,11 @@ import fall2018.csc2017.GameCentre.The2048.Merge2048;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Test the merge class
+ */
 public class MergeTest {
+
     /**
      * The board manager for testing.
      */

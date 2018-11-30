@@ -8,7 +8,10 @@ import fall2018.csc2017.GameCentre.AbstractBoard;
 import fall2018.csc2017.GameCentre.UserAccManager;
 import fall2018.csc2017.GameCentre.UserAccount;
 
-public class SudokuStrategy implements ScoringStrategy{
+/**
+ * Strategy for Sudoku
+ */
+public class SudokuStrategy implements ScoringStrategy {
 
     /**
      * The account map that stores all accounts
@@ -48,7 +51,7 @@ public class SudokuStrategy implements ScoringStrategy{
     }
 
     @Override
-    public int getScore(){
+    public int getScore() {
         return score;
     }
 }

@@ -39,12 +39,12 @@ public class ImageOperation {
     /**
      * Superpose one bitmap above the centre of one another.
      *
-     * @param back back image
+     * @param back  back image
      * @param front front image
      * @return the superposed image
      */
     public static Bitmap superpose(Bitmap back, Bitmap front) {
-        Bitmap superposed= Bitmap.createBitmap(back.getWidth(), back.getHeight(), back.getConfig());
+        Bitmap superposed = Bitmap.createBitmap(back.getWidth(), back.getHeight(), back.getConfig());
         Canvas canvas = new Canvas(superposed);
         canvas.drawBitmap(back, new Matrix(), null);
         canvas.drawBitmap(front,
@@ -58,7 +58,7 @@ public class ImageOperation {
      * Crop the given image into a given numRows x numCols grid. Then save it into tileDir for later
      * gaming access.
      *
-     * @param image the image bitmap about to be cropped
+     * @param image   the image bitmap about to be cropped
      * @param numRows the # of rows
      * @param numCols the # of cols
      */
@@ -81,8 +81,9 @@ public class ImageOperation {
 
     /**
      * Get the updated bitmap.
+     *
      * @param context the context
-     * @param tile the tile
+     * @param tile    the tile
      * @return the updated bitmap.
      */
     public static Bitmap getUpdatedSudokuTileBackground(Context context, SudokuTile tile) {
@@ -92,8 +93,7 @@ public class ImageOperation {
             Bitmap number = BitmapFactory.decodeResource(context.getResources(),
                     Tile.FirstSudokuNumberId + tile.getValue() - 1);
             return ImageOperation.superpose(blankTile, number);
-        }
-        else {
+        } else {
             if (tile.getValue() != 0) {
                 Bitmap number = BitmapFactory.decodeResource(context.getResources(),
                         Tile.FirstSudokuEditNumberId + tile.getValue() - 1);

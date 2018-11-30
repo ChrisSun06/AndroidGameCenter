@@ -32,6 +32,9 @@ import fall2018.csc2017.GameCentre.TileNamingInterface;
 import fall2018.csc2017.GameCentre.UserAccManager;
 import fall2018.csc2017.GameCentre.UserAccount;
 
+/**
+ * The sliding tile game settings activity
+ **/
 public class SlidingTileGameSettings extends AppCompatActivity implements TileNamingInterface {
 
     /**
@@ -77,16 +80,17 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
             public void onClick(View view) {
                 undoNum = findViewById(R.id.chooseUndo);
 
-                try{
-                int num = Integer.parseInt(undoNum.getText().toString());
-                accManager.updateUndoTime(num);
-                FileSaver.saveToFile(getApplicationContext(), accManager, LoginActivity.ACC_INFO);
-                makeToastSetUndo(num);
-                InputMethodManager imm = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);}
-                catch (NumberFormatException e){
+                try {
+                    int num = Integer.parseInt(undoNum.getText().toString());
+                    accManager.updateUndoTime(num);
+                    FileSaver.saveToFile(getApplicationContext(), accManager, LoginActivity.ACC_INFO);
+                    makeToastSetUndo(num);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+                } catch (NumberFormatException e) {
                     Toast.makeText(getApplicationContext(), "Please type in an Integer",
-                            Toast.LENGTH_LONG).show();}
+                            Toast.LENGTH_LONG).show();
+                }
             }
 
         });
@@ -95,7 +99,7 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
     /**
      * Activate URL Button for undo
      */
-    private void addUrlButtonListener(){
+    private void addUrlButtonListener() {
         ImageButton confirmURLButton = findViewById(R.id.URLConfirm);
         confirmURLButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,11 +116,9 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
                             cropAndSave(resized);
                             accManager.getAccountMap().get(accManager.getCurrentUser()).
                                     setImageType(UserAccount.ImageType.Imported);
-                        }
-                        catch (MalformedURLException e) {
+                        } catch (MalformedURLException e) {
                             e.printStackTrace();
-                        }
-                        catch (IOException e) {
+                        } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
@@ -209,8 +211,7 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
                 accManager.getAccountMap().get(accManager.getCurrentUser()).
                         setImageType(UserAccount.ImageType.Imported);
                 makeToastChangeBackground();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -230,13 +231,13 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
      * Save a given bitmap to internal storage as a PNG file.
      *
      * @param bitmapImage bitmap of the image
-     * @param userName name of the data directory
-     * @param fileName name of the png
+     * @param userName    name of the data directory
+     * @param fileName    name of the png
      */
     public void savePNGToInternalStorage(Bitmap bitmapImage, String userName, String fileName) {
         ContextWrapper cw = new ContextWrapper(this.getApplicationContext());
         File directory = cw.getDir(userName, MODE_PRIVATE);
-        File myPath = new File(directory,fileName);
+        File myPath = new File(directory, fileName);
 
         FileOutputStream fos = null;
         try {
@@ -258,7 +259,7 @@ public class SlidingTileGameSettings extends AppCompatActivity implements TileNa
      *
      * @param numRows board's num rows
      * @param numCols board's num cols
-     * @param tileId tile's id
+     * @param tileId  tile's id
      * @return generated tile's file name
      */
     @Override

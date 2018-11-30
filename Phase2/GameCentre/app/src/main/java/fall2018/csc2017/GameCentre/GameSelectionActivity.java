@@ -8,12 +8,26 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+/**
+ * Game selection activity
+ */
 public class GameSelectionActivity extends AppCompatActivity {
 
+    /**
+     * Game's names.
+     */
     public static final String GameSudoku = "Sudoku";
     public static final String GameSlidingTile = "sliding";
     public static final String Game2048 = "2048";
+
+    /**
+     * The slide view pager.
+     */
     private ViewPager mSlideViewPager;
+
+    /**
+     * The selection adapter.
+     */
     private GameSelectionAdapter selectionAdapter;
 
     /**

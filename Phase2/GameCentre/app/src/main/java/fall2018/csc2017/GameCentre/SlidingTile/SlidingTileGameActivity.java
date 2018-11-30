@@ -262,7 +262,10 @@ public class SlidingTileGameActivity extends AppCompatActivity implements Observ
     @Override
     protected void onStop() {
         super.onStop();
-        saveToFile();
+        FileSaver.saveToFile(getApplicationContext(), userAccManager,
+                LoginActivity.ACC_INFO);
+        FileSaver.saveToFile(getApplicationContext(), boardManager,
+                GameCenterActivity.TEMP_SAVE_FILENAME);
     }
 
 

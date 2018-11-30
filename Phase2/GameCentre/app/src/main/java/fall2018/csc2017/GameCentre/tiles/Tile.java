@@ -46,7 +46,8 @@ public abstract class Tile implements Comparable<Tile>, Serializable {
     /**
      * Default constructor.
      */
-    Tile() {}
+    Tile() {
+    }
 
     @Override
     public int compareTo(@NonNull Tile o) {

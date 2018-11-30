@@ -24,6 +24,9 @@ import fall2018.csc2017.GameCentre.Strategies.The2048Strategy;
 import fall2018.csc2017.GameCentre.UserAccManager;
 import fall2018.csc2017.GameCentre.tiles.TofeTile;
 
+/**
+ * Game activity for 2048
+ */
 public class The2048GameActivity extends AppCompatActivity implements Observer{
 
     /**
@@ -139,6 +142,18 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
     }
 
     /**
+     * Save the game state and account state when game activity is about to close.
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FileSaver.saveToFile(getApplicationContext(), userAccManager,
+                LoginActivity.ACC_INFO);
+        FileSaver.saveToFile(getApplicationContext(), boardManager,
+                GameCenterActivity.TEMP_SAVE_FILENAME);
+    }
+
+    /**
      * Update the backgrounds on the buttons to match the tiles.
      */
     private void updateTileButtons() {
@@ -151,18 +166,6 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
             //b.setBackground(Drawable.createFromPath(the2048Board.getTile(row, col).getBackground()));
             nextPos++;
         }
-    }
-
-    /**
-     * Dispatch onPause() to fragments.
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        FileSaver.saveToFile(getApplicationContext(), userAccManager,
-                LoginActivity.ACC_INFO);
-        FileSaver.saveToFile(getApplicationContext(), boardManager,
-                GameCenterActivity.TEMP_SAVE_FILENAME);
     }
 
     /**
@@ -183,15 +186,6 @@ public class The2048GameActivity extends AppCompatActivity implements Observer{
         userAccManager.addScore(strategy, 0, boardManager);
         FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
         gController.startOverControl(boardManager, getApplicationContext(), strategy, currentGame);
-    }
-
-    /**
-     * Save the game state and account state when game activity is about to close.
-     */
-    @Override
-    protected void onStop(){
-        super.onStop();
-        saveToFile();
     }
 
     /**

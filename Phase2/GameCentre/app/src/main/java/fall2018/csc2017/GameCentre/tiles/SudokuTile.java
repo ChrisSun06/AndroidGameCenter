@@ -53,8 +53,8 @@ public class SudokuTile extends Tile {
     /**
      * A tile with a background id, value and mutability.
      *
-     * @param id representing the position of the tile
-     * @param value current tile's displayed value 1, 2, ..., 9 or 0 (blank)
+     * @param id        representing the position of the tile
+     * @param value     current tile's displayed value 1, 2, ..., 9 or 0 (blank)
      * @param isMutable whether the tile is open to modification during the game
      */
     public SudokuTile(int id, int value, boolean isMutable) {

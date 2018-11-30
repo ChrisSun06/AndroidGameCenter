@@ -20,11 +20,12 @@ public class FileSaver {
 
     /**
      * Save an object to file in fileLocation.
-     * @param context the context.
-     * @param obj the object to be saved,
+     *
+     * @param context      the context.
+     * @param obj          the object to be saved,
      * @param fileLocation the file location to be saved to.
      */
-    public static void saveToFile(Context context, Object obj, String fileLocation){
+    public static void saveToFile(Context context, Object obj, String fileLocation) {
         try {
             ObjectOutputStream os =
                     new ObjectOutputStream(context.openFileOutput(fileLocation, MODE_PRIVATE));
@@ -39,11 +40,12 @@ public class FileSaver {
 
     /**
      * Load an object from fileLocation
-     * @param context the context
+     *
+     * @param context      the context
      * @param fileLocation the file location
      * @return that object that's loaded from fileLocation.
      */
-    public static Object loadFromFile(Context context, String fileLocation){
+    public static Object loadFromFile(Context context, String fileLocation) {
         try {
             return loadFile(context, fileLocation);
         } catch (FileNotFoundException e) {
@@ -61,10 +63,11 @@ public class FileSaver {
 
     /**
      * The helper method for loadFromFile(), that loads an object.
-     * @param c context
+     *
+     * @param c            context
      * @param fileLocation the file location.
      * @return the object that's being loaded.
-     * @throws IOException In/Out exception.
+     * @throws IOException            In/Out exception.
      * @throws ClassNotFoundException class not found exception.
      */
     public static Object loadFile(Context c, String fileLocation) throws IOException,

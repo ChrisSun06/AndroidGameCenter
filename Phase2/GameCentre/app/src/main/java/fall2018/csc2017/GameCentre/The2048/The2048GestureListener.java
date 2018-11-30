@@ -3,6 +3,10 @@ package fall2018.csc2017.GameCentre.The2048;
 import android.content.Context;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+
+/**
+ * Gesture listener for 2048
+ */
 class The2048GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     /**
@@ -24,6 +28,7 @@ class The2048GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     /**
      * set up the context
+     *
      * @param context the context
      */
     public void setContext(Context context) {
@@ -32,6 +37,7 @@ class The2048GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     /**
      * set up movement controller
+     *
      * @param mController the movement controller
      */
     void setController(The2048MovementController mController) {
@@ -40,6 +46,7 @@ class The2048GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     /**
      * unused method from the parent class
+     *
      * @param e motion event
      * @return false
      */
@@ -50,8 +57,9 @@ class The2048GestureListener extends GestureDetector.SimpleOnGestureListener {
 
     /**
      * process the sliding movement
-     * @param e1 event 1
-     * @param e2 event 2
+     *
+     * @param e1        event 1
+     * @param e2        event 2
      * @param velocityX velocity in x direction
      * @param velocityY velocity in y direction
      * @return true

@@ -3,7 +3,9 @@ package fall2018.csc2017.GameCentre.SlidingTile;
 import fall2018.csc2017.GameCentre.AbstractBoardManager;
 import fall2018.csc2017.GameCentre.GameMovementController;
 
-
+/**
+ * Movement controller for sliding tile game
+ */
 public class SlidingTileMovementController implements GameMovementController {
 
     /**
@@ -51,8 +53,6 @@ public class SlidingTileMovementController implements GameMovementController {
     private void processValidTap(int position) {
         boardManager.touchMove(position, false);
     }
-
-
 
 
 }

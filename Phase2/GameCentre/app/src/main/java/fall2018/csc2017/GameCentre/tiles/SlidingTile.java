@@ -9,7 +9,7 @@ public class SlidingTile extends Tile {
     /**
      * A tile with a background id and the grid size; look up and set the id.
      *
-     * @param id background id
+     * @param id       background id
      * @param gridSize grid size
      */
     public SlidingTile(int id, int gridSize) {

@@ -16,6 +16,9 @@ import fall2018.csc2017.GameCentre.R;
 import pl.droidsonroids.gif.GifImageButton;
 import pl.droidsonroids.gif.GifImageView;
 
+/**
+ * Game selection adapter class
+ */
 class GameSelectionAdapter extends PagerAdapter{
 
     /**Context of GameSelectionActivity.*/

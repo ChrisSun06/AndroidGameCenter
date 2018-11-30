@@ -16,7 +16,9 @@ import fall2018.csc2017.GameCentre.SlidingTile.*;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(SlidingTileBoardManager.class)
-
+/**
+ * Test sliding tile's movement control
+ */
 public class SlidingTileMovementControlTest {
 
     private int gridSize = 4;

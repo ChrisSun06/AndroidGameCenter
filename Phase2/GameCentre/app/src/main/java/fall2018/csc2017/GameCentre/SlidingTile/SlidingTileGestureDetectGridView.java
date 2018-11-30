@@ -19,30 +19,87 @@ import android.widget.TextView;
 
 import fall2018.csc2017.GameCentre.R;
 
+/**
+ * Gesture detect grid view for sliding tile
+ */
 public class SlidingTileGestureDetectGridView extends GridView {
+
+    /**
+     * The minimum swipe distance to activate
+     */
     public static final int SWIPE_MIN_DISTANCE = 100;
+
+    /**
+     * The gesture detector
+     */
     private GestureDetector gDetector;
+
+    /**
+     * The movement controller
+     */
     private SlidingTileMovementController mController;
+
+    /**
+     * The fling confirmed detector
+     */
     private boolean mFlingConfirmed = false;
+
+    /**
+     * Movement on the X axis
+     */
     private float mTouchX;
+
+    /**
+     * Movement on the Y axis
+     */
     private float mTouchY;
+
+    /**
+     * The board manager
+     */
     private SlidingTileBoardManager boardManager;
 
+    /**
+     * Constructor that initialize the grid view.
+     *
+     * @param context current context
+     */
     public SlidingTileGestureDetectGridView(Context context) {
         super(context);
         init(context);
     }
 
+    /**
+     * Another constructor that takes in attribute set
+     *
+     * @param context context
+     * @param attrs   attribute set
+     */
     public SlidingTileGestureDetectGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
+    /**
+     * Another constructor that takes in attribute set and style attribute
+     *
+     * @param context      context
+     * @param attrs        attribute set
+     * @param defStyleAttr style attribute
+     */
     public SlidingTileGestureDetectGridView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
+    /**
+     * initialize grid view(based on API 21)
+     *
+     * @param context      the context
+     * @param attrs        the attributes
+     * @param defStyleAttr int representing the style attribute.
+     * @param defStyleRes  int representing the style Res.
+     */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP) // API 21
     public SlidingTileGestureDetectGridView(Context context, AttributeSet attrs, int defStyleAttr,
                                             int defStyleRes) {
@@ -50,6 +107,11 @@ public class SlidingTileGestureDetectGridView extends GridView {
         init(context);
     }
 
+    /**
+     * helper method that help initializing the grid view
+     *
+     * @param context the context
+     */
     private void init(final Context context) {
         mController = new SlidingTileMovementController();
         gDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
@@ -73,6 +135,12 @@ public class SlidingTileGestureDetectGridView extends GridView {
         });
     }
 
+    /**
+     * Touch event on intercept
+     *
+     * @param ev touch event
+     * @return whether it's canceled or not on intercept.
+     */
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         int action = ev.getActionMasked();
@@ -99,28 +167,48 @@ public class SlidingTileGestureDetectGridView extends GridView {
         return super.onInterceptTouchEvent(ev);
     }
 
+    /**
+     * processing touch event.
+     *
+     * @param ev touch event on the grid view
+     * @return true
+     */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         return gDetector.onTouchEvent(ev);
     }
 
+    /**
+     * Set the board manager.
+     *
+     * @param boardManager board manager to set
+     */
     public void setBoardManager(SlidingTileBoardManager boardManager) {
         this.boardManager = boardManager;
         mController.setBoardManager(boardManager);
     }
 
-    public void updateUndoNumber(){
+    /**
+     * Update the number of undo left.
+     */
+    public void updateUndoNumber() {
         if (boardManager.getBoard().getMaxUndoTime() <= 0) {
             setUndoText("No More UNDO!");
-        } else{
+        } else {
             //boardManager.undo();
             setUndoText("Undo left: " + boardManager.getBoard().getMaxUndoTime());
         }
 
     }
 
-    void setUndoText(String txt){
-        TextView undoNum = (TextView) ((SlidingTileGameActivity)getContext()).findViewById(R.id.undoSlidingTileTextView);
+    /**
+     * Set the undo textview on the top right corner to txt.
+     *
+     * @param txt the text
+     */
+    void setUndoText(String txt) {
+        TextView undoNum = ((SlidingTileGameActivity) getContext()).findViewById(R.id.
+                undoSlidingTileTextView);
         undoNum.setText(txt);
     }
 }

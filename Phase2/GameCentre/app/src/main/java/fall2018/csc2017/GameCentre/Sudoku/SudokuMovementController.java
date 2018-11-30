@@ -6,7 +6,9 @@ import android.widget.Toast;
 import fall2018.csc2017.GameCentre.AbstractBoardManager;
 import fall2018.csc2017.GameCentre.GameMovementController;
 
-
+/**
+ * Sudoku's movement controller
+ */
 public class SudokuMovementController implements GameMovementController {
 
     /**
@@ -26,14 +28,13 @@ public class SudokuMovementController implements GameMovementController {
     /**
      * Process the movement for each tap on position.
      *
-     * @param context the current context
+     * @param context  the current context
      * @param position the tapped position
      */
     void processTapMovement(Context context, int position) {
         if (boardManager.isValidTap(position)) {
             processValidTap(context, position);
-        }
-        else {
+        } else {
             Toast.makeText(context, "Invalid Tap", Toast.LENGTH_SHORT).show();
         }
     }
@@ -41,7 +42,7 @@ public class SudokuMovementController implements GameMovementController {
     /**
      * process the valid tap.
      *
-     * @param context the current context
+     * @param context  the current context
      * @param position the position tapped
      */
     private void processValidTap(Context context, int position) {

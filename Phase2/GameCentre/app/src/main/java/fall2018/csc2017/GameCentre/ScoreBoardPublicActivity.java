@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 
+/**
+ * The public score board activity
+ */
 public class ScoreBoardPublicActivity extends AppCompatActivity {
 
     /*The view pager used for displaying scores*/
@@ -28,7 +31,7 @@ public class ScoreBoardPublicActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_board_public);
 
-        mSlideViewPager = (ViewPager) findViewById(R.id.scorePage);
+        mSlideViewPager = findViewById(R.id.scorePage);
 
         selectionAdapter = new ScoreAdapter(this);
 

@@ -147,6 +147,18 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     }
 
     /**
+     * Save the game state and account state when game activity is about to close.
+     */
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FileSaver.saveToFile(getApplicationContext(), userAccManager,
+                LoginActivity.ACC_INFO);
+        FileSaver.saveToFile(getApplicationContext(), boardManager,
+                GameCenterActivity.TEMP_SAVE_FILENAME);
+    }
+
+    /**
      * Update the backgrounds on the buttons to match the tiles.
      */
     private void updateTileButtons() {
@@ -163,18 +175,6 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     }
 
     /**
-     * Dispatch onPause() to fragments.
-     */
-    @Override
-    protected void onPause() {
-        super.onPause();
-        FileSaver.saveToFile(getApplicationContext(), userAccManager,
-                LoginActivity.ACC_INFO);
-        FileSaver.saveToFile(getApplicationContext(), boardManager,
-                GameCenterActivity.TEMP_SAVE_FILENAME);
-    }
-
-    /**
      * Update the score of the current user if puzzle is solved.
      */
     public void onSolved(){
@@ -182,15 +182,6 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         userAccManager.addScore(strategy, 0, boardManager);
         FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
         gController.startOverControl(boardManager, getApplicationContext(), strategy, currentGame);
-    }
-
-    /**
-     * Save the game state and account state when game activity is about to close.
-     */
-    @Override
-    protected void onStop(){
-        super.onStop();
-        saveToFile();
     }
 
     /**
