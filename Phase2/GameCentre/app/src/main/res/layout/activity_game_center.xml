@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/batman_gamecenter"
     tools:context="fall2018.csc2017.GameCentre.GameCenterActivity">
 
     <Button
@@ -42,15 +43,17 @@
     <FrameLayout
         android:id="@+id/gameButtonFrame"
         android:layout_width="368dp"
-        android:layout_height="245dp"
+        android:layout_height="118dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/SettingButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.88">
 
     </FrameLayout>
 
@@ -68,7 +71,7 @@
             android:layout_width="137dp"
             android:layout_height="213dp"
             android:background="@null"
-            android:src="@drawable/batman_gif_back_button" />
+            android:src="@drawable/batman_endgame" />
     </FrameLayout>
 
     <ImageButton

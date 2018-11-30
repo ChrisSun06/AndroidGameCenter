@@ -19,10 +19,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ScoreBoardActivity"
-            android:label="@string/title_activity_score_board"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SlidingTile.SlidingTileGameSettings" />
         <activity android:name=".GameSelectionActivity" />
         <activity android:name=".SlidingTile.SlidingTileGameActivity" />
