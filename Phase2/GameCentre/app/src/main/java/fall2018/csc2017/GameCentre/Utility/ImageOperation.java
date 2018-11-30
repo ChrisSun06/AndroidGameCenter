@@ -7,15 +7,18 @@ import android.graphics.Matrix;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Some image operation functions.
+ */
 public class ImageOperation {
     /**
      * The default source image width.
      */
-    static final int SourceImageWidth = 992;
+    private static final int SourceImageWidth = 992;
     /**
      * The default source image height.
      */
-    static final int SourceImageHeight = 1276;
+    private static final int SourceImageHeight = 1276;
 
     /**
      * Resize the source image into 992x1276 and return the resized image bitmap.
