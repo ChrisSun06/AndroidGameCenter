@@ -172,30 +172,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
                 LoginActivity.ACC_INFO);
         FileSaver.saveToFile(getApplicationContext(), boardManager,
                 GameCenterActivity.TEMP_SAVE_FILENAME);
-        /*LoginActivity.accManager.writeAccManager(getApplicationContext());
-        saveToFile(GameCenterActivity.TEMP_SAVE_FILENAME);*/
     }
-
-    /**
-     * Load the board manager from fileName.
-     *
-     * @param fileName the name of the file
-     */
-    /*private void loadFromFile(String fileName) {
-
-        try {
-            InputStream inputStream = this.openFileInput(fileName);
-            if (inputStream != null) {
-                loadGameState(inputStream);
-            }
-        } catch (FileNotFoundException e) {
-            Log.e("login activity", "File not found: " + e.toString());
-        } catch (IOException e) {
-            Log.e("login activity", "Can not read file: " + e.toString());
-        } catch (ClassNotFoundException e) {
-            Log.e("login activity", "File contained unexpected data type: " + e.toString());
-        }
-    }*/
 
     /**
      * Update the score of the current user if puzzle is solved.
@@ -214,30 +191,7 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
     protected void onStop(){
         super.onStop();
         saveToFile();
-        /*LoginActivity.accManager.writeAccManager(getApplicationContext());
-        saveToFile(GameCenterActivity.SAVE_FILENAME);*/
     }
-
-    /**
-     * load the game state.
-     *
-     * @param inputStream the file input stream
-     *
-     * @throws IOException in/output exception
-     * @throws ClassNotFoundException class not found exception
-     */
-    /*private void loadGameState(InputStream inputStream) throws IOException, ClassNotFoundException {
-        ObjectInputStream input = new ObjectInputStream(inputStream);
-        gameStateMap = (HashMap<String, SudokuBoardManager>) input.readObject();
-        if (gameStateMap.containsKey(LoginActivity.currentUser)){
-            boardManager = gameStateMap.get(LoginActivity.currentUser);
-            // boardManager.getBoard().setMaxUndoTime(boardManager.getBoard().getMaxUndoTime());
-        } else {
-            Toast.makeText(this, "Game saves not found!", Toast.LENGTH_LONG).show();
-        }
-        inputStream.close();
-    }*/
-
 
     /**
      * Save the board manager to fileName.
@@ -247,20 +201,10 @@ public class SudokuGameActivity extends AppCompatActivity implements Observer {
         FileSaver.saveToFile(getApplicationContext(), boardManager,
                 GameCenterActivity.TEMP_SAVE_FILENAME);
         FileSaver.saveToFile(getApplicationContext(), userAccManager, LoginActivity.ACC_INFO);
-        /*gameStateMap.put(LoginActivity.currentUser, boardManager);
-        try {
-            ObjectOutputStream outputStream = new ObjectOutputStream(
-                    this.openFileOutput(fileName, MODE_PRIVATE));
-            outputStream.writeObject(gameStateMap);
-            outputStream.close();
-        } catch (IOException e) {
-            Log.e("Exception", "File write failed: " + e.toString());
-        }*/
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        //saveToFile(GameCenterActivity.SAVE_FILENAME);
         saveToFile();
         display();
         onSolved();

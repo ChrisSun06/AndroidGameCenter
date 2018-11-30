@@ -4,31 +4,43 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+
 import fall2018.csc2017.GameCentre.SlidingTile.*;
 import fall2018.csc2017.GameCentre.The2048.*;
 import fall2018.csc2017.GameCentre.Sudoku.*;
+
 /***Test the GameActivityController class*/
 public class GameActivityControllerTest {
 
-    /**Game activity controller for testing**/
+    /**
+     * Game activity controller for testing
+     **/
     private GameCenterActivityController gController;
 
-    /**A sliding tile fragment for testing**/
+    /**
+     * A sliding tile fragment for testing
+     **/
     private SlidingTileFragment slidingTileFragment;
 
-    /**A 2048 fragment for testing**/
+    /**
+     * A 2048 fragment for testing
+     **/
     private The2048Fragment the2048Fragment;
 
-    /**A Sudoku fragment for testing**/
+    /**
+     * A Sudoku fragment for testing
+     **/
     private SudokuFragment sudokuFragment;
 
-    /**A fragment that's never been assigned, which is null**/
+    /**
+     * A fragment that's never been assigned, which is null
+     **/
     private SlidingTileFragment nullFragment;
 
     /**
      * Create 3 fragment instances except nullFragment.
      */
-    private void setUpFragments(){
+    private void setUpFragments() {
         slidingTileFragment = new SlidingTileFragment();
         the2048Fragment = new The2048Fragment();
         sudokuFragment = new SudokuFragment();
@@ -37,7 +49,7 @@ public class GameActivityControllerTest {
     /**
      * Set up the game activity controller
      */
-    private void setUp(){
+    private void setUp() {
         gController = new GameCenterActivityController();
     }
 
@@ -45,7 +57,7 @@ public class GameActivityControllerTest {
      * Test whether switchFragment() works.
      */
     @Test
-    public void testSwitchFragment(){
+    public void testSwitchFragment() {
         setUp();
         setUpFragments();
         assertEquals(gController.switchFragment(null), nullFragment);

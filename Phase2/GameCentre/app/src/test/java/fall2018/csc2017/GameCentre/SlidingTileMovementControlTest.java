@@ -1,7 +1,6 @@
 package fall2018.csc2017.GameCentre;
 
 
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,8 +8,10 @@ import org.mockito.Mock;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+
 import fall2018.csc2017.GameCentre.SlidingTile.*;
 
 @RunWith(PowerMockRunner.class)
@@ -33,8 +34,8 @@ public class SlidingTileMovementControlTest {
      * Setp up the board manager for test
      */
     @Before
-    public void setup(){
-       boardManager = PowerMockito.spy(new SlidingTileBoardManager(gridSize));
+    public void setup() {
+        boardManager = PowerMockito.spy(new SlidingTileBoardManager(gridSize));
 
         movementController.setBoardManager(boardManager);
         when(boardManager.isValidTap(validTap)).thenReturn(true);
@@ -46,7 +47,7 @@ public class SlidingTileMovementControlTest {
      * Test a tap movement on a valid tap
      */
     @Test
-     public void testValidTapMovement() {
+    public void testValidTapMovement() {
         setup();
         movementController.processTapMovement(validTap);
 

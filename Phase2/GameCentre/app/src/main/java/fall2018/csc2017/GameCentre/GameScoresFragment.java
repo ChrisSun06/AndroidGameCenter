@@ -13,10 +13,17 @@ import java.util.ArrayList;
 
 import fall2018.csc2017.GameCentre.Utility.FileSaver;
 
-
+/**The score fragment that takes care of displaying user's score.**/
 public class GameScoresFragment extends Fragment implements ScoresBoardFragmentInterface{
 
+    /**
+     * The game type
+     */
     private String gameType;
+
+    /**
+     * The game name.
+     */
     TextView gameName;
 
     /**
@@ -29,36 +36,42 @@ public class GameScoresFragment extends Fragment implements ScoresBoardFragmentI
                 loadFromFile(getActivity(), LoginActivity.ACC_INFO);
         Scores scores = new Scores(gameType, userAccManager);
         View rootView = inflater.inflate(R.layout.fragment_game_scores, container, false);
-
-        //ScoreBoardActivity activity = (ScoreBoardActivity) getActivity();
-
         gameName = rootView.findViewById(R.id.gametype);
         gameName.setText(gameType);
-
         castNameToView((ArrayList<String>) scores.getAccountNames(), rootView);
         castScoresToView((ArrayList<String>) scores.getAccountScores(), rootView);
-
         return rootView;
     }
 
+    /**
+     * Set the game type.
+     * @param gameType the game type.
+     */
     public void setGameType(String gameType) {
         this.gameType = gameType;
     }
 
 
     /**
-     * It will cast the ArrayList lis to the  name listView or the score listView
+     * It will cast the ArrayList listName to the  name listView or the score listView
+     * @param listName list of user names.
+     * @param rootview root view.
      */
-    public void castNameToView(ArrayList<String> lis, View rootview){
+    public void castNameToView(ArrayList<String> listName, View rootview){
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, lis);
+                android.R.layout.simple_list_item_1, listName);
         ListView list = rootview.findViewById(R.id.gameViewName);
         list.setAdapter(adapter);
     }
 
-    public void castScoresToView (ArrayList<String> lis, View rootview) {
+    /**
+     *
+     * @param listScores
+     * @param rootview
+     */
+    public void castScoresToView (ArrayList<String> listScores, View rootview) {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, lis);
+                android.R.layout.simple_list_item_1, listScores);
         ListView list = rootview.findViewById(R.id.gameViewScores);
         list.setAdapter(adapter);
     }

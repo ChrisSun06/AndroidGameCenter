@@ -2,6 +2,7 @@ package fall2018.csc2017.GameCentre.Strategies;
 
 import fall2018.csc2017.GameCentre.AbstractBoard;
 
+/**The strategy of calculating score**/
 public interface ScoringStrategy {
 
     /**

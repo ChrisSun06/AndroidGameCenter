@@ -4,22 +4,28 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import fall2018.csc2017.GameCentre.tiles.SlidingTile;
 import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileBoardManager;
 import fall2018.csc2017.GameCentre.SlidingTile.SlidingTileBoard;
+
 import static org.junit.Assert.*;
+
 /**
  * Example local unit test, which will execute on the development machine (host).
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
-public class BoardAndTileTest {
+public class SlidingTileTest {
 
-    /** The board manager for testing. */
+    /**
+     * The board manager for testing.
+     */
     SlidingTileBoardManager boardManager = new SlidingTileBoardManager(4);
 
     /**
      * Make a set of tiles that are in order.
+     *
      * @return a set of tiles that are in order
      */
     private List<SlidingTile> makeTiles() {
@@ -46,7 +52,8 @@ public class BoardAndTileTest {
      * Shuffle a few tiles.
      */
     private void swapFirstTwoTiles() {
-        boardManager.getBoard().swapTiles(0, 0, 0, 1);
+        boardManager.getBoard().swapTiles(0,
+                0, 0, 1);
     }
 
     /**
@@ -58,6 +65,17 @@ public class BoardAndTileTest {
         assertEquals(true, boardManager.puzzleSolved());
         swapFirstTwoTiles();
         assertEquals(false, boardManager.puzzleSolved());
+    }
+
+    /**
+     * Test whether getBoardSize() works.
+     */
+    @Test
+    public void testGetBoardSize() {
+        SlidingTileBoardManager managerFour = new SlidingTileBoardManager(4);
+        SlidingTileBoardManager managerFive = new SlidingTileBoardManager(5);
+        assertEquals(4 * 4, managerFour.getBoard().getBoardSize());
+        assertEquals(5 * 5, managerFive.getBoard().getBoardSize());
     }
 
     /**
