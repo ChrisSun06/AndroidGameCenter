@@ -9,7 +9,9 @@ and how it is implemented.
 ## How to run the app
 After the application BatGameCenter is installed on the phone, you can register as a new user.
 Just simply type in your username and password to register. Then, click on to Login to get into the
-game center. You can select three games which are Sliding Tiles(1), Sudoku(2) and 2048(3).
+game center. You can select three games which are Sliding Tiles(1), Sudoku(2) and 2048(3) by swiping screen.
+
+Notice the top left button is the back button, the top right gif button is the scoreboard button.
 (1). In Sliding Tile, you can select three sizes of the Sliding Tile game to play. If you want to change the in-game tile
 picture or change the undo numbers, you can go to settings to change them. In game, you can tab the tiles near
 the empty space to swap the tile. Your goal is to sort out the picture or the number given to you.
