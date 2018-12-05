@@ -9,11 +9,11 @@ MingJin Lu:
 6043757778
 mingjin.lu@mail.utoronto.ca
 
-Chris Sun:
+Chris(sunhong6) Sun:
 6478931235
 Hongyi.sun@mail.utoronto.ca
 
-Peter Zhao:
+Peter(dpcjzpeter) Zhao:
 6474473890
 zhiwei.zhao@mail.utoronto.ca
 
