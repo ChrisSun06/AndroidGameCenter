@@ -3,9 +3,6 @@
 This is a guide on how to run our programs, as well as introducing multiple features implement it
 and how it is implemented.
 
-## Setup
-
-
 ## How to run the app
 After the application BatGameCenter is installed on the phone, you can register as a new user.
 Just simply type in your username and password to register. Then, click on to Login to get into the
@@ -41,11 +38,10 @@ Overall app description: We have a batman theme GameCenter application, after th
 the player can select 3 sizes of sliding tile game on the right to play from.
 When the user returns back to the game center, user can choose to load or
 save the previous game. If the player is not pleased with the look of the sliding tile game,
-he/she can go to âsettingâ and select either default, superman, batman, to change the look of the sliding tile game.
-The player can also choose âuploadâ to use the image from image gallery on the phone, or to paste an url of a picture to set the image of the sliding tile games.
+he/she can go to setting and select either default, superman, batman, to change the look of the sliding tile game.
+The player can also choose upload to use the image from image gallery on the phone, or to paste an url of a picture to set the image of the sliding tile games.
 Furthermore, the player can also select the numbers of the undo they want in this setting page.
-After the player have won a game, the scoreboard will show the
-highest scores of the player.
+After the player have won a game, the scoreboard will show the highest scores of the player.
 
 ### Game Launch Centre:
 #### Login/Register: 
@@ -62,6 +58,7 @@ After logging in, user can choose to start a new game by selecting game complexi
 
 #### Auto save
 Auto save is also implemented, in the update method in GameActivity class, every time when the observable board updated, the observer GameActivity will be notified and save the game into local storage. And since number of undos left is stored inside the board object as well, it will also be stored.
+But auto save is only updated when the board is updated, therefore the first time creating a new game, without making any move will not auto save the board's status. In order to save a untouched board, user will have to manually click the save button on the game center menu. Every time when a board is solved, the game save will be erased since a solved board is meaningless, if the user really want to save it, again, user will have to manually save it.
 
 
 #### Undo method:
@@ -76,6 +73,10 @@ User undo one move => score unchanged
 When game over, calculate the score, the score is calculated by 1000\*(grid_size)/moves, for example if a user made 3 moves plus 3 undos on a 3X3 sliding tile game, his/her score will be 1000\*9/3 = 3000
 Therefore, user who gets the highest score is the best player, and score board will display in a descending order.
 And scores don't differ by a lot when amount of moves made are large, but differ by a quite significant amount if amount of moves made are small.
+
+In Sudoku:
+Since each board has similar difficulties (same number of tiles removed), every time when player solve one sudoku, they gain 1 point as their score.
+First time solving a Sudoku will made your score 0 and start displaying your name on the score board.
 
 In 2048:
 User make one movement => score added by sum of all merged new tile's value
